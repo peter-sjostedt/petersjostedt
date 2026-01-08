@@ -15,10 +15,9 @@ class User
 {
     private Database $db;
 
-    // Tillgängliga roller
+    // Tillgängliga roller (matchar ENUM i databasen)
     public const ROLE_USER = 'user';
     public const ROLE_ADMIN = 'admin';
-    public const ROLE_MODERATOR = 'moderator';
 
     /**
      * Konstruktor - hämta databasinstans

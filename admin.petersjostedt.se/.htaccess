@@ -1,0 +1,29 @@
+# Admin-säkerhet
+
+# Aktivera rewrite engine
+RewriteEngine On
+
+# Tvinga HTTPS i produktion
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Blockera känsliga filer
+<FilesMatch "\.(ini|log|conf|env|json|lock|md)$">
+    Deny from all
+</FilesMatch>
+
+# Blockera dolda filer
+<FilesMatch "^\.">
+    Deny from all
+</FilesMatch>
+
+# Förhindra directory listing
+Options -Indexes
+
+# Säkerhetsheaders
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "DENY"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline'"
+</IfModule>
