@@ -1,0 +1,4 @@
+# Blockera all webbåtkomst till cron-mappen
+# Cron-jobb ska endast köras via CLI
+
+Deny from all

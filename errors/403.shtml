@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>403 - Förbjudet</title>
+</head>
+<body>
+    <h1>403 – Förbjudet</h1>
+    <p>Du har inte behörighet att se den här sidan.</p>
+    <p><strong>Begärd URL:</strong> <!--#echo var="REDIRECT_URL" --></p>
+    <p><strong>Kom från:</strong> <!--#echo var="HTTP_REFERER" --></p>
+    <a href="/">Tillbaka till startsidan</a>
+</body>
+</html>

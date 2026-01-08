@@ -1,0 +1,29 @@
+# Aktivera rewrite engine
+RewriteEngine On
+
+# Neka åtkomst till känsliga filer
+<FilesMatch "\.(ini|log|conf|env|json|lock|md)$">
+    Deny from all
+</FilesMatch>
+
+# Blockera åtkomst till dolda filer (börjar med punkt)
+<FilesMatch "^\.">
+    Deny from all
+</FilesMatch>
+
+# Förhindra directory listing
+Options -Indexes
+
+# Skydda mot XSS och clickjacking
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Anpassade felsidor
+ErrorDocument 400 /errors/400.shtml
+ErrorDocument 401 /errors/401.shtml
+ErrorDocument 403 /errors/403.shtml
+ErrorDocument 404 /errors/404.shtml
+ErrorDocument 500 /errors/500.shtml

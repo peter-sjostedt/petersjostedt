@@ -1,0 +1,44 @@
+Folder PATH listing for volume OS
+Volume serial number is F699-8E6E
+C:.
+¦   tree.txt
+¦   
++---api.petersjostedt.se
+¦       .htaccess
+¦       index.php
+¦       
++---config
+¦       .htaccess
+¦       app.php
+¦       database.php
+¦       
++---errors
+¦       400.shtml
+¦       401.shtml
+¦       403.shtml
+¦       404.shtml
+¦       500.shtml
+¦       
++---logs
+¦       .htaccess
+¦       
++---public_html
+    ¦   .htaccess
+    ¦   about.php
+    ¦   contact.php
+    ¦   index.php
+    ¦   
+    +---cgi-bin
+    +---css
+    ¦       style.css
+    ¦       
+    +---includes
+    ¦       .htaccess
+    ¦       config.php
+    ¦       footer.php
+    ¦       header.php
+    ¦       security.php
+    ¦       
+    +---js
+            main.js
+            

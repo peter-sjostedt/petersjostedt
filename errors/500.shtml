@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>500 - Internt serverfel</title>
+</head>
+<body>
+    <h1>500 – Internt serverfel</h1>
+    <p>Något gick fel på servern. Försök igen senare.</p>
+    <p><strong>Begärd URL:</strong> <!--#echo var="REDIRECT_URL" --></p>
+    <p><strong>Kom från:</strong> <!--#echo var="HTTP_REFERER" --></p>
+    <a href="/">Tillbaka till startsidan</a>
+</body>
+</html>

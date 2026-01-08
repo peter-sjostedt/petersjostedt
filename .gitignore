@@ -1,0 +1,31 @@
+# Känsliga filer - ALDRIG committa dessa
+config/database.php
+config/app.php
+.env
+
+# Loggar
+logs/*.log
+logs/*
+
+# IDE och editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS-filer
+.DS_Store
+Thumbs.db
+
+# PHP
+vendor/
+composer.lock
+
+# Sessioner
+sessions/
+
+# Tillfälliga filer
+*.tmp
+*.temp
+*.cache
