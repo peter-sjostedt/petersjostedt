@@ -15,7 +15,7 @@ $messageType = '';
 // Hantera åtgärder
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!Session::verifyCsrfToken($_POST['csrf_token'] ?? '')) {
-        $message = 'Ogiltig förfrågan.';
+        $message = t('error.invalid_request');
         $messageType = 'error';
     } else {
         $action = $_POST['action'] ?? '';
@@ -28,19 +28,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $role = $_POST['role'] ?? 'user';
 
                 if (empty($email) || empty($password) || empty($name)) {
-                    $message = 'Alla fält måste fyllas i.';
+                    $message = t('error.all_fields_required');
                     $messageType = 'error';
                 } elseif (strlen($password) < 8) {
-                    $message = 'Lösenordet måste vara minst 8 tecken.';
+                    $message = t('error.password_min_length');
                     $messageType = 'error';
                 } else {
                     $userId = $userModel->create($email, $password, $name, $role);
                     if ($userId) {
-                        $message = 'Användare skapad!';
+                        $message = t('user.created');
                         $messageType = 'success';
                         Logger::write(Logger::ACTION_CREATE, Session::getUserId(), "Skapade användare: {$email}");
                     } else {
-                        $message = 'Kunde inte skapa användare. E-posten kanske redan finns.';
+                        $message = t('user.create_failed');
                         $messageType = 'error';
                     }
                 }
@@ -55,11 +55,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ];
 
                 if ($userModel->update($id, $data)) {
-                    $message = 'Användare uppdaterad!';
+                    $message = t('user.updated');
                     $messageType = 'success';
                     Logger::write(Logger::ACTION_UPDATE, Session::getUserId(), "Uppdaterade användare ID: {$id}");
                 } else {
-                    $message = 'Kunde inte uppdatera användare.';
+                    $message = t('user.update_failed');
                     $messageType = 'error';
                 }
                 break;
@@ -69,14 +69,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $password = $_POST['password'] ?? '';
 
                 if (strlen($password) < 8) {
-                    $message = 'Lösenordet måste vara minst 8 tecken.';
+                    $message = t('error.password_min_length');
                     $messageType = 'error';
                 } elseif ($userModel->updatePassword($id, $password)) {
-                    $message = 'Lösenord uppdaterat!';
+                    $message = t('user.password_updated');
                     $messageType = 'success';
                     Logger::write(Logger::ACTION_PASSWORD_CHANGE, Session::getUserId(), "Ändrade lösenord för användare ID: {$id}");
                 } else {
-                    $message = 'Kunde inte uppdatera lösenord.';
+                    $message = t('user.password_update_failed');
                     $messageType = 'error';
                 }
                 break;
@@ -86,14 +86,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 // Förhindra att man tar bort sig själv
                 if ($id === Session::getUserId()) {
-                    $message = 'Du kan inte ta bort dig själv.';
+                    $message = t('user.cannot_delete_self');
                     $messageType = 'error';
                 } elseif ($userModel->delete($id)) {
-                    $message = 'Användare borttagen!';
+                    $message = t('user.deleted');
                     $messageType = 'success';
                     Logger::write(Logger::ACTION_DELETE, Session::getUserId(), "Tog bort användare ID: {$id}");
                 } else {
-                    $message = 'Kunde inte ta bort användare.';
+                    $message = t('user.delete_failed');
                     $messageType = 'error';
                 }
                 break;
@@ -110,64 +110,18 @@ if (isset($_GET['edit'])) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="<?= Language::getInstance()->getLanguage() ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Användare - Admin</title>
+    <title><?= t('admin.users') ?> - <?= t('admin.title_prefix') ?></title>
     <link rel="stylesheet" href="css/admin.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background: #1a1a2e; color: #eee; min-height: 100vh; }
-        .sidebar { position: fixed; left: 0; top: 0; width: 250px; height: 100vh; background: #16213e; padding: 2rem 0; }
-        .sidebar h2 { color: #fff; padding: 0 1.5rem 1.5rem; border-bottom: 1px solid #0f3460; }
-        .sidebar nav { margin-top: 1rem; }
-        .sidebar a { display: block; padding: 1rem 1.5rem; color: #aaa; text-decoration: none; }
-        .sidebar a:hover, .sidebar a.active { background: #0f3460; color: #fff; }
-        .main { margin-left: 250px; padding: 2rem; }
-        h1 { margin-bottom: 1.5rem; }
-        .card { background: #16213e; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
-        .card h2 { margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #0f3460; }
-        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
-        .form-group { margin-bottom: 1rem; }
-        label { display: block; margin-bottom: 0.5rem; color: #aaa; }
-        input, select { width: 100%; padding: 0.75rem; border: 1px solid #0f3460; border-radius: 4px; background: #1a1a2e; color: #eee; }
-        input:focus, select:focus { outline: none; border-color: #e94560; }
-        .btn { padding: 0.75rem 1.5rem; background: #e94560; color: #fff; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; }
-        .btn:hover { background: #c73e54; }
-        .btn-secondary { background: #0f3460; }
-        .btn-secondary:hover { background: #16213e; }
-        .btn-danger { background: #dc3545; }
-        .btn-danger:hover { background: #c82333; }
-        .btn-small { padding: 0.5rem 1rem; font-size: 0.875rem; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #0f3460; }
-        th { color: #aaa; }
-        .badge { padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; }
-        .badge-admin { background: #e94560; }
-        .badge-user { background: #0f3460; }
-        .message { padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; }
-        .message.success { background: #28a74533; color: #28a745; }
-        .message.error { background: #dc354533; color: #dc3545; }
-        .actions { display: flex; gap: 0.5rem; }
-    </style>
 </head>
 <body>
-    <aside class="sidebar">
-        <h2>Admin Panel</h2>
-        <nav>
-            <a href="index.php">Dashboard</a>
-            <a href="users.php" class="active">Användare</a>
-            <a href="settings.php">Inställningar</a>
-            <a href="logs.php">Loggar</a>
-            <a href="sessions.php">Sessioner</a>
-            <a href="../public_html/">Visa sidan</a>
-            <a href="logout.php">Logga ut</a>
-        </nav>
-    </aside>
+    <?php include 'includes/sidebar.php'; ?>
 
     <main class="main">
-        <h1>Användare</h1>
+        <h1><?= t('admin.users') ?></h1>
 
         <?php if ($message): ?>
             <div class="message <?php echo $messageType; ?>"><?php echo htmlspecialchars($message); ?></div>
@@ -175,7 +129,7 @@ if (isset($_GET['edit'])) {
 
         <!-- Skapa/Redigera användare -->
         <div class="card">
-            <h2><?php echo $editUser ? 'Redigera användare' : 'Skapa ny användare'; ?></h2>
+            <h2><?php echo $editUser ? t('user.edit') : t('user.create_new'); ?></h2>
             <form method="POST" action="">
                 <?php echo Session::csrfField(); ?>
                 <input type="hidden" name="action" value="<?php echo $editUser ? 'update' : 'create'; ?>">
@@ -185,32 +139,32 @@ if (isset($_GET['edit'])) {
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="name">Namn</label>
+                        <label for="name"><?= t('user.name') ?></label>
                         <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($editUser['name'] ?? ''); ?>" required>
                     </div>
                     <div class="form-group">
-                        <label for="email">E-post</label>
+                        <label for="email"><?= t('user.email') ?></label>
                         <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($editUser['email'] ?? ''); ?>" required>
                     </div>
                     <div class="form-group">
-                        <label for="role">Roll</label>
+                        <label for="role"><?= t('user.role') ?></label>
                         <select id="role" name="role">
-                            <option value="user" <?php echo ($editUser['role'] ?? '') === 'user' ? 'selected' : ''; ?>>Användare</option>
-                            <option value="admin" <?php echo ($editUser['role'] ?? '') === 'admin' ? 'selected' : ''; ?>>Admin</option>
+                            <option value="user" <?php echo ($editUser['role'] ?? '') === 'user' ? 'selected' : ''; ?>><?= t('user.role_user') ?></option>
+                            <option value="admin" <?php echo ($editUser['role'] ?? '') === 'admin' ? 'selected' : ''; ?>><?= t('user.role_admin') ?></option>
                         </select>
                     </div>
                 </div>
 
                 <?php if (!$editUser): ?>
                 <div class="form-group">
-                    <label for="password">Lösenord (minst 8 tecken)</label>
+                    <label for="password"><?= t('user.password_min_8') ?></label>
                     <input type="password" id="password" name="password" required minlength="8">
                 </div>
                 <?php endif; ?>
 
-                <button type="submit" class="btn"><?php echo $editUser ? 'Uppdatera' : 'Skapa'; ?></button>
+                <button type="submit" class="btn"><?php echo $editUser ? t('update') : t('create'); ?></button>
                 <?php if ($editUser): ?>
-                    <a href="users.php" class="btn btn-secondary">Avbryt</a>
+                    <a href="users.php" class="btn btn-secondary"><?= t('cancel') ?></a>
                 <?php endif; ?>
             </form>
         </div>
@@ -218,34 +172,34 @@ if (isset($_GET['edit'])) {
         <?php if ($editUser): ?>
         <!-- Byt lösenord -->
         <div class="card">
-            <h2>Byt lösenord</h2>
+            <h2><?= t('user.change_password') ?></h2>
             <form method="POST" action="">
                 <?php echo Session::csrfField(); ?>
                 <input type="hidden" name="action" value="update_password">
                 <input type="hidden" name="id" value="<?php echo $editUser['id']; ?>">
 
                 <div class="form-group">
-                    <label for="new_password">Nytt lösenord (minst 8 tecken)</label>
+                    <label for="new_password"><?= t('user.new_password_min_8') ?></label>
                     <input type="password" id="new_password" name="password" required minlength="8">
                 </div>
 
-                <button type="submit" class="btn">Byt lösenord</button>
+                <button type="submit" class="btn"><?= t('user.change_password') ?></button>
             </form>
         </div>
         <?php endif; ?>
 
         <!-- Lista användare -->
         <div class="card">
-            <h2>Alla användare (<?php echo count($users); ?>)</h2>
+            <h2><?= t('user.all_users', ['count' => count($users)]) ?></h2>
             <table>
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Namn</th>
-                        <th>E-post</th>
-                        <th>Roll</th>
-                        <th>Skapad</th>
-                        <th>Åtgärder</th>
+                        <th><?= t('user.name') ?></th>
+                        <th><?= t('user.email') ?></th>
+                        <th><?= t('user.role') ?></th>
+                        <th><?= t('created') ?></th>
+                        <th><?= t('actions') ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -257,13 +211,13 @@ if (isset($_GET['edit'])) {
                         <td><span class="badge badge-<?php echo $user['role']; ?>"><?php echo $user['role']; ?></span></td>
                         <td><?php echo date('Y-m-d', strtotime($user['created_at'])); ?></td>
                         <td class="actions">
-                            <a href="?edit=<?php echo $user['id']; ?>" class="btn btn-secondary btn-small">Redigera</a>
+                            <a href="?edit=<?php echo $user['id']; ?>" class="btn btn-secondary btn-small"><?= t('edit') ?></a>
                             <?php if ($user['id'] !== Session::getUserId()): ?>
-                            <form method="POST" action="" style="display:inline;" onsubmit="return confirm('Är du säker?');">
+                            <form method="POST" action="" style="display:inline;" onsubmit="return confirm('<?= t('confirm.are_you_sure') ?>');">
                                 <?php echo Session::csrfField(); ?>
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
-                                <button type="submit" class="btn btn-danger btn-small">Ta bort</button>
+                                <button type="submit" class="btn btn-danger btn-small"><?= t('delete') ?></button>
                             </form>
                             <?php endif; ?>
                         </td>
