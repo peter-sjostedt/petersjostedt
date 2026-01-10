@@ -8,6 +8,19 @@ require_once __DIR__ . '/../public_html/includes/config.php';
 Session::start();
 Session::requireAdmin('login.php');
 
+// Hantera språkbyte
+if (isset($_GET['set_lang'])) {
+    Language::getInstance()->setLanguage($_GET['set_lang']);
+    $url = strtok($_SERVER['REQUEST_URI'], '?');
+    $params = $_GET;
+    unset($params['set_lang']);
+    if (!empty($params)) {
+        $url .= '?' . http_build_query($params);
+    }
+    header('Location: ' . $url);
+    exit;
+}
+
 $settings = Settings::getInstance();
 $message = '';
 $messageType = '';

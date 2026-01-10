@@ -5,20 +5,6 @@
  */
 
 $lang = Language::getInstance();
-
-// Hantera språkbyte
-if (isset($_GET['set_lang'])) {
-    $lang->setLanguage($_GET['set_lang']);
-    $url = strtok($_SERVER['REQUEST_URI'], '?');
-    $params = $_GET;
-    unset($params['set_lang']);
-    if (!empty($params)) {
-        $url .= '?' . http_build_query($params);
-    }
-    header('Location: ' . $url);
-    exit;
-}
-
 $currentPage = basename($_SERVER['PHP_SELF']);
 ?>
 <aside class="sidebar">
