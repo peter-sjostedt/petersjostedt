@@ -37,6 +37,7 @@ $userCount = $userModel->count();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= t('admin.nav.dashboard') ?> - <?= t('admin.title.prefix') ?></title>
     <link rel="stylesheet" href="css/admin.css">
+    <script src="js/admin.js" defer></script>
 </head>
 <body>
     <?php include 'includes/sidebar.php'; ?>

@@ -11,7 +11,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     <h2><?= t('admin.title.panel') ?></h2>
 
     <div class="lang-switcher">
-        <select onchange="window.location.href='?set_lang='+this.value">
+        <select>
             <?php foreach ($lang->getLanguages() as $code => $info): ?>
                 <option value="<?= $code ?>" <?= $code === $lang->getLanguage() ? 'selected' : '' ?>>
                     <?= $info['name'] ?>

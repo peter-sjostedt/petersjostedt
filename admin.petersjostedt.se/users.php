@@ -129,6 +129,7 @@ if (isset($_GET['edit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= t('admin.nav.users') ?> - <?= t('admin.title.prefix') ?></title>
     <link rel="stylesheet" href="css/admin.css">
+    <script src="js/admin.js" defer></script>
 </head>
 <body>
     <?php include 'includes/sidebar.php'; ?>
@@ -226,7 +227,7 @@ if (isset($_GET['edit'])) {
                         <td class="actions">
                             <a href="?edit=<?php echo $user['id']; ?>" class="btn btn-secondary btn-small"><?= t('common.edit') ?></a>
                             <?php if ($user['id'] !== Session::getUserId()): ?>
-                            <form method="POST" action="" style="display:inline;" onsubmit="return confirm('<?= t('confirm.are_you_sure') ?>');">
+                            <form method="POST" action="" style="display:inline;" data-confirm="<?= t('confirm.are_you_sure') ?>">
                                 <?php echo Session::csrfField(); ?>
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="id" value="<?php echo $user['id']; ?>">

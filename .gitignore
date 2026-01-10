@@ -1,6 +1,7 @@
 # Känsliga filer - ALDRIG committa dessa
 config/database.php
 config/app.php
+config/mail.php
 .env
 
 # Loggar

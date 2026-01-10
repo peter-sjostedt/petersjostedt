@@ -1,0 +1,143 @@
+﻿key;sv;en
+common.save;Spara;Save
+common.cancel;Avbryt;Cancel
+common.close;Stäng;Close
+common.delete;Radera;Delete
+common.edit;Redigera;Edit
+common.add;"Lägg till";Add
+common.create;Skapa;Create
+common.update;Uppdatera;Update
+common.created;Skapad;Created
+common.search;Sök;Search
+common.loading;Laddar...;Loading...
+common.please_wait;"Vänligen vänta...";"Please wait..."
+common.actions;Åtgärder;Actions
+common.unknown;Okänd;Unknown
+common.yes;Ja;Yes
+common.no;Nej;No
+common.ok;OK;OK
+common.login;"Logga in";"Log in"
+common.logout;"Logga ut";"Log out"
+common.welcome;Välkommen;Welcome
+common.welcome_user;"Välkommen {name}!";"Welcome {name}!"
+field.email;E-post;Email
+field.password;Lösenord;Password
+field.password_min_8;"Lösenord (minst 8 tecken)";"Password (min 8 characters)"
+field.new_password_min_8;"Nytt lösenord (minst 8 tecken)";"New password (min 8 characters)"
+field.name;Namn;Name
+field.role;Roll;Role
+error.generic;"Ett fel uppstod";"An error occurred"
+error.not_found;"Sidan hittades inte";"Page not found"
+error.unauthorized;"Ingen behörighet";Unauthorized
+error.invalid_request;"Ogiltig förfrågan. Försök igen.";"Invalid request. Please try again."
+error.too_many_attempts;"För många misslyckade försök. Vänta 15 minuter.";"Too many failed attempts. Wait 15 minutes."
+error.invalid_credentials_or_no_admin;"Felaktiga inloggningsuppgifter eller saknar admin-behörighet.";"Invalid credentials or missing admin privileges."
+error.all_fields_required;"Alla fält måste fyllas i.";"All fields are required."
+error.password_min_length;"Lösenordet måste vara minst 8 tecken.";"Password must be at least 8 characters."
+confirm.are_you_sure;"Är du säker?";"Are you sure?"
+confirm.delete_item;"Vill du verkligen radera detta?";"Do you really want to delete this?"
+pagination.previous;Föregående;Previous
+pagination.next;Nästa;Next
+filter.all;Alla;All
+filter.security;Säkerhet;Security
+filter.logins;Inloggningar;Logins
+filter.errors;Fel;Errors
+admin.nav.dashboard;Dashboard;Dashboard
+admin.nav.users;Användare;Users
+admin.nav.settings;Inställningar;Settings
+admin.nav.logs;Loggar;Logs
+admin.nav.sessions;Sessioner;Sessions
+admin.nav.view_site;"Visa sidan";"View site"
+admin.title.prefix;Admin;Admin
+admin.title.panel;"Admin Panel";"Admin Panel"
+admin.title.login;"Admin Login";"Admin Login"
+admin.title.back_to_site;"Tillbaka till sidan";"Back to site"
+admin.dashboard.logged_in_as;"Inloggad som:";"Logged in as:"
+admin.dashboard.admin;Admin;Admin
+admin.dashboard.events_24h;"Händelser (24h)";"Events (24h)"
+admin.dashboard.active_users_24h;"Aktiva användare (24h)";"Active users (24h)"
+admin.dashboard.failed_logins_24h;"Misslyckade inloggningar (24h)";"Failed logins (24h)"
+admin.dashboard.recent_activity;"Senaste aktivitet";"Recent activity"
+admin.users.created;"Användare skapad!";"User created!"
+admin.users.deleted;"Användare borttagen!";"User deleted!"
+admin.users.updated;"Användare uppdaterad!";"User updated!"
+admin.users.create_new;"Skapa ny användare";"Create new user"
+admin.users.edit;"Redigera användare";"Edit user"
+admin.users.change_password;"Byt lösenord";"Change password"
+admin.users.all_users;"Alla användare ({count})";"All users ({count})"
+admin.users.cannot_delete_self;"Du kan inte ta bort dig själv.";"You cannot delete yourself."
+admin.users.create_failed;"Kunde inte skapa användare. E-posten kanske redan finns.";"Could not create user. Email may already exist."
+admin.users.update_failed;"Kunde inte uppdatera användare.";"Could not update user."
+admin.users.delete_failed;"Kunde inte ta bort användare.";"Could not delete user."
+admin.users.password_updated;"Lösenord uppdaterat!";"Password updated!"
+admin.users.password_update_failed;"Kunde inte uppdatera lösenord.";"Could not update password."
+admin.users.role_user;Användare;User
+admin.users.role_admin;Admin;Admin
+admin.settings.saved;"Inställningar sparade!";"Settings saved!"
+admin.settings.save_failed;"Kunde inte spara inställningar.";"Could not save settings."
+admin.settings.save;"Spara inställningar";"Save settings"
+admin.settings.system_settings;Systeminställningar;"System settings"
+admin.settings.general;Allmänt;General
+admin.settings.security;Säkerhet;Security
+admin.settings.site_name;"Sidans namn";"Site name"
+admin.settings.description;Beskrivning;Description
+admin.settings.contact_email;Kontakt-epost;"Contact email"
+admin.settings.maintenance_mode;Underhållsläge;"Maintenance mode"
+admin.settings.maintenance_mode_desc;"Underhållsläge (stänger sidan för besökare)";"Maintenance mode (closes site for visitors)"
+admin.settings.allow_registration;"Tillåt registrering";"Allow registration"
+admin.settings.allow_registration_desc;"Tillåt registrering av nya användare";"Allow registration of new users"
+admin.settings.items_per_page;"Poster per sida";"Items per page"
+admin.settings.session_lifetime;"Session-livstid (sekunder)";"Session lifetime (seconds)"
+admin.settings.session_lifetime_help;"86400 = 24 timmar, 3600 = 1 timme";"86400 = 24 hours, 3600 = 1 hour"
+admin.settings.max_login_attempts;"Max inloggningsförsök";"Max login attempts"
+admin.settings.max_login_attempts_help;"Antal misslyckade försök innan IP blockeras";"Number of failed attempts before IP is blocked"
+admin.settings.lockout_time;"Spärrtid (minuter)";"Lockout time (minutes)"
+admin.settings.lockout_time_help;"Hur länge en IP är blockerad efter för många försök";"How long an IP is blocked after too many attempts"
+admin.settings.system_info;Systeminformation;"System information"
+admin.settings.php_version;PHP-version;"PHP version"
+admin.settings.server;Server;Server
+admin.settings.environment;Miljö;Environment
+admin.settings.database;Databas;Database
+admin.settings.timezone;Tidzon;Timezone
+admin.sessions.active;"Aktiva sessioner";"Active sessions"
+admin.sessions.unique_users;"Unika användare";"Unique users"
+admin.sessions.unique_ips;"Unika IP-adresser";"Unique IP addresses"
+admin.sessions.expired_to_clean;"Utgångna (att rensa)";"Expired (to clean)"
+admin.sessions.clean_expired;"Rensa {count} utgångna sessioner";"Clean {count} expired sessions"
+admin.sessions.expires;Utgår;Expires
+admin.sessions.no_active;"Inga aktiva sessioner";"No active sessions"
+admin.sessions.your_session;"Din session";"Your session"
+admin.sessions.hours_left;"{hours}h kvar";"{hours}h left"
+admin.sessions.confirm_terminate;"Avsluta denna session?";"Terminate this session?"
+admin.sessions.terminate;Avsluta;Terminate
+admin.sessions.terminated;"Session avslutad!";"Session terminated!"
+admin.sessions.terminated_count;"{count} sessioner avslutade!";"{count} sessions terminated!"
+admin.sessions.expired_cleaned;"{count} utgångna sessioner rensade!";"{count} expired sessions cleaned!"
+admin.logs.total;Totalt;Total
+admin.logs.last_24h;"Senaste 24h";"Last 24h"
+admin.logs.failed_logins;"Misslyckade inloggningar";"Failed logins"
+admin.logs.unique_ips_24h;"Unika IP:er (24h)";"Unique IPs (24h)"
+admin.logs.no_results;"Inga loggar hittades";"No logs found"
+admin.logs.time;Tid;Time
+admin.logs.user;Användare;User
+admin.logs.event;Händelse;Event
+admin.logs.ip_address;IP-adress;"IP address"
+admin.logs.search_placeholder;Sök...;Search...
+error.back_home;"Tillbaka till startsidan";"Back to homepage"
+error.requested_url;"Begärd URL";"Requested URL"
+error.came_from;"Kom från";"Came from"
+error.400.title;"400 - Felaktig begäran";"400 - Bad Request"
+error.400.heading;"Felaktig begäran";"Bad Request"
+error.400.message;"Servern kunde inte förstå din begäran.";"The server could not understand your request."
+error.401.title;"401 - Auktorisering krävs";"401 - Authorization Required"
+error.401.heading;"Auktorisering krävs";"Authorization Required"
+error.401.message;"Du måste logga in för att se den här sidan.";"You must log in to view this page."
+error.403.title;"403 - Förbjudet";"403 - Forbidden"
+error.403.heading;Förbjudet;Forbidden
+error.403.message;"Du har inte behörighet att se den här sidan.";"You do not have permission to view this page."
+error.404.title;"404 - Sidan hittades inte";"404 - Page Not Found"
+error.404.heading;"Sidan hittades inte";"Page Not Found"
+error.404.message;"Sidan du letar efter finns inte eller har flyttats.";"The page you are looking for does not exist or has been moved."
+error.500.title;"500 - Internt serverfel";"500 - Internal Server Error"
+error.500.heading;"Internt serverfel";"Internal Server Error"
+error.500.message;"Något gick fel på servern. Försök igen senare.";"Something went wrong on the server. Please try again later."

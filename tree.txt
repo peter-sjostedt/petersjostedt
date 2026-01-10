@@ -1,16 +1,47 @@
 Folder PATH listing for volume OS
 Volume serial number is F699-8E6E
 C:.
+¦   .gitignore
 ¦   tree.txt
 ¦   
++---.claude
+¦       settings.local.json
+¦       
++---admin.petersjostedt.se
+¦   ¦   .htaccess
+¦   ¦   index.php
+¦   ¦   login.php
+¦   ¦   logout.php
+¦   ¦   logs.php
+¦   ¦   sessions.php
+¦   ¦   settings.php
+¦   ¦   users.php
+¦   ¦   
+¦   +---css
+¦   ¦       admin.css
+¦   ¦       
+¦   +---includes
+¦   ¦       sidebar.php
+¦   ¦       
+¦   +---js
+¦           admin.js
+¦           
 +---api.petersjostedt.se
 ¦       .htaccess
 ¦       index.php
 ¦       
 +---config
 ¦       .htaccess
+¦       app.example.php
 ¦       app.php
+¦       database.example.php
 ¦       database.php
+¦       languages.php
+¦       translations.php
+¦       
++---cron
+¦       .htaccess
+¦       example.php
 ¦       
 +---errors
 ¦       400.shtml
@@ -23,22 +54,40 @@ C:.
 ¦       .htaccess
 ¦       
 +---public_html
-    ¦   .htaccess
-    ¦   about.php
-    ¦   contact.php
-    ¦   index.php
-    ¦   
-    +---cgi-bin
-    +---css
-    ¦       style.css
-    ¦       
-    +---includes
-    ¦       .htaccess
-    ¦       config.php
-    ¦       footer.php
-    ¦       header.php
-    ¦       security.php
-    ¦       
-    +---js
-            main.js
-            
+¦   ¦   .htaccess
+¦   ¦   about.php
+¦   ¦   contact.php
+¦   ¦   index.php
+¦   ¦   language-usage.php
+¦   ¦   modal-usage.php
+¦   ¦   scan-translations.php
+¦   ¦   test-db.php
+¦   ¦   
+¦   +---assets
+¦   ¦   +---css
+¦   ¦   ¦       modal.css
+¦   ¦   ¦       style.css
+¦   ¦   ¦       
+¦   ¦   +---js
+¦   ¦           main.js
+¦   ¦           modal.js
+¦   ¦           
+¦   +---cgi-bin
+¦   +---includes
+¦           .htaccess
+¦           config.php
+¦           footer.php
+¦           header.php
+¦           security.php
+¦           
++---src
+        Database.php
+        Language.php
+        LanguageExport.php
+        LanguageScanner.php
+        Logger.php
+        Router.php
+        Session.php
+        Settings.php
+        User.php
+        

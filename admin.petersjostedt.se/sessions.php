@@ -86,6 +86,7 @@ $uniqueIps = count(array_unique(array_column($sessions, 'ip_address')));
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= t('admin.nav.sessions') ?> - <?= t('admin.title.prefix') ?></title>
     <link rel="stylesheet" href="css/admin.css">
+    <script src="js/admin.js" defer></script>
 </head>
 <body>
     <?php include 'includes/sidebar.php'; ?>
@@ -165,7 +166,7 @@ $uniqueIps = count(array_unique(array_column($sessions, 'ip_address')));
                         </td>
                         <td>
                             <?php if (!$isCurrentSession): ?>
-                            <form method="POST" action="" style="display:inline;" onsubmit="return confirm('<?= t('admin.sessions.confirm_terminate') ?>');">
+                            <form method="POST" action="" style="display:inline;" data-confirm="<?= t('admin.sessions.confirm_terminate') ?>">
                                 <?php echo Session::csrfField(); ?>
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="session_id" value="<?php echo $session['id']; ?>">

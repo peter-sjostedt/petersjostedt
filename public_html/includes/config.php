@@ -4,6 +4,10 @@
  * Känsliga uppgifter laddas från /config/ utanför public_html
  */
 
+// Ladda Composer autoloader
+require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../src/Pdf.php';
+
 // Ladda konfiguration från säker plats
 $appConfig = require __DIR__ . '/../../config/app.php';
 $dbConfig = require __DIR__ . '/../../config/database.php';
@@ -46,3 +50,5 @@ require_once __DIR__ . '/../../src/Session.php';
 require_once __DIR__ . '/../../src/User.php';
 require_once __DIR__ . '/../../src/Settings.php';
 require_once __DIR__ . '/../../src/Logger.php';
+require_once __DIR__ . '/../../src/Language.php';
+require_once __DIR__ . '/../../src/Mailer.php';

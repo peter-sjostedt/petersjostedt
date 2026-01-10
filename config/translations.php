@@ -156,4 +156,25 @@ return [
     'admin.logs.event' => ['sv' => 'Händelse', 'en' => 'Event'],
     'admin.logs.ip_address' => ['sv' => 'IP-adress', 'en' => 'IP address'],
     'admin.logs.search_placeholder' => ['sv' => 'Sök...', 'en' => 'Search...'],
-];
+
+    // === ERROR - Felsidor ===
+    'error.back_home' => ['sv' => 'Tillbaka till startsidan', 'en' => 'Back to homepage'],
+    'error.requested_url' => ['sv' => 'Begärd URL', 'en' => 'Requested URL'],
+    'error.came_from' => ['sv' => 'Kom från', 'en' => 'Came from'],
+    'error.400.title' => ['sv' => '400 - Felaktig begäran', 'en' => '400 - Bad Request'],
+    'error.400.heading' => ['sv' => 'Felaktig begäran', 'en' => 'Bad Request'],
+    'error.400.message' => ['sv' => 'Servern kunde inte förstå din begäran.', 'en' => 'The server could not understand your request.'],
+    'error.401.title' => ['sv' => '401 - Auktorisering krävs', 'en' => '401 - Authorization Required'],
+    'error.401.heading' => ['sv' => 'Auktorisering krävs', 'en' => 'Authorization Required'],
+    'error.401.message' => ['sv' => 'Du måste logga in för att se den här sidan.', 'en' => 'You must log in to view this page.'],
+    'error.403.title' => ['sv' => '403 - Förbjudet', 'en' => '403 - Forbidden'],
+    'error.403.heading' => ['sv' => 'Förbjudet', 'en' => 'Forbidden'],
+    'error.403.message' => ['sv' => 'Du har inte behörighet att se den här sidan.', 'en' => 'You do not have permission to view this page.'],
+    'error.404.title' => ['sv' => '404 - Sidan hittades inte', 'en' => '404 - Page Not Found'],
+    'error.404.heading' => ['sv' => 'Sidan hittades inte', 'en' => 'Page Not Found'],
+    'error.404.message' => ['sv' => 'Sidan du letar efter finns inte eller har flyttats.', 'en' => 'The page you are looking for does not exist or has been moved.'],
+    'error.500.title' => ['sv' => '500 - Internt serverfel', 'en' => '500 - Internal Server Error'],
+    'error.500.heading' => ['sv' => 'Internt serverfel', 'en' => 'Internal Server Error'],
+    'error.500.message' => ['sv' => 'Något gick fel på servern. Försök igen senare.', 'en' => 'Something went wrong on the server. Please try again later.'],
+
+    ];
