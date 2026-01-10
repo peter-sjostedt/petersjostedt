@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= t('admin.login') ?> - <?php echo SITE_NAME; ?></title>
+    <title><?= t('admin.title.login') ?> - <?php echo SITE_NAME; ?></title>
     <link rel="stylesheet" href="css/admin.css">
     <style>
         body {
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="login-box">
-        <h1><?= t('admin.login') ?></h1>
+        <h1><?= t('admin.title.login') ?></h1>
 
         <?php if ($error): ?>
             <div class="error"><?php echo htmlspecialchars($error); ?></div>
@@ -80,19 +80,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php echo Session::csrfField(); ?>
 
             <div class="form-group">
-                <label for="email"><?= t('user.email') ?></label>
+                <label for="email"><?= t('field.email') ?></label>
                 <input type="email" id="email" name="email" required autofocus>
             </div>
 
             <div class="form-group">
-                <label for="password"><?= t('user.password') ?></label>
+                <label for="password"><?= t('field.password') ?></label>
                 <input type="password" id="password" name="password" required>
             </div>
 
-            <button type="submit" class="btn"><?= t('user.login') ?></button>
+            <button type="submit" class="btn"><?= t('common.login') ?></button>
         </form>
 
-        <a href="../public_html/" class="back-link"><?= t('admin.back_to_site') ?></a>
+        <a href="../public_html/" class="back-link"><?= t('admin.title.back_to_site') ?></a>
     </div>
 </body>
 </html>

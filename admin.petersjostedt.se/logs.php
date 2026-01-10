@@ -55,31 +55,31 @@ $stats = $logger->getStats();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= t('admin.logs') ?> - <?= t('admin.title_prefix') ?></title>
+    <title><?= t('admin.nav.logs') ?> - <?= t('admin.title.prefix') ?></title>
     <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
     <?php include 'includes/sidebar.php'; ?>
 
     <main class="main">
-        <h1><?= t('admin.logs') ?></h1>
+        <h1><?= t('admin.nav.logs') ?></h1>
 
         <div class="stats">
             <div class="stat">
                 <h3><?php echo number_format($stats['total']); ?></h3>
-                <p><?= t('admin.total') ?></p>
+                <p><?= t('admin.logs.total') ?></p>
             </div>
             <div class="stat">
                 <h3><?php echo number_format($stats['last_24h']); ?></h3>
-                <p><?= t('admin.last_24h') ?></p>
+                <p><?= t('admin.logs.last_24h') ?></p>
             </div>
             <div class="stat">
                 <h3><?php echo number_format($stats['failed_logins_24h']); ?></h3>
-                <p><?= t('admin.failed_logins') ?></p>
+                <p><?= t('admin.logs.failed_logins') ?></p>
             </div>
             <div class="stat">
                 <h3><?php echo number_format($stats['unique_ips_24h']); ?></h3>
-                <p><?= t('admin.unique_ips_24h') ?></p>
+                <p><?= t('admin.logs.unique_ips_24h') ?></p>
             </div>
         </div>
 
@@ -91,8 +91,8 @@ $stats = $logger->getStats();
 
             <form method="GET" class="search-box" style="margin-left:auto;">
                 <input type="hidden" name="filter" value="<?php echo htmlspecialchars($filter); ?>">
-                <input type="text" name="search" placeholder="<?= t('search.placeholder') ?>" value="<?php echo htmlspecialchars($search); ?>">
-                <button type="submit"><?= t('search') ?></button>
+                <input type="text" name="search" placeholder="<?= t('admin.logs.search_placeholder') ?>" value="<?php echo htmlspecialchars($search); ?>">
+                <button type="submit"><?= t('common.search') ?></button>
             </form>
         </div>
 
@@ -100,15 +100,15 @@ $stats = $logger->getStats();
             <table>
                 <thead>
                     <tr>
-                        <th><?= t('admin.time') ?></th>
-                        <th><?= t('admin.user') ?></th>
-                        <th><?= t('admin.event') ?></th>
-                        <th><?= t('admin.ip_address') ?></th>
+                        <th><?= t('admin.logs.time') ?></th>
+                        <th><?= t('admin.logs.user') ?></th>
+                        <th><?= t('admin.logs.event') ?></th>
+                        <th><?= t('admin.logs.ip_address') ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($logs)): ?>
-                    <tr><td colspan="4" style="text-align:center;color:#aaa;"><?= t('admin.no_logs_found') ?></td></tr>
+                    <tr><td colspan="4" style="text-align:center;color:#aaa;"><?= t('admin.logs.no_results') ?></td></tr>
                     <?php else: ?>
                     <?php foreach ($logs as $log):
                         $actionClass = '';

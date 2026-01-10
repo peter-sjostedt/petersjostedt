@@ -22,7 +22,7 @@ $userCount = $userModel->count();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= t('admin.dashboard') ?> - <?= t('admin.title_prefix') ?></title>
+    <title><?= t('admin.nav.dashboard') ?> - <?= t('admin.title.prefix') ?></title>
     <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
@@ -30,40 +30,40 @@ $userCount = $userModel->count();
 
     <main class="main">
         <div class="header">
-            <h1><?= t('admin.dashboard') ?></h1>
+            <h1><?= t('admin.nav.dashboard') ?></h1>
             <div class="user-info">
-                <?= t('admin.logged_in_as') ?> <strong><?= htmlspecialchars($userData['name'] ?? t('admin.admin')) ?></strong>
+                <?= t('admin.dashboard.logged_in_as') ?> <strong><?= htmlspecialchars($userData['name'] ?? t('admin.dashboard.admin')) ?></strong>
             </div>
         </div>
 
         <div class="stats">
             <div class="stat-card">
                 <h3><?= $userCount ?></h3>
-                <p><?= t('admin.users') ?></p>
+                <p><?= t('admin.nav.users') ?></p>
             </div>
             <div class="stat-card">
                 <h3><?= $stats['last_24h'] ?></h3>
-                <p><?= t('admin.events_24h') ?></p>
+                <p><?= t('admin.dashboard.events_24h') ?></p>
             </div>
             <div class="stat-card">
                 <h3><?= $stats['unique_users_24h'] ?></h3>
-                <p><?= t('admin.active_users_24h') ?></p>
+                <p><?= t('admin.dashboard.active_users_24h') ?></p>
             </div>
             <div class="stat-card">
                 <h3><?= $stats['failed_logins_24h'] ?></h3>
-                <p><?= t('admin.failed_logins_24h') ?></p>
+                <p><?= t('admin.dashboard.failed_logins_24h') ?></p>
             </div>
         </div>
 
         <div class="card">
-            <h2><?= t('admin.recent_activity') ?></h2>
+            <h2><?= t('admin.dashboard.recent_activity') ?></h2>
             <table>
                 <thead>
                     <tr>
-                        <th><?= t('admin.time') ?></th>
-                        <th><?= t('admin.user') ?></th>
-                        <th><?= t('admin.event') ?></th>
-                        <th><?= t('admin.ip') ?></th>
+                        <th><?= t('admin.logs.time') ?></th>
+                        <th><?= t('admin.logs.user') ?></th>
+                        <th><?= t('admin.logs.event') ?></th>
+                        <th><?= t('admin.logs.ip_address') ?></th>
                     </tr>
                 </thead>
                 <tbody>
