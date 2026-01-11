@@ -65,6 +65,70 @@ class Backup
     }
 
     /**
+     * Hitta mysqldump-binär
+     */
+    private function getMysqldumpPath(): string
+    {
+        return $this->findMysqlBinary('mysqldump');
+    }
+
+    /**
+     * Hitta mysql-binär
+     */
+    private function getMysqlPath(): string
+    {
+        return $this->findMysqlBinary('mysql');
+    }
+
+    /**
+     * Hitta MySQL-binär (mysqldump eller mysql)
+     */
+    private function findMysqlBinary(string $binary): string
+    {
+        // Testa om binären finns i PATH
+        $output = [];
+        $returnCode = 0;
+
+        if (PHP_OS_FAMILY === 'Windows') {
+            exec("where {$binary} 2>NUL", $output, $returnCode);
+        } else {
+            exec("which {$binary} 2>/dev/null", $output, $returnCode);
+        }
+
+        if ($returnCode === 0 && !empty($output[0])) {
+            return trim($output[0]);
+        }
+
+        // Laragon-specifik sökning (Windows)
+        if (PHP_OS_FAMILY === 'Windows') {
+            $binaryExe = $binary . '.exe';
+            $laragonPaths = [
+                "C:/laragon/bin/mysql/mysql-8.4.3-winx64/bin/{$binaryExe}",
+                "C:/laragon/bin/mysql/mysql-8.0.30-winx64/bin/{$binaryExe}",
+                "C:/laragon/bin/mysql/mariadb-10.4.10-winx64/bin/{$binaryExe}",
+            ];
+
+            foreach ($laragonPaths as $path) {
+                if (file_exists($path)) {
+                    return $path;
+                }
+            }
+
+            // Sök i Laragon bin-mappen
+            $laragonBase = 'C:/laragon/bin/mysql';
+            if (is_dir($laragonBase)) {
+                $dirs = glob($laragonBase . "/*/bin/{$binaryExe}");
+                if (!empty($dirs)) {
+                    return $dirs[0];
+                }
+            }
+        }
+
+        // Fallback till bara binärnamnet och hoppas det finns i PATH
+        return $binary;
+    }
+
+    /**
      * Skapa databasbackup
      *
      * @param string $type Typ av backup: 'daily', 'weekly', 'monthly'
@@ -85,9 +149,13 @@ class Backup
             // Hämta databaskonfiguration
             $dbConfig = $this->getDatabaseConfig();
 
+            // Hitta mysqldump
+            $mysqldump = $this->getMysqldumpPath();
+
             // Bygg mysqldump-kommando
             $command = sprintf(
-                'mysqldump --user=%s --password=%s --host=%s %s > %s 2>&1',
+                '"%s" --user=%s --password=%s --host=%s %s > %s 2>&1',
+                $mysqldump,
                 escapeshellarg($dbConfig['user']),
                 escapeshellarg($dbConfig['password']),
                 escapeshellarg($dbConfig['host']),
@@ -326,9 +394,13 @@ class Backup
             // Hämta databaskonfiguration
             $dbConfig = $this->getDatabaseConfig();
 
+            // Hitta mysql
+            $mysql = $this->getMysqlPath();
+
             // Bygg mysql-kommando för import
             $command = sprintf(
-                'mysql --user=%s --password=%s --host=%s %s < %s 2>&1',
+                '"%s" --user=%s --password=%s --host=%s %s < %s 2>&1',
+                $mysql,
                 escapeshellarg($dbConfig['user']),
                 escapeshellarg($dbConfig['password']),
                 escapeshellarg($dbConfig['host']),
@@ -483,9 +555,9 @@ class Backup
 
         return [
             'host' => $config['host'] ?? 'localhost',
-            'database' => $config['database'] ?? '',
-            'user' => $config['username'] ?? '',
-            'password' => $config['password'] ?? ''
+            'database' => $config['name'] ?? $config['database'] ?? '',
+            'user' => $config['user'] ?? $config['username'] ?? '',
+            'password' => $config['pass'] ?? $config['password'] ?? ''
         ];
     }
 
