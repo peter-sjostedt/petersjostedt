@@ -9,6 +9,17 @@ logs/*.log
 logs/*.gz
 !logs/.gitkeep
 
+# Backuper
+backups/*.sql
+backups/*.sql.gz
+backups/daily/*.sql.gz
+backups/weekly/*.sql.gz
+backups/monthly/*.sql.gz
+!backups/.gitkeep
+!backups/daily/.gitkeep
+!backups/weekly/.gitkeep
+!backups/monthly/.gitkeep
+
 # IDE och editor
 .idea/
 .vscode/

@@ -157,6 +157,81 @@ return [
     'admin.logs.ip_address' => ['sv' => 'IP-adress', 'en' => 'IP address'],
     'admin.logs.search_placeholder' => ['sv' => 'Sök...', 'en' => 'Search...'],
 
+    // === ADMIN - Backup ===
+    'admin.nav.backup' => ['sv' => 'Backuper', 'en' => 'Backups'],
+    'admin.backup.title' => ['sv' => 'Databasbackuper', 'en' => 'Database Backups'],
+    'admin.backup.heading' => ['sv' => 'Databasbackuper', 'en' => 'Database Backups'],
+    'admin.backup.description' => ['sv' => 'Hantera och återställ databasbackuper', 'en' => 'Manage and restore database backups'],
+
+    // Stats
+    'admin.backup.stats.heading' => ['sv' => 'Statistik', 'en' => 'Statistics'],
+    'admin.backup.stats.total' => ['sv' => 'Totalt', 'en' => 'Total'],
+    'admin.backup.stats.daily' => ['sv' => 'Dagliga', 'en' => 'Daily'],
+    'admin.backup.stats.weekly' => ['sv' => 'Veckovisa', 'en' => 'Weekly'],
+    'admin.backup.stats.monthly' => ['sv' => 'Månatliga', 'en' => 'Monthly'],
+    'admin.backup.stats.total_size' => ['sv' => 'Total storlek', 'en' => 'Total size'],
+    'admin.backup.stats.oldest' => ['sv' => 'Äldsta backup', 'en' => 'Oldest backup'],
+    'admin.backup.stats.newest' => ['sv' => 'Senaste backup', 'en' => 'Newest backup'],
+
+    // Create
+    'admin.backup.create.heading' => ['sv' => 'Skapa ny backup', 'en' => 'Create new backup'],
+    'admin.backup.create.type' => ['sv' => 'Typ av backup', 'en' => 'Backup type'],
+    'admin.backup.create.button' => ['sv' => 'Skapa backup', 'en' => 'Create backup'],
+    'admin.backup.create.confirm' => ['sv' => 'Skapa en ny databasbackup?', 'en' => 'Create a new database backup?'],
+
+    // Types
+    'admin.backup.type.daily' => ['sv' => 'Daglig', 'en' => 'Daily'],
+    'admin.backup.type.weekly' => ['sv' => 'Veckovis', 'en' => 'Weekly'],
+    'admin.backup.type.monthly' => ['sv' => 'Månatlig', 'en' => 'Monthly'],
+
+    // List
+    'admin.backup.list.heading' => ['sv' => 'Befintliga backuper', 'en' => 'Existing backups'],
+    'admin.backup.list.empty' => ['sv' => 'Inga backuper hittades', 'en' => 'No backups found'],
+    'admin.backup.list.filename' => ['sv' => 'Filnamn', 'en' => 'Filename'],
+    'admin.backup.list.type' => ['sv' => 'Typ', 'en' => 'Type'],
+    'admin.backup.list.size' => ['sv' => 'Storlek', 'en' => 'Size'],
+    'admin.backup.list.created' => ['sv' => 'Skapad', 'en' => 'Created'],
+    'admin.backup.list.age' => ['sv' => 'Ålder', 'en' => 'Age'],
+    'admin.backup.list.actions' => ['sv' => 'Åtgärder', 'en' => 'Actions'],
+    'admin.backup.list.days_ago' => ['sv' => '{days} dagar sedan', 'en' => '{days} days ago'],
+
+    // Restore
+    'admin.backup.restore.button' => ['sv' => 'Återställ', 'en' => 'Restore'],
+    'admin.backup.restore.confirm' => ['sv' => 'VARNING: Detta kommer att ersätta all data i databasen! Är du säker?', 'en' => 'WARNING: This will replace all data in the database! Are you sure?'],
+
+    // Delete
+    'admin.backup.delete.button' => ['sv' => 'Radera', 'en' => 'Delete'],
+    'admin.backup.delete.confirm' => ['sv' => 'Radera denna backup permanent?', 'en' => 'Delete this backup permanently?'],
+
+    // Rotate
+    'admin.backup.rotate.button' => ['sv' => 'Rotera backuper', 'en' => 'Rotate backups'],
+    'admin.backup.rotate.confirm' => ['sv' => 'Köra backup-rotation nu?', 'en' => 'Run backup rotation now?'],
+
+    // Success messages
+    'admin.backup.success.created' => ['sv' => 'Backup skapad: {filename} ({size})', 'en' => 'Backup created: {filename} ({size})'],
+    'admin.backup.success.restored' => ['sv' => 'Databasen har återställts från {filename}', 'en' => 'Database has been restored from {filename}'],
+    'admin.backup.success.deleted' => ['sv' => 'Backup raderad: {filename}', 'en' => 'Backup deleted: {filename}'],
+    'admin.backup.success.rotated' => ['sv' => 'Rotation utförd: {promoted} befordrade, {deleted} raderade', 'en' => 'Rotation completed: {promoted} promoted, {deleted} deleted'],
+
+    // Error messages
+    'admin.backup.error.invalid_type' => ['sv' => 'Ogiltig backup-typ', 'en' => 'Invalid backup type'],
+    'admin.backup.error.create_failed' => ['sv' => 'Kunde inte skapa backup: {error}', 'en' => 'Could not create backup: {error}'],
+    'admin.backup.error.restore_failed' => ['sv' => 'Kunde inte återställa backup: {error}', 'en' => 'Could not restore backup: {error}'],
+    'admin.backup.error.delete_failed' => ['sv' => 'Kunde inte radera backup', 'en' => 'Could not delete backup'],
+    'admin.backup.error.no_file_selected' => ['sv' => 'Ingen fil vald', 'en' => 'No file selected'],
+    'admin.backup.error.file_not_found' => ['sv' => 'Filen hittades inte', 'en' => 'File not found'],
+
+    // Instructions
+    'admin.backup.instructions.heading' => ['sv' => 'Instruktioner', 'en' => 'Instructions'],
+    'admin.backup.instructions.cron.heading' => ['sv' => 'Automatiska backuper', 'en' => 'Automatic backups'],
+    'admin.backup.instructions.cron.description' => ['sv' => 'Lägg till detta cron-jobb för automatiska dagliga backuper kl 03:00:', 'en' => 'Add this cron job for automatic daily backups at 03:00:'],
+    'admin.backup.instructions.types.heading' => ['sv' => 'Backup-typer', 'en' => 'Backup types'],
+    'admin.backup.instructions.types.daily' => ['sv' => 'Behålls i 7 dagar', 'en' => 'Kept for 7 days'],
+    'admin.backup.instructions.types.weekly' => ['sv' => 'Behålls i 4 veckor', 'en' => 'Kept for 4 weeks'],
+    'admin.backup.instructions.types.monthly' => ['sv' => 'Behålls i 12 månader', 'en' => 'Kept for 12 months'],
+    'admin.backup.instructions.restore.heading' => ['sv' => 'Återställning', 'en' => 'Restoration'],
+    'admin.backup.instructions.restore.warning' => ['sv' => 'VARNING: Återställning ersätter ALL data i databasen. Skapa alltid en backup först innan du återställer!', 'en' => 'WARNING: Restoration replaces ALL data in the database. Always create a backup first before restoring!'],
+
     // === ERROR - Felsidor ===
     'error.back_home' => ['sv' => 'Tillbaka till startsidan', 'en' => 'Back to homepage'],
     'error.requested_url' => ['sv' => 'Begärd URL', 'en' => 'Requested URL'],
