@@ -27,7 +27,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         <a href="logs.php" class="<?= $currentPage === 'logs.php' ? 'active' : '' ?>"><?= t('admin.nav.logs') ?></a>
         <a href="sessions.php" class="<?= $currentPage === 'sessions.php' ? 'active' : '' ?>"><?= t('admin.nav.sessions') ?></a>
         <a href="backup.php" class="<?= $currentPage === 'backup.php' ? 'active' : '' ?>"><?= t('admin.nav.backup') ?></a>
-        <a href="../public_html/"><?= t('admin.nav.view_site') ?></a>
+        <a href="<?= SITE_URL ?>" target="_blank"><?= t('admin.nav.view_site') ?></a>
         <a href="logout.php"><?= t('common.logout') ?></a>
     </nav>
 </aside>
