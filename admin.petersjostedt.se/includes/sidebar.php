@@ -27,6 +27,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         <a href="logs.php" class="<?= $currentPage === 'logs.php' ? 'active' : '' ?>"><?= t('admin.nav.logs') ?></a>
         <a href="sessions.php" class="<?= $currentPage === 'sessions.php' ? 'active' : '' ?>"><?= t('admin.nav.sessions') ?></a>
         <a href="backup.php" class="<?= $currentPage === 'backup.php' ? 'active' : '' ?>"><?= t('admin.nav.backup') ?></a>
+        <a href="migrations.php" class="<?= $currentPage === 'migrations.php' ? 'active' : '' ?>"><?= t('admin.nav.migrations') ?></a>
         <a href="https://petersjostedt.se" target="_blank"><?= t('admin.nav.view_site') ?></a>
         <a href="logout.php"><?= t('common.logout') ?></a>
     </nav>

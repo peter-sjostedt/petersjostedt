@@ -252,4 +252,58 @@ return [
     'error.500.heading' => ['sv' => 'Internt serverfel', 'en' => 'Internal Server Error'],
     'error.500.message' => ['sv' => 'Något gick fel på servern. Försök igen senare.', 'en' => 'Something went wrong on the server. Please try again later.'],
 
+    // === ADMIN - Migrations ===
+    'admin.nav.migrations' => ['sv' => 'Migrations', 'en' => 'Migrations'],
+    'admin.migrations.title' => ['sv' => 'Databasmigrations', 'en' => 'Database Migrations'],
+    'admin.migrations.heading' => ['sv' => 'Databasmigrations', 'en' => 'Database Migrations'],
+    'admin.migrations.description' => ['sv' => 'Hantera databasändringar med migrations-systemet', 'en' => 'Manage database changes with the migration system'],
+
+    // Summary
+    'admin.migrations.summary.heading' => ['sv' => 'Sammanfattning', 'en' => 'Summary'],
+    'admin.migrations.summary.total' => ['sv' => 'Totalt antal migrations', 'en' => 'Total migrations'],
+    'admin.migrations.summary.executed' => ['sv' => 'Körda', 'en' => 'Executed'],
+    'admin.migrations.summary.pending' => ['sv' => 'Väntande', 'en' => 'Pending'],
+
+    // Actions
+    'admin.migrations.actions.heading' => ['sv' => 'Kör migrations', 'en' => 'Run Migrations'],
+    'admin.migrations.actions.pending_info' => ['sv' => 'Det finns {count} väntande migrations som behöver köras.', 'en' => 'There are {count} pending migrations that need to be run.'],
+    'admin.migrations.actions.migrate_confirm' => ['sv' => 'Är du säker på att du vill köra alla väntande migrations? Detta kommer att ändra databasens schema.', 'en' => 'Are you sure you want to run all pending migrations? This will modify the database schema.'],
+    'admin.migrations.actions.run_button' => ['sv' => 'Kör alla migrations', 'en' => 'Run All Migrations'],
+
+    // Rollback
+    'admin.migrations.rollback.heading' => ['sv' => 'Återställ migrations', 'en' => 'Rollback Migrations'],
+    'admin.migrations.rollback.warning' => ['sv' => 'VARNING: Detta återställer den senaste batchen av migrations. Data kan gå förlorad!', 'en' => 'WARNING: This will rollback the latest batch of migrations. Data may be lost!'],
+    'admin.migrations.rollback.confirm' => ['sv' => 'Är du SÄKER på att du vill återställa migrations? Detta kan inte ångras!', 'en' => 'Are you SURE you want to rollback migrations? This cannot be undone!'],
+    'admin.migrations.rollback.button' => ['sv' => 'Återställ senaste batch', 'en' => 'Rollback Latest Batch'],
+
+    // List
+    'admin.migrations.list.heading' => ['sv' => 'Alla migrations', 'en' => 'All Migrations'],
+    'admin.migrations.list.empty' => ['sv' => 'Inga migrations hittades', 'en' => 'No migrations found'],
+    'admin.migrations.list.status' => ['sv' => 'Status', 'en' => 'Status'],
+    'admin.migrations.list.migration' => ['sv' => 'Migration', 'en' => 'Migration'],
+    'admin.migrations.list.batch' => ['sv' => 'Batch', 'en' => 'Batch'],
+    'admin.migrations.list.executed_at' => ['sv' => 'Körd', 'en' => 'Executed At'],
+    'admin.migrations.list.executed' => ['sv' => 'Körd', 'en' => 'Executed'],
+    'admin.migrations.list.pending' => ['sv' => 'Väntande', 'en' => 'Pending'],
+
+    // Success messages
+    'admin.migrations.success.migrated' => ['sv' => '{count} migrations kördes framgångsrikt!', 'en' => '{count} migrations executed successfully!'],
+    'admin.migrations.success.rolled_back' => ['sv' => '{count} migrations återställdes!', 'en' => '{count} migrations rolled back!'],
+
+    // Error messages
+    'admin.migrations.error.failed' => ['sv' => 'Migrations misslyckades. {count} fel uppstod.', 'en' => 'Migrations failed. {count} errors occurred.'],
+    'admin.migrations.error.rollback_failed' => ['sv' => 'Återställning misslyckades', 'en' => 'Rollback failed'],
+
+    // Info
+    'admin.migrations.info.heading' => ['sv' => 'Information', 'en' => 'Information'],
+    'admin.migrations.info.what.heading' => ['sv' => 'Vad är migrations?', 'en' => 'What are migrations?'],
+    'admin.migrations.info.what.description' => ['sv' => 'Migrations är ett sätt att versionshantera databasens schema. Varje migration innehåller SQL för att applicera en ändring och för att återställa den.', 'en' => 'Migrations are a way to version control your database schema. Each migration contains SQL to apply a change and to rollback it.'],
+    'admin.migrations.info.when.heading' => ['sv' => 'När ska jag köra migrations?', 'en' => 'When should I run migrations?'],
+    'admin.migrations.info.when.first_setup' => ['sv' => 'Vid första installation för att skapa tabellerna', 'en' => 'On first installation to create the tables'],
+    'admin.migrations.info.when.after_update' => ['sv' => 'Efter att ha uppdaterat koden från Git', 'en' => 'After updating the code from Git'],
+    'admin.migrations.info.when.new_features' => ['sv' => 'När nya funktioner kräver databasändringar', 'en' => 'When new features require database changes'],
+    'admin.migrations.info.cli.heading' => ['sv' => 'CLI-kommando', 'en' => 'CLI Command'],
+    'admin.migrations.info.cli.description' => ['sv' => 'Du kan också köra migrations via terminalen:', 'en' => 'You can also run migrations via terminal:'],
+
     ];
+
