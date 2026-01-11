@@ -1,6 +1,12 @@
     <footer>
-        <p>&copy; <?php echo date('Y'); ?> <?php echo SITE_NAME; ?>. Alla rättigheter reserverade.</p>
+        <p>&copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars($siteName); ?>. Alla rättigheter reserverade.</p>
+        <?php
+        $siteEmail = $settings->get('site_email', '');
+        if ($siteEmail):
+        ?>
+        <p><a href="mailto:<?php echo htmlspecialchars($siteEmail); ?>">Kontakta oss</a></p>
+        <?php endif; ?>
     </footer>
-    <script src="js/main.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html>

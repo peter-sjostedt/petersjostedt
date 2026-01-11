@@ -27,9 +27,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif (!validate_email($email)) {
             $message = '<p class="error">Vänligen ange en giltig e-postadress.</p>';
         } else {
-            // Här kan du lägga till kod för att skicka e-post eller spara i databas
-            $message = '<p class="success">Tack för ditt meddelande! Vi återkommer så snart som möjligt.</p>';
-            log_security_event('CONTACT_FORM', "Från: {$name} ({$email})");
+            // Skicka e-post till kontaktadressen från inställningarna
+            $settings = Settings::getInstance();
+            $siteEmail = $settings->get('site_email', '');
+
+            if ($siteEmail) {
+                $mailer = Mailer::getInstance();
+                $emailSubject = $subject ?: 'Nytt meddelande från kontaktformuläret';
+                $emailBody = "<h2>Nytt kontaktformulär</h2>";
+                $emailBody .= "<p><strong>Från:</strong> " . htmlspecialchars($name) . "</p>";
+                $emailBody .= "<p><strong>E-post:</strong> " . htmlspecialchars($email) . "</p>";
+                if ($subject) {
+                    $emailBody .= "<p><strong>Ämne:</strong> " . htmlspecialchars($subject) . "</p>";
+                }
+                $emailBody .= "<p><strong>Meddelande:</strong></p>";
+                $emailBody .= "<p>" . nl2br(htmlspecialchars($body)) . "</p>";
+
+                if ($mailer->send($siteEmail, $emailSubject, $emailBody, $email)) {
+                    $message = '<p class="success">Tack för ditt meddelande! Vi återkommer så snart som möjligt.</p>';
+                    log_security_event('CONTACT_FORM', "Från: {$name} ({$email})");
+                } else {
+                    $message = '<p class="error">Ett fel uppstod när meddelandet skulle skickas. Försök igen senare.</p>';
+                }
+            } else {
+                $message = '<p class="success">Tack för ditt meddelande! Vi återkommer så snart som möjligt.</p>';
+                log_security_event('CONTACT_FORM', "Från: {$name} ({$email})");
+            }
         }
     }
 }

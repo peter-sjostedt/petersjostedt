@@ -6,27 +6,42 @@ use PHPMailer\PHPMailer\Exception;
 
 /**
  * Mailer - Wrapper för PHPMailer
- * 
- * Enkel klass för att skicka e-post via SMTP.
- * 
+ *
+ * Singleton-klass för att skicka e-post via SMTP.
+ *
  * Användning:
- *   $mailer = new Mailer();
+ *   $mailer = Mailer::getInstance();
  *   $mailer->send('mottagare@example.com', 'Ämne', '<p>HTML-innehåll</p>');
  */
 class Mailer
 {
+    private static ?Mailer $instance = null;
     private array $config;
     private ?string $lastError = null;
-    
-    public function __construct()
+
+    /**
+     * Privat konstruktor - använd getInstance()
+     */
+    private function __construct()
     {
         $this->config = require __DIR__ . '/../config/mail.php';
     }
-    
+
+    /**
+     * Hämta instansen (singleton)
+     */
+    public static function getInstance(): Mailer
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
     /**
      * Skicka e-post
      */
-    public function send(string $to, string $subject, string $htmlBody, ?string $textBody = null): bool
+    public function send(string $to, string $subject, string $htmlBody, ?string $replyTo = null, ?string $textBody = null): bool
     {
         $mail = new PHPMailer(true);
         
@@ -47,7 +62,12 @@ class Mailer
             // Avsändare och mottagare
             $mail->setFrom($this->config['from_email'], $this->config['from_name']);
             $mail->addAddress($to);
-            
+
+            // Reply-To om angivet
+            if ($replyTo) {
+                $mail->addReplyTo($replyTo);
+            }
+
             // Innehåll
             $mail->isHTML(true);
             $mail->Subject = $subject;
@@ -166,5 +186,18 @@ class Mailer
     public function getLastError(): ?string
     {
         return $this->lastError;
+    }
+
+    /**
+     * Förhindra kloning av singleton
+     */
+    private function __clone() {}
+
+    /**
+     * Förhindra unserialisering av singleton
+     */
+    public function __wakeup()
+    {
+        throw new Exception('Kan inte unserialisera singleton');
     }
 }
