@@ -6,11 +6,6 @@
 
 $lang = Language::getInstance();
 $currentPage = basename($_SERVER['PHP_SELF']);
-
-// Dynamisk URL till publika sidan
-// Produktion: använd SITE_URL
-// Utveckling: relativ sökväg
-$publicSiteUrl = (ENVIRONMENT === 'production') ? SITE_URL : '../public_html/';
 ?>
 <aside class="sidebar">
     <h2><?= t('admin.title.panel') ?></h2>
@@ -32,7 +27,7 @@ $publicSiteUrl = (ENVIRONMENT === 'production') ? SITE_URL : '../public_html/';
         <a href="logs.php" class="<?= $currentPage === 'logs.php' ? 'active' : '' ?>"><?= t('admin.nav.logs') ?></a>
         <a href="sessions.php" class="<?= $currentPage === 'sessions.php' ? 'active' : '' ?>"><?= t('admin.nav.sessions') ?></a>
         <a href="backup.php" class="<?= $currentPage === 'backup.php' ? 'active' : '' ?>"><?= t('admin.nav.backup') ?></a>
-        <a href="<?= $publicSiteUrl ?>" target="_blank"><?= t('admin.nav.view_site') ?></a>
+        <a href="https://petersjostedt.se" target="_blank"><?= t('admin.nav.view_site') ?></a>
         <a href="logout.php"><?= t('common.logout') ?></a>
     </nav>
 </aside>
