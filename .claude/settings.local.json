@@ -6,7 +6,8 @@
       "Bash(git commit -m \"$\\(cat <<''EOF''\nInitial commit: PHP-stomme med säkerhetsfokus\n\n- Grundläggande sidstruktur \\(index, about, contact\\)\n- Säker konfiguration utanför public_html\n- src/ med kärnklasser: Database, Router, Session, User, Settings, Logger\n- CSRF-skydd, prepared statements, lösenordshashing \\(Argon2ID\\)\n- API-struktur för api.petersjostedt.se\n- Cron-mall med CLI-skydd\n- .htaccess för säkerhet och routing\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(git commit:*)",
       "Bash(where:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(php database/migrate.php:*)"
     ]
   }
 }

@@ -94,8 +94,19 @@ GRANT ALL PRIVILEGES ON petersjostedt.* TO 'dbuser'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
-### 3. Importera databasschema
+### 3. Kör databasmigrations
 
+Projektet använder ett migrations-system för databasändringar:
+
+```bash
+# Kör alla pending migrations
+php database/migrate.php
+
+# Visa status för migrations
+php database/migrate.php status
+```
+
+**Alternativt** (manuell import, EJ rekommenderat):
 ```bash
 mysql -u dbuser -p petersjostedt < database/schema.sql
 ```
@@ -285,6 +296,72 @@ php /path/to/project/cron/rotate-logs.php
 tail -f /path/to/project/logs/cron-backup.log
 tail -f /path/to/project/logs/cron-rotate.log
 ```
+
+## 🔄 Databasmigrations
+
+Projektet använder ett migrations-system för att versionshantera databasändringar. Detta gör det enkelt att:
+- Hålla reda på alla schemaändringar i Git
+- Rulla ut ändringar konsekvent på dev/staging/produktion
+- Rulla tillbaka ändringar om något går fel
+- Samarbeta i team med automatisk synkronisering
+
+### Kommandon
+
+```bash
+# Kör alla pending migrations
+php database/migrate.php
+
+# Visa status för migrations (vilka körda/väntande)
+php database/migrate.php status
+
+# Rulla tillbaka senaste batch
+php database/migrate.php rollback
+
+# Skapa ny migration-fil
+php database/migrate.php create add_column_to_users
+
+# Återställ ALLA migrations (FARLIGT!)
+php database/migrate.php reset
+```
+
+### Skapa en ny migration
+
+1. **Generera migration-fil:**
+   ```bash
+   php database/migrate.php create add_profile_fields
+   ```
+
+2. **Redigera filen** `database/migrations/YYYY_MM_DD_HHMMSS_add_profile_fields.sql`:
+   ```sql
+   -- UP: Lägg till ändringar här
+   ALTER TABLE users
+   ADD COLUMN bio TEXT,
+   ADD COLUMN avatar VARCHAR(255);
+
+   -- DOWN: Lägg till återställning här
+   ALTER TABLE users
+   DROP COLUMN bio,
+   DROP COLUMN avatar;
+   ```
+
+3. **Kör migrationen:**
+   ```bash
+   php database/migrate.php
+   ```
+
+### Migration-fil format
+
+Varje migration-fil har två sektioner:
+
+- **UP**: SQL som applicerar ändringen
+- **DOWN**: SQL som återställer ändringen (för rollback)
+
+### Best practices
+
+- Kör aldrig migrations manuellt i databasen - använd alltid systemet
+- Testa rollback lokalt innan deploy till produktion
+- En migration = en logisk ändring (t.ex. "lägg till kolumn", "skapa tabell")
+- Skriv tydliga kommentarer i migrations-filer
 
 ## 📁 Struktur
 
