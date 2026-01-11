@@ -6,7 +6,8 @@ config/mail.php
 
 # Loggar
 logs/*.log
-logs/*
+logs/*.gz
+!logs/.gitkeep
 
 # IDE och editor
 .idea/

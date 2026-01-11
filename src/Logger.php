@@ -2,7 +2,7 @@
 /**
  * Logger - Aktivitetsloggning
  *
- * Loggar användaraktivitet till databasen för
+ * Loggar användaraktivitet till databas OCH fil för
  * säkerhetsövervakning och felsökning.
  *
  * Databasstruktur (logs-tabell):
@@ -11,12 +11,26 @@
  * - action: VARCHAR(255)
  * - ip_address: VARCHAR(45)
  * - created_at: DATETIME
+ *
+ * Filstruktur (logs/):
+ * - app-YYYY-MM-DD.log - Applikationsloggar
+ * - error-YYYY-MM-DD.log - Felloggar
+ * - security-YYYY-MM-DD.log - Säkerhetsloggar
+ * - debug-YYYY-MM-DD.log - Debugloggar (endast development)
  */
 
 class Logger
 {
     private static ?Logger $instance = null;
     private Database $db;
+    private string $logDir;
+
+    // Loggningsnivåer
+    public const LEVEL_DEBUG = 'DEBUG';
+    public const LEVEL_INFO = 'INFO';
+    public const LEVEL_WARNING = 'WARNING';
+    public const LEVEL_ERROR = 'ERROR';
+    public const LEVEL_SECURITY = 'SECURITY';
 
     // Fördefinierade åtgärdstyper
     public const ACTION_LOGIN = 'LOGIN';
@@ -42,6 +56,12 @@ class Logger
     private function __construct()
     {
         $this->db = Database::getInstance();
+        $this->logDir = __DIR__ . '/../logs';
+
+        // Skapa logs-mapp om den inte finns
+        if (!is_dir($this->logDir)) {
+            mkdir($this->logDir, 0755, true);
+        }
     }
 
     /**
@@ -61,24 +81,30 @@ class Logger
      * @param string $action Åtgärdstyp (använd konstanter)
      * @param int|null $userId Användar-ID (null för anonyma)
      * @param string $details Extra information (valfritt)
+     * @param string $level Loggningsnivå (default: INFO)
      * @return bool True om loggningen lyckades
      */
-    public function log(string $action, ?int $userId = null, string $details = ''): bool
+    public function log(string $action, ?int $userId = null, string $details = '', string $level = self::LEVEL_INFO): bool
     {
         $ipAddress = $this->getClientIp();
 
         // Kombinera action och details
         $fullAction = $details ? "{$action}: {$details}" : $action;
 
-        // Begränsa längden
-        if (strlen($fullAction) > 255) {
-            $fullAction = substr($fullAction, 0, 252) . '...';
+        // Begränsa längden för databas
+        $dbAction = $fullAction;
+        if (strlen($dbAction) > 255) {
+            $dbAction = substr($dbAction, 0, 252) . '...';
         }
 
+        // Logga till fil först (fungerar även om DB är nere)
+        $this->logToFile($level, $action, $userId, $ipAddress, $fullAction);
+
+        // Försök logga till databas
         try {
             $this->db->insert('logs', [
                 'user_id' => $userId,
-                'action' => $fullAction,
+                'action' => $dbAction,
                 'ip_address' => $ipAddress,
                 'created_at' => date('Y-m-d H:i:s')
             ]);
@@ -86,8 +112,9 @@ class Logger
             return true;
 
         } catch (Exception $e) {
-            // Logga till fil om databasen misslyckas
-            error_log("Logger DB-fel: {$action} - " . $e->getMessage());
+            // Om databas misslyckas, logga till error-fil
+            $this->logToFile(self::LEVEL_ERROR, 'DB_ERROR', null, $ipAddress,
+                "Kunde inte logga till databas: {$action} - " . $e->getMessage());
             return false;
         }
     }
@@ -97,12 +124,108 @@ class Logger
      *
      * @param string $action Åtgärdstyp
      * @param string $details Extra information
+     * @param string $level Loggningsnivå
      * @return bool True om loggningen lyckades
      */
-    public function logForCurrentUser(string $action, string $details = ''): bool
+    public function logForCurrentUser(string $action, string $details = '', string $level = self::LEVEL_INFO): bool
     {
         $userId = Session::getUserId();
-        return $this->log($action, $userId, $details);
+        return $this->log($action, $userId, $details, $level);
+    }
+
+    /**
+     * Logga till fil
+     *
+     * @param string $level Loggningsnivå
+     * @param string $action Åtgärdstyp
+     * @param int|null $userId Användar-ID
+     * @param string $ipAddress IP-adress
+     * @param string $message Meddelande
+     */
+    private function logToFile(string $level, string $action, ?int $userId, string $ipAddress, string $message): void
+    {
+        // Skippa DEBUG-loggar i produktion
+        if ($level === self::LEVEL_DEBUG && ENVIRONMENT === 'production') {
+            return;
+        }
+
+        // Bestäm vilken fil som ska användas
+        $filename = $this->getLogFilename($level);
+        $filepath = $this->logDir . '/' . $filename;
+
+        // Formatera loggmeddelandet
+        $timestamp = date('Y-m-d H:i:s');
+        $userStr = $userId ? "User:$userId" : 'Guest';
+        $logLine = sprintf(
+            "[%s] [%s] [%s] [IP:%s] %s: %s\n",
+            $timestamp,
+            $level,
+            $userStr,
+            $ipAddress,
+            $action,
+            $message
+        );
+
+        // Skriv till fil
+        try {
+            file_put_contents($filepath, $logLine, FILE_APPEND | LOCK_EX);
+        } catch (Exception $e) {
+            // Fallback till PHP:s error_log om filskrivning misslyckas
+            error_log("Logger-filfel: " . $e->getMessage());
+            error_log($logLine);
+        }
+    }
+
+    /**
+     * Hämta filnamn baserat på loggningsnivå
+     *
+     * @param string $level Loggningsnivå
+     * @return string Filnamn
+     */
+    private function getLogFilename(string $level): string
+    {
+        $date = date('Y-m-d');
+
+        switch ($level) {
+            case self::LEVEL_ERROR:
+                return "error-{$date}.log";
+            case self::LEVEL_SECURITY:
+                return "security-{$date}.log";
+            case self::LEVEL_DEBUG:
+                return "debug-{$date}.log";
+            case self::LEVEL_WARNING:
+            case self::LEVEL_INFO:
+            default:
+                return "app-{$date}.log";
+        }
+    }
+
+    /**
+     * Genvägsmetoder för olika loggningsnivåer
+     */
+    public function debug(string $action, ?int $userId = null, string $details = ''): bool
+    {
+        return $this->log($action, $userId, $details, self::LEVEL_DEBUG);
+    }
+
+    public function info(string $action, ?int $userId = null, string $details = ''): bool
+    {
+        return $this->log($action, $userId, $details, self::LEVEL_INFO);
+    }
+
+    public function warning(string $action, ?int $userId = null, string $details = ''): bool
+    {
+        return $this->log($action, $userId, $details, self::LEVEL_WARNING);
+    }
+
+    public function error(string $action, ?int $userId = null, string $details = ''): bool
+    {
+        return $this->log($action, $userId, $details, self::LEVEL_ERROR);
+    }
+
+    public function security(string $action, ?int $userId = null, string $details = ''): bool
+    {
+        return $this->log($action, $userId, $details, self::LEVEL_SECURITY);
     }
 
     /**
@@ -286,7 +409,7 @@ class Logger
     }
 
     /**
-     * Rensa gamla loggar (kör via cron)
+     * Rensa gamla loggar från databas (kör via cron)
      *
      * @param int $daysToKeep Antal dagar att behålla
      * @return int Antal borttagna poster
@@ -302,6 +425,167 @@ class Logger
             error_log('Kunde inte rensa gamla loggar: ' . $e->getMessage());
             return 0;
         }
+    }
+
+    /**
+     * Rotera loggfiler (kör via cron)
+     * Komprimerar gamla loggfiler och raderar mycket gamla
+     *
+     * @param int $daysToKeep Antal dagar att behålla okomprimerade loggar
+     * @param int $daysToArchive Antal dagar att behålla komprimerade loggar
+     * @return array Statistik över rotation
+     */
+    public function rotateLogFiles(int $daysToKeep = 7, int $daysToArchive = 90): array
+    {
+        $stats = [
+            'compressed' => 0,
+            'deleted' => 0,
+            'errors' => []
+        ];
+
+        if (!is_dir($this->logDir)) {
+            $stats['errors'][] = "Loggmapp saknas: {$this->logDir}";
+            return $stats;
+        }
+
+        $files = glob($this->logDir . '/*.log');
+        $cutoffDate = time() - ($daysToKeep * 86400);
+        $archiveCutoff = time() - ($daysToArchive * 86400);
+
+        foreach ($files as $file) {
+            $fileTime = filemtime($file);
+            $basename = basename($file);
+
+            // Radera mycket gamla komprimerade filer
+            if (str_ends_with($file, '.gz')) {
+                if ($fileTime < $archiveCutoff) {
+                    if (unlink($file)) {
+                        $stats['deleted']++;
+                    } else {
+                        $stats['errors'][] = "Kunde inte radera: $basename";
+                    }
+                }
+                continue;
+            }
+
+            // Komprimera gamla okomprimerade loggar
+            if ($fileTime < $cutoffDate) {
+                $gzFile = $file . '.gz';
+
+                if (function_exists('gzopen')) {
+                    $gz = gzopen($gzFile, 'wb9');
+                    if ($gz) {
+                        $content = file_get_contents($file);
+                        gzwrite($gz, $content);
+                        gzclose($gz);
+
+                        // Radera originalet efter komprimering
+                        if (unlink($file)) {
+                            $stats['compressed']++;
+                        } else {
+                            $stats['errors'][] = "Kunde inte radera efter komprimering: $basename";
+                        }
+                    } else {
+                        $stats['errors'][] = "Kunde inte komprimera: $basename";
+                    }
+                } else {
+                    $stats['errors'][] = "gzip-stöd saknas, kan inte komprimera loggar";
+                    break; // Hoppa över resten om gzip saknas
+                }
+            }
+        }
+
+        return $stats;
+    }
+
+    /**
+     * Hämta loggfiler
+     *
+     * @param bool $includeArchived Inkludera komprimerade filer
+     * @return array Lista med loggfiler och deras storlekar
+     */
+    public function getLogFiles(bool $includeArchived = false): array
+    {
+        $files = [];
+        $pattern = $includeArchived ? '*.{log,gz}' : '*.log';
+        $logFiles = glob($this->logDir . '/' . $pattern, GLOB_BRACE);
+
+        foreach ($logFiles as $file) {
+            $files[] = [
+                'name' => basename($file),
+                'path' => $file,
+                'size' => filesize($file),
+                'size_human' => $this->formatBytes(filesize($file)),
+                'modified' => filemtime($file),
+                'modified_human' => date('Y-m-d H:i:s', filemtime($file))
+            ];
+        }
+
+        // Sortera efter senast modifierad
+        usort($files, function($a, $b) {
+            return $b['modified'] - $a['modified'];
+        });
+
+        return $files;
+    }
+
+    /**
+     * Läs loggfil
+     *
+     * @param string $filename Filnamn (utan sökväg)
+     * @param int $lines Antal rader att läsa (0 = alla)
+     * @param bool $reverse Läs underifrån
+     * @return array|false Logginnehåll eller false
+     */
+    public function readLogFile(string $filename, int $lines = 100, bool $reverse = true): array|false
+    {
+        $filepath = $this->logDir . '/' . basename($filename);
+
+        if (!file_exists($filepath)) {
+            return false;
+        }
+
+        // Hantera komprimerade filer
+        if (str_ends_with($filepath, '.gz')) {
+            $content = gzfile($filepath);
+        } else {
+            $content = file($filepath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        }
+
+        if ($content === false) {
+            return false;
+        }
+
+        // Begränsa antal rader
+        if ($lines > 0) {
+            $content = $reverse ? array_slice($content, -$lines) : array_slice($content, 0, $lines);
+        }
+
+        // Vänd ordning om reverse
+        if ($reverse) {
+            $content = array_reverse($content);
+        }
+
+        return $content;
+    }
+
+    /**
+     * Formatera bytes till läsbar storlek
+     *
+     * @param int $bytes Antal bytes
+     * @return string Formaterad storlek
+     */
+    private function formatBytes(int $bytes): string
+    {
+        $units = ['B', 'KB', 'MB', 'GB'];
+        $i = 0;
+
+        while ($bytes >= 1024 && $i < count($units) - 1) {
+            $bytes /= 1024;
+            $i++;
+        }
+
+        return round($bytes, 2) . ' ' . $units[$i];
     }
 
     /**
