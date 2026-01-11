@@ -52,3 +52,4 @@ require_once __DIR__ . '/../../src/Settings.php';
 require_once __DIR__ . '/../../src/Logger.php';
 require_once __DIR__ . '/../../src/Language.php';
 require_once __DIR__ . '/../../src/Mailer.php';
+require_once __DIR__ . '/../../src/Backup.php';
