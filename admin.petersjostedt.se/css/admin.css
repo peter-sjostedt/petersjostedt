@@ -246,6 +246,9 @@ select:focus {
 
 .btn:hover { background: #c73e54; }
 
+.btn-primary { background: #2563eb; }
+.btn-primary:hover { background: #1d4ed8; }
+
 .btn-secondary { background: #0f3460; }
 .btn-secondary:hover { background: #16213e; }
 

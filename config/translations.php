@@ -305,5 +305,96 @@ return [
     'admin.migrations.info.cli.heading' => ['sv' => 'CLI-kommando', 'en' => 'CLI Command'],
     'admin.migrations.info.cli.description' => ['sv' => 'Du kan också köra migrations via terminalen:', 'en' => 'You can also run migrations via terminal:'],
 
+    // === UPLOAD - Filuppladdning ===
+    'upload.select_file' => ['sv' => 'Välj fil', 'en' => 'Select file'],
+    'upload.select_folder' => ['sv' => 'Välj mapp', 'en' => 'Select folder'],
+    'upload.max_size' => ['sv' => 'Max storlek', 'en' => 'Max size'],
+    'upload.allowed_types' => ['sv' => 'Tillåtna typer', 'en' => 'Allowed types'],
+    'upload.success' => ['sv' => 'Fil uppladdad', 'en' => 'File uploaded'],
+    'upload.error_size' => ['sv' => 'Filen är för stor', 'en' => 'File is too large'],
+    'upload.error_type' => ['sv' => 'Otillåten filtyp', 'en' => 'File type not allowed'],
+    'upload.error_failed' => ['sv' => 'Uppladdning misslyckades', 'en' => 'Upload failed'],
+    'upload.no_gd' => ['sv' => 'GD saknas - original sparad', 'en' => 'GD missing - original saved'],
+    'upload.delete_confirm' => ['sv' => 'Radera denna fil?', 'en' => 'Delete this file?'],
+    'upload.deleted' => ['sv' => 'Fil raderad', 'en' => 'File deleted'],
+
+    // === ADMIN - Files ===
+    'admin.files.title' => ['sv' => 'Filhantering', 'en' => 'File Management'],
+    'admin.files.heading' => ['sv' => 'Filhantering', 'en' => 'File Management'],
+    'admin.files.nav' => ['sv' => 'Filer', 'en' => 'Files'],
+
+    // Stats
+    'admin.files.stats.total_files' => ['sv' => 'Totalt antal filer', 'en' => 'Total files'],
+    'admin.files.stats.total_size' => ['sv' => 'Total storlek', 'en' => 'Total size'],
+    'admin.files.stats.folders' => ['sv' => 'Mappar', 'en' => 'Folders'],
+
+    // Filter
+    'admin.files.filter.heading' => ['sv' => 'Filter', 'en' => 'Filter'],
+    'admin.files.filter.folder' => ['sv' => 'Mapp', 'en' => 'Folder'],
+    'admin.files.filter.all_folders' => ['sv' => 'Alla mappar', 'en' => 'All folders'],
+    'admin.files.filter.type' => ['sv' => 'Filtyp', 'en' => 'File type'],
+    'admin.files.filter.all_types' => ['sv' => 'Alla typer', 'en' => 'All types'],
+    'admin.files.filter.images' => ['sv' => 'Bilder', 'en' => 'Images'],
+    'admin.files.filter.documents' => ['sv' => 'Dokument', 'en' => 'Documents'],
+    'admin.files.filter.clear' => ['sv' => 'Rensa filter', 'en' => 'Clear filters'],
+    'admin.files.filter.scan' => ['sv' => 'Skanna diskrepanser', 'en' => 'Scan discrepancies'],
+
+    // Views
+    'admin.files.view.grid' => ['sv' => 'Kortvy', 'en' => 'Grid view'],
+    'admin.files.view.table' => ['sv' => 'Tabellvy', 'en' => 'Table view'],
+
+    // List
+    'admin.files.list.heading' => ['sv' => 'Filer ({count})', 'en' => 'Files ({count})'],
+    'admin.files.list.empty' => ['sv' => 'Inga filer hittades', 'en' => 'No files found'],
+
+    // Table columns
+    'admin.files.table.preview' => ['sv' => 'Förhandsvisning', 'en' => 'Preview'],
+    'admin.files.table.filename' => ['sv' => 'Filnamn', 'en' => 'Filename'],
+    'admin.files.table.folder' => ['sv' => 'Mapp', 'en' => 'Folder'],
+    'admin.files.table.path' => ['sv' => 'Sökväg', 'en' => 'Path'],
+    'admin.files.table.size' => ['sv' => 'Storlek', 'en' => 'Size'],
+    'admin.files.table.date' => ['sv' => 'Datum', 'en' => 'Date'],
+    'admin.files.table.modified' => ['sv' => 'Ändrad', 'en' => 'Modified'],
+    'admin.files.table.actions' => ['sv' => 'Åtgärder', 'en' => 'Actions'],
+
+    // Actions
+    'admin.files.action.view' => ['sv' => 'Visa', 'en' => 'View'],
+    'admin.files.action.rename' => ['sv' => 'Byt namn', 'en' => 'Rename'],
+    'admin.files.action.delete' => ['sv' => 'Radera', 'en' => 'Delete'],
+    'admin.files.action.import' => ['sv' => 'Importera', 'en' => 'Import'],
+
+    // Discrepancies
+    'admin.files.discrepancy.heading' => ['sv' => 'Diskrepanser', 'en' => 'Discrepancies'],
+    'admin.files.discrepancy.missing_on_disk' => ['sv' => 'Filer i databas som saknas på disk ({count})', 'en' => 'Files in database missing on disk ({count})'],
+    'admin.files.discrepancy.orphaned' => ['sv' => 'Filer på disk som saknas i databas ({count})', 'en' => 'Files on disk missing in database ({count})'],
+    'admin.files.discrepancy.help_missing' => ['sv' => 'Dessa filer finns i databasen men filen finns inte på disk. Du kan radera dem från databasen.', 'en' => 'These files exist in the database but the file is not on disk. You can delete them from the database.'],
+    'admin.files.discrepancy.help_orphaned' => ['sv' => 'Dessa filer finns på servern men inte i databasen. Du kan importera dem eller radera dem.', 'en' => 'These files exist on the server but not in the database. You can import or delete them.'],
+
+    // Messages
+    'admin.files.message.file_not_found' => ['sv' => 'Filen hittades inte på servern', 'en' => 'File not found on server'],
+    'admin.files.message.invalid_path' => ['sv' => 'Ogiltig filsökväg', 'en' => 'Invalid file path'],
+    'admin.files.message.name_updated' => ['sv' => 'Filnamnet har uppdaterats', 'en' => 'Filename has been updated'],
+    'admin.files.message.name_update_failed' => ['sv' => 'Kunde inte uppdatera filnamnet', 'en' => 'Could not update filename'],
+    'admin.files.message.invalid_name' => ['sv' => 'Ogiltigt filnamn', 'en' => 'Invalid filename'],
+    'admin.files.message.imported' => ['sv' => 'Fil importerad', 'en' => 'File imported'],
+
+    // Modals
+    'admin.files.modal.import.title' => ['sv' => 'Importera fil till databasen', 'en' => 'Import file to database'],
+    'admin.files.modal.import.message' => ['sv' => 'Vill du importera filen <strong>{filename}</strong> till databasen?', 'en' => 'Do you want to import the file <strong>{filename}</strong> to the database?'],
+    'admin.files.modal.import.help' => ['sv' => 'Filen kommer då att bli tillgänglig via filväljaren och serve.php.', 'en' => 'The file will then be available via the file picker and serve.php.'],
+
+    'admin.files.modal.delete.title' => ['sv' => 'Radera fil', 'en' => 'Delete file'],
+    'admin.files.modal.delete.message' => ['sv' => 'Är du säker på att du vill radera filen <strong>{filename}</strong>?', 'en' => 'Are you sure you want to delete the file <strong>{filename}</strong>?'],
+    'admin.files.modal.delete.help' => ['sv' => 'Detta kan inte ångras.', 'en' => 'This cannot be undone.'],
+
+    'admin.files.modal.delete_orphaned.title' => ['sv' => 'Radera övergiven fil', 'en' => 'Delete orphaned file'],
+    'admin.files.modal.delete_orphaned.message' => ['sv' => 'Är du säker på att du vill radera den övergivna filen <strong>{filename}</strong>?', 'en' => 'Are you sure you want to delete the orphaned file <strong>{filename}</strong>?'],
+    'admin.files.modal.delete_orphaned.help' => ['sv' => 'Filen finns inte i databasen och kommer raderas från servern permanent. Detta kan inte ångras.', 'en' => 'The file is not in the database and will be permanently deleted from the server. This cannot be undone.'],
+
+    'admin.files.modal.rename.title' => ['sv' => 'Byt namn på fil', 'en' => 'Rename file'],
+    'admin.files.modal.rename.prompt' => ['sv' => 'Ange nytt namn för filen:', 'en' => 'Enter new name for the file:'],
+    'admin.files.modal.rename.placeholder' => ['sv' => 'Nytt filnamn', 'en' => 'New filename'],
+    'admin.files.modal.rename.help' => ['sv' => 'Filändelsen kommer att behållas automatiskt om du inte anger en ny.', 'en' => 'The file extension will be kept automatically if you don\'t specify a new one.'],
+
     ];
 

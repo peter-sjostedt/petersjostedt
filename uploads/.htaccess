@@ -1,0 +1,5 @@
+# Neka direkt åtkomst till uploads-mappen
+# Alla filer serveras via serve.php för säkerhet
+
+Order Deny,Allow
+Deny from all

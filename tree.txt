@@ -2,6 +2,10 @@ Folder PATH listing for volume OS
 Volume serial number is F699-8E6E
 C:.
 ¦   .gitignore
+¦   composer.json
+¦   composer.lock
+¦   README.md
+¦   translations-2026-01-10.csv
 ¦   tree.txt
 ¦   
 +---.claude
@@ -9,10 +13,12 @@ C:.
 ¦       
 +---admin.petersjostedt.se
 ¦   ¦   .htaccess
+¦   ¦   backup.php
 ¦   ¦   index.php
 ¦   ¦   login.php
 ¦   ¦   logout.php
 ¦   ¦   logs.php
+¦   ¦   migrations.php
 ¦   ¦   sessions.php
 ¦   ¦   settings.php
 ¦   ¦   users.php
@@ -30,47 +36,101 @@ C:.
 ¦       .htaccess
 ¦       index.php
 ¦       
++---backups
+¦   ¦   .gitkeep
+¦   ¦   .htaccess
+¦   ¦   backup_daily_2026-01-11_081632.sql
+¦   ¦   
+¦   +---daily
+¦   ¦       .gitkeep
+¦   ¦       backup_daily_2026-01-11_082238.sql.gz
+¦   ¦       
+¦   +---monthly
+¦   ¦       .gitkeep
+¦   ¦       
+¦   +---weekly
+¦           .gitkeep
+¦           
 +---config
 ¦       .htaccess
-¦       app.example.php
 ¦       app.php
-¦       database.example.php
 ¦       database.php
 ¦       languages.php
+¦       mail.php
 ¦       translations.php
 ¦       
 +---cron
 ¦       .htaccess
+¦       backup-database.php
 ¦       example.php
+¦       export-translations.php
+¦       import-translations.php
+¦       rotate-logs.php
 ¦       
++---database
+¦   ¦   migrate.php
+¦   ¦   schema.sql
+¦   ¦   
+¦   +---migrations
+¦           2026_01_11_090800_initial_schema.sql
+¦           2026_01_12_064757_create_files_table.sql
+¦           2026_01_12_071739_add_image_variant_fields.sql
+¦           README.md
+¦           TEMPLATE.sql
+¦           
 +---errors
-¦       400.shtml
-¦       401.shtml
-¦       403.shtml
-¦       404.shtml
-¦       500.shtml
+¦       400.php
+¦       401.php
+¦       403.php
+¦       404.php
+¦       500.php
 ¦       
 +---logs
+¦       .gitkeep
 ¦       .htaccess
+¦       app-2026-01-11.log
+¦       app-2026-01-12.log
+¦       debug-2026-01-11.log
+¦       debug-2026-01-12.log
+¦       error-2026-01-11.log
+¦       error-2026-01-12.log
+¦       security-2026-01-11.log
 ¦       
 +---public_html
 ¦   ¦   .htaccess
 ¦   ¦   about.php
 ¦   ¦   contact.php
+¦   ¦   favicon-link.txt
+¦   ¦   favicon.svg
+¦   ¦   file-picker-api.php
 ¦   ¦   index.php
-¦   ¦   language-usage.php
 ¦   ¦   modal-usage.php
 ¦   ¦   scan-translations.php
+¦   ¦   serve.php
+¦   ¦   test-backup.php
 ¦   ¦   test-db.php
+¦   ¦   test-file-browser.php
+¦   ¦   test-file-upload.php
+¦   ¦   test-image-upload.php
+¦   ¦   test-language-usage.php
+¦   ¦   test-logging.php
+¦   ¦   test-mail.php
+¦   ¦   test-modal-integration.php
+¦   ¦   test-modal-usage.php
+¦   ¦   test-pdf.php
 ¦   ¦   
 ¦   +---assets
 ¦   ¦   +---css
+¦   ¦   ¦       file-picker-modal.css
 ¦   ¦   ¦       modal.css
 ¦   ¦   ¦       style.css
 ¦   ¦   ¦       
 ¦   ¦   +---js
+¦   ¦           file-picker-modal.js
 ¦   ¦           main.js
+¦   ¦           modal-usage.js
 ¦   ¦           modal.js
+¦   ¦           test-modal-integration.js
 ¦   ¦           
 ¦   +---cgi-bin
 ¦   +---includes
@@ -81,13 +141,1129 @@ C:.
 ¦           security.php
 ¦           
 +---src
-        Database.php
-        Language.php
-        LanguageExport.php
-        LanguageScanner.php
-        Logger.php
-        Router.php
-        Session.php
-        Settings.php
-        User.php
-        
+¦       Backup.php
+¦       Database.php
+¦       FileServe.php
+¦       FileUpload.php
+¦       ImageUpload.php
+¦       Language.php
+¦       LanguageExport.php
+¦       LanguageScanner.php
+¦       Logger.php
+¦       Mailer.php
+¦       Migration.php
+¦       Pdf.php
+¦       Router.php
+¦       Session.php
+¦       Settings.php
+¦       User.php
+¦       
++---uploads
+¦   ¦   .htaccess
+¦   ¦   index.php
+¦   ¦   
+¦   +---documents
+¦   ¦       037b777a2e9f1ff0aed93aa9b350acc6.pdf
+¦   ¦       
+¦   +---images
+¦   +---originals
++---vendor
+    ¦   autoload.php
+    ¦   
+    +---composer
+    ¦       autoload_classmap.php
+    ¦       autoload_files.php
+    ¦       autoload_namespaces.php
+    ¦       autoload_psr4.php
+    ¦       autoload_real.php
+    ¦       autoload_static.php
+    ¦       ClassLoader.php
+    ¦       installed.json
+    ¦       installed.php
+    ¦       InstalledVersions.php
+    ¦       LICENSE
+    ¦       platform_check.php
+    ¦       
+    +---dompdf
+    ¦   +---dompdf
+    ¦   ¦   ¦   AUTHORS.md
+    ¦   ¦   ¦   composer.json
+    ¦   ¦   ¦   LICENSE.LGPL
+    ¦   ¦   ¦   phpunit.xml
+    ¦   ¦   ¦   README.md
+    ¦   ¦   ¦   VERSION
+    ¦   ¦   ¦   
+    ¦   ¦   +---lib
+    ¦   ¦   ¦   ¦   Cpdf.php
+    ¦   ¦   ¦   ¦   
+    ¦   ¦   ¦   +---fonts
+    ¦   ¦   ¦   ¦       Courier-Bold.afm
+    ¦   ¦   ¦   ¦       Courier-BoldOblique.afm
+    ¦   ¦   ¦   ¦       Courier-Oblique.afm
+    ¦   ¦   ¦   ¦       Courier.afm
+    ¦   ¦   ¦   ¦       DejaVuSans-Bold.ttf
+    ¦   ¦   ¦   ¦       DejaVuSans-Bold.ufm
+    ¦   ¦   ¦   ¦       DejaVuSans-Bold.ufm.json
+    ¦   ¦   ¦   ¦       DejaVuSans-BoldOblique.ttf
+    ¦   ¦   ¦   ¦       DejaVuSans-BoldOblique.ufm
+    ¦   ¦   ¦   ¦       DejaVuSans-Oblique.ttf
+    ¦   ¦   ¦   ¦       DejaVuSans-Oblique.ufm
+    ¦   ¦   ¦   ¦       DejaVuSans.ttf
+    ¦   ¦   ¦   ¦       DejaVuSans.ufm
+    ¦   ¦   ¦   ¦       DejaVuSans.ufm.json
+    ¦   ¦   ¦   ¦       DejaVuSansMono-Bold.ttf
+    ¦   ¦   ¦   ¦       DejaVuSansMono-Bold.ufm
+    ¦   ¦   ¦   ¦       DejaVuSansMono-BoldOblique.ttf
+    ¦   ¦   ¦   ¦       DejaVuSansMono-BoldOblique.ufm
+    ¦   ¦   ¦   ¦       DejaVuSansMono-Oblique.ttf
+    ¦   ¦   ¦   ¦       DejaVuSansMono-Oblique.ufm
+    ¦   ¦   ¦   ¦       DejaVuSansMono.ttf
+    ¦   ¦   ¦   ¦       DejaVuSansMono.ufm
+    ¦   ¦   ¦   ¦       DejaVuSerif-Bold.ttf
+    ¦   ¦   ¦   ¦       DejaVuSerif-Bold.ufm
+    ¦   ¦   ¦   ¦       DejaVuSerif-BoldItalic.ttf
+    ¦   ¦   ¦   ¦       DejaVuSerif-BoldItalic.ufm
+    ¦   ¦   ¦   ¦       DejaVuSerif-Italic.ttf
+    ¦   ¦   ¦   ¦       DejaVuSerif-Italic.ufm
+    ¦   ¦   ¦   ¦       DejaVuSerif.ttf
+    ¦   ¦   ¦   ¦       DejaVuSerif.ufm
+    ¦   ¦   ¦   ¦       Helvetica-Bold.afm
+    ¦   ¦   ¦   ¦       Helvetica-BoldOblique.afm
+    ¦   ¦   ¦   ¦       Helvetica-Oblique.afm
+    ¦   ¦   ¦   ¦       Helvetica.afm
+    ¦   ¦   ¦   ¦       installed-fonts.dist.json
+    ¦   ¦   ¦   ¦       mustRead.html
+    ¦   ¦   ¦   ¦       Symbol.afm
+    ¦   ¦   ¦   ¦       Times-Bold.afm
+    ¦   ¦   ¦   ¦       Times-BoldItalic.afm
+    ¦   ¦   ¦   ¦       Times-Italic.afm
+    ¦   ¦   ¦   ¦       Times-Roman.afm
+    ¦   ¦   ¦   ¦       ZapfDingbats.afm
+    ¦   ¦   ¦   ¦       
+    ¦   ¦   ¦   +---res
+    ¦   ¦   ¦           broken_image.png
+    ¦   ¦   ¦           broken_image.svg
+    ¦   ¦   ¦           html.css
+    ¦   ¦   ¦           sRGB2014.icc
+    ¦   ¦   ¦           sRGB2014.icc.LICENSE
+    ¦   ¦   ¦           
+    ¦   ¦   +---src
+    ¦   ¦       ¦   Canvas.php
+    ¦   ¦       ¦   CanvasFactory.php
+    ¦   ¦       ¦   Cellmap.php
+    ¦   ¦       ¦   Dompdf.php
+    ¦   ¦       ¦   Exception.php
+    ¦   ¦       ¦   FontMetrics.php
+    ¦   ¦       ¦   Frame.php
+    ¦   ¦       ¦   Helpers.php
+    ¦   ¦       ¦   JavascriptEmbedder.php
+    ¦   ¦       ¦   LineBox.php
+    ¦   ¦       ¦   Options.php
+    ¦   ¦       ¦   PhpEvaluator.php
+    ¦   ¦       ¦   Renderer.php
+    ¦   ¦       ¦   
+    ¦   ¦       +---Adapter
+    ¦   ¦       ¦       CPDF.php
+    ¦   ¦       ¦       GD.php
+    ¦   ¦       ¦       PDFLib.php
+    ¦   ¦       ¦       
+    ¦   ¦       +---Css
+    ¦   ¦       ¦   ¦   AttributeTranslator.php
+    ¦   ¦       ¦   ¦   Color.php
+    ¦   ¦       ¦   ¦   Style.php
+    ¦   ¦       ¦   ¦   Stylesheet.php
+    ¦   ¦       ¦   ¦   
+    ¦   ¦       ¦   +---Content
+    ¦   ¦       ¦           Attr.php
+    ¦   ¦       ¦           CloseQuote.php
+    ¦   ¦       ¦           ContentPart.php
+    ¦   ¦       ¦           Counter.php
+    ¦   ¦       ¦           Counters.php
+    ¦   ¦       ¦           NoCloseQuote.php
+    ¦   ¦       ¦           NoOpenQuote.php
+    ¦   ¦       ¦           OpenQuote.php
+    ¦   ¦       ¦           StringPart.php
+    ¦   ¦       ¦           Url.php
+    ¦   ¦       ¦           
+    ¦   ¦       +---Exception
+    ¦   ¦       ¦       ImageException.php
+    ¦   ¦       ¦       
+    ¦   ¦       +---Frame
+    ¦   ¦       ¦       Factory.php
+    ¦   ¦       ¦       FrameListIterator.php
+    ¦   ¦       ¦       FrameTree.php
+    ¦   ¦       ¦       FrameTreeIterator.php
+    ¦   ¦       ¦       
+    ¦   ¦       +---FrameDecorator
+    ¦   ¦       ¦       AbstractFrameDecorator.php
+    ¦   ¦       ¦       Block.php
+    ¦   ¦       ¦       Image.php
+    ¦   ¦       ¦       Inline.php
+    ¦   ¦       ¦       ListBullet.php
+    ¦   ¦       ¦       ListBulletImage.php
+    ¦   ¦       ¦       NullFrameDecorator.php
+    ¦   ¦       ¦       Page.php
+    ¦   ¦       ¦       Table.php
+    ¦   ¦       ¦       TableCell.php
+    ¦   ¦       ¦       TableRow.php
+    ¦   ¦       ¦       TableRowGroup.php
+    ¦   ¦       ¦       Text.php
+    ¦   ¦       ¦       
+    ¦   ¦       +---FrameReflower
+    ¦   ¦       ¦       AbstractFrameReflower.php
+    ¦   ¦       ¦       Block.php
+    ¦   ¦       ¦       Image.php
+    ¦   ¦       ¦       Inline.php
+    ¦   ¦       ¦       ListBullet.php
+    ¦   ¦       ¦       NullFrameReflower.php
+    ¦   ¦       ¦       Page.php
+    ¦   ¦       ¦       Table.php
+    ¦   ¦       ¦       TableCell.php
+    ¦   ¦       ¦       TableRow.php
+    ¦   ¦       ¦       TableRowGroup.php
+    ¦   ¦       ¦       Text.php
+    ¦   ¦       ¦       
+    ¦   ¦       +---Image
+    ¦   ¦       ¦       Cache.php
+    ¦   ¦       ¦       
+    ¦   ¦       +---Positioner
+    ¦   ¦       ¦       Absolute.php
+    ¦   ¦       ¦       AbstractPositioner.php
+    ¦   ¦       ¦       Block.php
+    ¦   ¦       ¦       Fixed.php
+    ¦   ¦       ¦       Inline.php
+    ¦   ¦       ¦       ListBullet.php
+    ¦   ¦       ¦       NullPositioner.php
+    ¦   ¦       ¦       TableCell.php
+    ¦   ¦       ¦       TableRow.php
+    ¦   ¦       ¦       
+    ¦   ¦       +---Renderer
+    ¦   ¦               AbstractRenderer.php
+    ¦   ¦               Block.php
+    ¦   ¦               Image.php
+    ¦   ¦               Inline.php
+    ¦   ¦               ListBullet.php
+    ¦   ¦               TableCell.php
+    ¦   ¦               TableRow.php
+    ¦   ¦               TableRowGroup.php
+    ¦   ¦               Text.php
+    ¦   ¦               
+    ¦   +---php-font-lib
+    ¦   ¦   ¦   AUTHORS.md
+    ¦   ¦   ¦   composer.json
+    ¦   ¦   ¦   LICENSE
+    ¦   ¦   ¦   README.md
+    ¦   ¦   ¦   
+    ¦   ¦   +---maps
+    ¦   ¦   ¦       adobe-standard-encoding.map
+    ¦   ¦   ¦       cp1250.map
+    ¦   ¦   ¦       cp1251.map
+    ¦   ¦   ¦       cp1252.map
+    ¦   ¦   ¦       cp1253.map
+    ¦   ¦   ¦       cp1254.map
+    ¦   ¦   ¦       cp1255.map
+    ¦   ¦   ¦       cp1257.map
+    ¦   ¦   ¦       cp1258.map
+    ¦   ¦   ¦       cp874.map
+    ¦   ¦   ¦       iso-8859-1.map
+    ¦   ¦   ¦       iso-8859-11.map
+    ¦   ¦   ¦       iso-8859-15.map
+    ¦   ¦   ¦       iso-8859-16.map
+    ¦   ¦   ¦       iso-8859-2.map
+    ¦   ¦   ¦       iso-8859-4.map
+    ¦   ¦   ¦       iso-8859-5.map
+    ¦   ¦   ¦       iso-8859-7.map
+    ¦   ¦   ¦       iso-8859-9.map
+    ¦   ¦   ¦       koi8-r.map
+    ¦   ¦   ¦       koi8-u.map
+    ¦   ¦   ¦       
+    ¦   ¦   +---src
+    ¦   ¦       +---FontLib
+    ¦   ¦           ¦   AdobeFontMetrics.php
+    ¦   ¦           ¦   BinaryStream.php
+    ¦   ¦           ¦   EncodingMap.php
+    ¦   ¦           ¦   Font.php
+    ¦   ¦           ¦   Header.php
+    ¦   ¦           ¦   
+    ¦   ¦           +---EOT
+    ¦   ¦           ¦       File.php
+    ¦   ¦           ¦       Header.php
+    ¦   ¦           ¦       
+    ¦   ¦           +---Exception
+    ¦   ¦           ¦       FontNotFoundException.php
+    ¦   ¦           ¦       
+    ¦   ¦           +---Glyph
+    ¦   ¦           ¦       Outline.php
+    ¦   ¦           ¦       OutlineComponent.php
+    ¦   ¦           ¦       OutlineComposite.php
+    ¦   ¦           ¦       OutlineSimple.php
+    ¦   ¦           ¦       
+    ¦   ¦           +---OpenType
+    ¦   ¦           ¦       File.php
+    ¦   ¦           ¦       TableDirectoryEntry.php
+    ¦   ¦           ¦       
+    ¦   ¦           +---Table
+    ¦   ¦           ¦   ¦   DirectoryEntry.php
+    ¦   ¦           ¦   ¦   Table.php
+    ¦   ¦           ¦   ¦   
+    ¦   ¦           ¦   +---Type
+    ¦   ¦           ¦           cmap.php
+    ¦   ¦           ¦           cvt.php
+    ¦   ¦           ¦           fpgm.php
+    ¦   ¦           ¦           glyf.php
+    ¦   ¦           ¦           head.php
+    ¦   ¦           ¦           hhea.php
+    ¦   ¦           ¦           hmtx.php
+    ¦   ¦           ¦           kern.php
+    ¦   ¦           ¦           loca.php
+    ¦   ¦           ¦           maxp.php
+    ¦   ¦           ¦           name.php
+    ¦   ¦           ¦           nameRecord.php
+    ¦   ¦           ¦           os2.php
+    ¦   ¦           ¦           post.php
+    ¦   ¦           ¦           prep.php
+    ¦   ¦           ¦           
+    ¦   ¦           +---TrueType
+    ¦   ¦           ¦       Collection.php
+    ¦   ¦           ¦       File.php
+    ¦   ¦           ¦       Header.php
+    ¦   ¦           ¦       TableDirectoryEntry.php
+    ¦   ¦           ¦       
+    ¦   ¦           +---WOFF
+    ¦   ¦                   File.php
+    ¦   ¦                   Header.php
+    ¦   ¦                   TableDirectoryEntry.php
+    ¦   ¦                   
+    ¦   +---php-svg-lib
+    ¦       ¦   AUTHORS.md
+    ¦       ¦   composer.json
+    ¦       ¦   LICENSE
+    ¦       ¦   README.md
+    ¦       ¦   
+    ¦       +---src
+    ¦           +---Svg
+    ¦               ¦   CssLength.php
+    ¦               ¦   DefaultStyle.php
+    ¦               ¦   Document.php
+    ¦               ¦   Style.php
+    ¦               ¦   
+    ¦               +---Gradient
+    ¦               ¦       Stop.php
+    ¦               ¦       
+    ¦               +---Surface
+    ¦               ¦       CPdf.php
+    ¦               ¦       SurfaceCpdf.php
+    ¦               ¦       SurfaceInterface.php
+    ¦               ¦       SurfacePDFLib.php
+    ¦               ¦       
+    ¦               +---Tag
+    ¦                       AbstractTag.php
+    ¦                       Anchor.php
+    ¦                       Circle.php
+    ¦                       ClipPath.php
+    ¦                       Ellipse.php
+    ¦                       Group.php
+    ¦                       Image.php
+    ¦                       Line.php
+    ¦                       LinearGradient.php
+    ¦                       Path.php
+    ¦                       Polygon.php
+    ¦                       Polyline.php
+    ¦                       RadialGradient.php
+    ¦                       Rect.php
+    ¦                       Shape.php
+    ¦                       Stop.php
+    ¦                       StyleTag.php
+    ¦                       Symbol.php
+    ¦                       Text.php
+    ¦                       UseTag.php
+    ¦                       
+    +---masterminds
+    ¦   +---html5
+    ¦       ¦   composer.json
+    ¦       ¦   CREDITS
+    ¦       ¦   LICENSE.txt
+    ¦       ¦   README.md
+    ¦       ¦   RELEASE.md
+    ¦       ¦   UPGRADING.md
+    ¦       ¦   
+    ¦       +---bin
+    ¦       ¦       entities.php
+    ¦       ¦       
+    ¦       +---src
+    ¦           ¦   HTML5.php
+    ¦           ¦   
+    ¦           +---HTML5
+    ¦               ¦   Elements.php
+    ¦               ¦   Entities.php
+    ¦               ¦   Exception.php
+    ¦               ¦   InstructionProcessor.php
+    ¦               ¦   
+    ¦               +---Parser
+    ¦               ¦       CharacterReference.php
+    ¦               ¦       DOMTreeBuilder.php
+    ¦               ¦       EventHandler.php
+    ¦               ¦       FileInputStream.php
+    ¦               ¦       InputStream.php
+    ¦               ¦       ParseError.php
+    ¦               ¦       README.md
+    ¦               ¦       Scanner.php
+    ¦               ¦       StringInputStream.php
+    ¦               ¦       Tokenizer.php
+    ¦               ¦       TreeBuildingRules.php
+    ¦               ¦       UTF8Utils.php
+    ¦               ¦       
+    ¦               +---Serializer
+    ¦                       HTML5Entities.php
+    ¦                       OutputRules.php
+    ¦                       README.md
+    ¦                       RulesInterface.php
+    ¦                       Traverser.php
+    ¦                       
+    +---phpmailer
+    ¦   +---phpmailer
+    ¦       ¦   COMMITMENT
+    ¦       ¦   composer.json
+    ¦       ¦   get_oauth_token.php
+    ¦       ¦   LICENSE
+    ¦       ¦   README.md
+    ¦       ¦   SECURITY.md
+    ¦       ¦   SMTPUTF8.md
+    ¦       ¦   VERSION
+    ¦       ¦   
+    ¦       +---language
+    ¦       ¦       phpmailer.lang-af.php
+    ¦       ¦       phpmailer.lang-ar.php
+    ¦       ¦       phpmailer.lang-as.php
+    ¦       ¦       phpmailer.lang-az.php
+    ¦       ¦       phpmailer.lang-ba.php
+    ¦       ¦       phpmailer.lang-be.php
+    ¦       ¦       phpmailer.lang-bg.php
+    ¦       ¦       phpmailer.lang-bn.php
+    ¦       ¦       phpmailer.lang-ca.php
+    ¦       ¦       phpmailer.lang-cs.php
+    ¦       ¦       phpmailer.lang-da.php
+    ¦       ¦       phpmailer.lang-de.php
+    ¦       ¦       phpmailer.lang-el.php
+    ¦       ¦       phpmailer.lang-eo.php
+    ¦       ¦       phpmailer.lang-es.php
+    ¦       ¦       phpmailer.lang-et.php
+    ¦       ¦       phpmailer.lang-fa.php
+    ¦       ¦       phpmailer.lang-fi.php
+    ¦       ¦       phpmailer.lang-fo.php
+    ¦       ¦       phpmailer.lang-fr.php
+    ¦       ¦       phpmailer.lang-gl.php
+    ¦       ¦       phpmailer.lang-he.php
+    ¦       ¦       phpmailer.lang-hi.php
+    ¦       ¦       phpmailer.lang-hr.php
+    ¦       ¦       phpmailer.lang-hu.php
+    ¦       ¦       phpmailer.lang-hy.php
+    ¦       ¦       phpmailer.lang-id.php
+    ¦       ¦       phpmailer.lang-it.php
+    ¦       ¦       phpmailer.lang-ja.php
+    ¦       ¦       phpmailer.lang-ka.php
+    ¦       ¦       phpmailer.lang-ko.php
+    ¦       ¦       phpmailer.lang-ku.php
+    ¦       ¦       phpmailer.lang-lt.php
+    ¦       ¦       phpmailer.lang-lv.php
+    ¦       ¦       phpmailer.lang-mg.php
+    ¦       ¦       phpmailer.lang-mn.php
+    ¦       ¦       phpmailer.lang-ms.php
+    ¦       ¦       phpmailer.lang-nb.php
+    ¦       ¦       phpmailer.lang-nl.php
+    ¦       ¦       phpmailer.lang-pl.php
+    ¦       ¦       phpmailer.lang-pt.php
+    ¦       ¦       phpmailer.lang-pt_br.php
+    ¦       ¦       phpmailer.lang-ro.php
+    ¦       ¦       phpmailer.lang-ru.php
+    ¦       ¦       phpmailer.lang-si.php
+    ¦       ¦       phpmailer.lang-sk.php
+    ¦       ¦       phpmailer.lang-sl.php
+    ¦       ¦       phpmailer.lang-sr.php
+    ¦       ¦       phpmailer.lang-sr_latn.php
+    ¦       ¦       phpmailer.lang-sv.php
+    ¦       ¦       phpmailer.lang-tl.php
+    ¦       ¦       phpmailer.lang-tr.php
+    ¦       ¦       phpmailer.lang-uk.php
+    ¦       ¦       phpmailer.lang-ur.php
+    ¦       ¦       phpmailer.lang-vi.php
+    ¦       ¦       phpmailer.lang-zh.php
+    ¦       ¦       phpmailer.lang-zh_cn.php
+    ¦       ¦       
+    ¦       +---src
+    ¦               DSNConfigurator.php
+    ¦               Exception.php
+    ¦               OAuth.php
+    ¦               OAuthTokenProvider.php
+    ¦               PHPMailer.php
+    ¦               POP3.php
+    ¦               SMTP.php
+    ¦               
+    +---sabberworm
+    ¦   +---php-css-parser
+    ¦       ¦   CHANGELOG.md
+    ¦       ¦   composer.json
+    ¦       ¦   LICENSE
+    ¦       ¦   README.md
+    ¦       ¦   
+    ¦       +---src
+    ¦           ¦   CSSElement.php
+    ¦           ¦   OutputFormat.php
+    ¦           ¦   OutputFormatter.php
+    ¦           ¦   Parser.php
+    ¦           ¦   Renderable.php
+    ¦           ¦   Settings.php
+    ¦           ¦   
+    ¦           +---Comment
+    ¦           ¦       Comment.php
+    ¦           ¦       Commentable.php
+    ¦           ¦       CommentContainer.php
+    ¦           ¦       
+    ¦           +---CSSList
+    ¦           ¦       AtRuleBlockList.php
+    ¦           ¦       CSSBlockList.php
+    ¦           ¦       CSSList.php
+    ¦           ¦       CSSListItem.php
+    ¦           ¦       Document.php
+    ¦           ¦       KeyFrame.php
+    ¦           ¦       
+    ¦           +---Parsing
+    ¦           ¦       Anchor.php
+    ¦           ¦       OutputException.php
+    ¦           ¦       ParserState.php
+    ¦           ¦       SourceException.php
+    ¦           ¦       UnexpectedEOFException.php
+    ¦           ¦       UnexpectedTokenException.php
+    ¦           ¦       
+    ¦           +---Position
+    ¦           ¦       Position.php
+    ¦           ¦       Positionable.php
+    ¦           ¦       
+    ¦           +---Property
+    ¦           ¦   ¦   AtRule.php
+    ¦           ¦   ¦   Charset.php
+    ¦           ¦   ¦   CSSNamespace.php
+    ¦           ¦   ¦   Import.php
+    ¦           ¦   ¦   KeyframeSelector.php
+    ¦           ¦   ¦   Selector.php
+    ¦           ¦   ¦   
+    ¦           ¦   +---Selector
+    ¦           ¦           SpecificityCalculator.php
+    ¦           ¦           
+    ¦           +---Rule
+    ¦           ¦       Rule.php
+    ¦           ¦       
+    ¦           +---RuleSet
+    ¦           ¦       AtRuleSet.php
+    ¦           ¦       DeclarationBlock.php
+    ¦           ¦       RuleContainer.php
+    ¦           ¦       RuleSet.php
+    ¦           ¦       
+    ¦           +---Value
+    ¦                   CalcFunction.php
+    ¦                   CalcRuleValueList.php
+    ¦                   Color.php
+    ¦                   CSSFunction.php
+    ¦                   CSSString.php
+    ¦                   LineName.php
+    ¦                   PrimitiveValue.php
+    ¦                   RuleValueList.php
+    ¦                   Size.php
+    ¦                   URL.php
+    ¦                   Value.php
+    ¦                   ValueList.php
+    ¦                   
+    +---thecodingmachine
+        +---safe
+            ¦   composer.json
+            ¦   LICENSE
+            ¦   README.md
+            ¦   rector-migrate.php
+            ¦   
+            +---generated
+            ¦   ¦   apache.php
+            ¦   ¦   apcu.php
+            ¦   ¦   array.php
+            ¦   ¦   bzip2.php
+            ¦   ¦   calendar.php
+            ¦   ¦   classobj.php
+            ¦   ¦   com.php
+            ¦   ¦   cubrid.php
+            ¦   ¦   curl.php
+            ¦   ¦   datetime.php
+            ¦   ¦   dir.php
+            ¦   ¦   eio.php
+            ¦   ¦   errorfunc.php
+            ¦   ¦   exec.php
+            ¦   ¦   fileinfo.php
+            ¦   ¦   filesystem.php
+            ¦   ¦   filter.php
+            ¦   ¦   fpm.php
+            ¦   ¦   ftp.php
+            ¦   ¦   funchand.php
+            ¦   ¦   functionsList.php
+            ¦   ¦   gettext.php
+            ¦   ¦   gmp.php
+            ¦   ¦   gnupg.php
+            ¦   ¦   hash.php
+            ¦   ¦   ibase.php
+            ¦   ¦   ibmDb2.php
+            ¦   ¦   iconv.php
+            ¦   ¦   image.php
+            ¦   ¦   imap.php
+            ¦   ¦   info.php
+            ¦   ¦   inotify.php
+            ¦   ¦   json.php
+            ¦   ¦   ldap.php
+            ¦   ¦   libxml.php
+            ¦   ¦   lzf.php
+            ¦   ¦   mailparse.php
+            ¦   ¦   mbstring.php
+            ¦   ¦   misc.php
+            ¦   ¦   mysql.php
+            ¦   ¦   mysqli.php
+            ¦   ¦   network.php
+            ¦   ¦   oci8.php
+            ¦   ¦   opcache.php
+            ¦   ¦   openssl.php
+            ¦   ¦   outcontrol.php
+            ¦   ¦   pcntl.php
+            ¦   ¦   pcre.php
+            ¦   ¦   pgsql.php
+            ¦   ¦   posix.php
+            ¦   ¦   ps.php
+            ¦   ¦   pspell.php
+            ¦   ¦   readline.php
+            ¦   ¦   rnp.php
+            ¦   ¦   rpminfo.php
+            ¦   ¦   rrd.php
+            ¦   ¦   sem.php
+            ¦   ¦   session.php
+            ¦   ¦   shmop.php
+            ¦   ¦   sockets.php
+            ¦   ¦   sodium.php
+            ¦   ¦   solr.php
+            ¦   ¦   spl.php
+            ¦   ¦   sqlsrv.php
+            ¦   ¦   ssdeep.php
+            ¦   ¦   ssh2.php
+            ¦   ¦   stream.php
+            ¦   ¦   strings.php
+            ¦   ¦   swoole.php
+            ¦   ¦   uodbc.php
+            ¦   ¦   uopz.php
+            ¦   ¦   url.php
+            ¦   ¦   var.php
+            ¦   ¦   xdiff.php
+            ¦   ¦   xml.php
+            ¦   ¦   xmlrpc.php
+            ¦   ¦   yaml.php
+            ¦   ¦   yaz.php
+            ¦   ¦   zip.php
+            ¦   ¦   zlib.php
+            ¦   ¦   
+            ¦   +---8.1
+            ¦   ¦       apache.php
+            ¦   ¦       apcu.php
+            ¦   ¦       array.php
+            ¦   ¦       bzip2.php
+            ¦   ¦       calendar.php
+            ¦   ¦       classobj.php
+            ¦   ¦       com.php
+            ¦   ¦       cubrid.php
+            ¦   ¦       curl.php
+            ¦   ¦       datetime.php
+            ¦   ¦       dir.php
+            ¦   ¦       eio.php
+            ¦   ¦       errorfunc.php
+            ¦   ¦       exec.php
+            ¦   ¦       fileinfo.php
+            ¦   ¦       filesystem.php
+            ¦   ¦       filter.php
+            ¦   ¦       fpm.php
+            ¦   ¦       ftp.php
+            ¦   ¦       funchand.php
+            ¦   ¦       functionsList.php
+            ¦   ¦       gettext.php
+            ¦   ¦       gmp.php
+            ¦   ¦       gnupg.php
+            ¦   ¦       hash.php
+            ¦   ¦       ibase.php
+            ¦   ¦       ibmDb2.php
+            ¦   ¦       iconv.php
+            ¦   ¦       image.php
+            ¦   ¦       imap.php
+            ¦   ¦       info.php
+            ¦   ¦       inotify.php
+            ¦   ¦       json.php
+            ¦   ¦       ldap.php
+            ¦   ¦       libxml.php
+            ¦   ¦       lzf.php
+            ¦   ¦       mailparse.php
+            ¦   ¦       mbstring.php
+            ¦   ¦       misc.php
+            ¦   ¦       mysql.php
+            ¦   ¦       mysqli.php
+            ¦   ¦       network.php
+            ¦   ¦       oci8.php
+            ¦   ¦       opcache.php
+            ¦   ¦       openssl.php
+            ¦   ¦       outcontrol.php
+            ¦   ¦       pcntl.php
+            ¦   ¦       pcre.php
+            ¦   ¦       pgsql.php
+            ¦   ¦       posix.php
+            ¦   ¦       ps.php
+            ¦   ¦       pspell.php
+            ¦   ¦       readline.php
+            ¦   ¦       rector-migrate.php
+            ¦   ¦       rpminfo.php
+            ¦   ¦       rrd.php
+            ¦   ¦       sem.php
+            ¦   ¦       session.php
+            ¦   ¦       shmop.php
+            ¦   ¦       sockets.php
+            ¦   ¦       sodium.php
+            ¦   ¦       solr.php
+            ¦   ¦       spl.php
+            ¦   ¦       sqlsrv.php
+            ¦   ¦       ssdeep.php
+            ¦   ¦       ssh2.php
+            ¦   ¦       stream.php
+            ¦   ¦       strings.php
+            ¦   ¦       swoole.php
+            ¦   ¦       uodbc.php
+            ¦   ¦       uopz.php
+            ¦   ¦       url.php
+            ¦   ¦       var.php
+            ¦   ¦       xdiff.php
+            ¦   ¦       xml.php
+            ¦   ¦       xmlrpc.php
+            ¦   ¦       yaml.php
+            ¦   ¦       yaz.php
+            ¦   ¦       zip.php
+            ¦   ¦       zlib.php
+            ¦   ¦       
+            ¦   +---8.2
+            ¦   ¦       apache.php
+            ¦   ¦       apcu.php
+            ¦   ¦       array.php
+            ¦   ¦       bzip2.php
+            ¦   ¦       calendar.php
+            ¦   ¦       classobj.php
+            ¦   ¦       com.php
+            ¦   ¦       cubrid.php
+            ¦   ¦       curl.php
+            ¦   ¦       datetime.php
+            ¦   ¦       dir.php
+            ¦   ¦       eio.php
+            ¦   ¦       errorfunc.php
+            ¦   ¦       exec.php
+            ¦   ¦       fileinfo.php
+            ¦   ¦       filesystem.php
+            ¦   ¦       filter.php
+            ¦   ¦       fpm.php
+            ¦   ¦       ftp.php
+            ¦   ¦       funchand.php
+            ¦   ¦       functionsList.php
+            ¦   ¦       gettext.php
+            ¦   ¦       gmp.php
+            ¦   ¦       gnupg.php
+            ¦   ¦       hash.php
+            ¦   ¦       ibase.php
+            ¦   ¦       ibmDb2.php
+            ¦   ¦       iconv.php
+            ¦   ¦       image.php
+            ¦   ¦       imap.php
+            ¦   ¦       info.php
+            ¦   ¦       inotify.php
+            ¦   ¦       json.php
+            ¦   ¦       ldap.php
+            ¦   ¦       libxml.php
+            ¦   ¦       lzf.php
+            ¦   ¦       mailparse.php
+            ¦   ¦       mbstring.php
+            ¦   ¦       misc.php
+            ¦   ¦       mysql.php
+            ¦   ¦       mysqli.php
+            ¦   ¦       network.php
+            ¦   ¦       oci8.php
+            ¦   ¦       opcache.php
+            ¦   ¦       openssl.php
+            ¦   ¦       outcontrol.php
+            ¦   ¦       pcntl.php
+            ¦   ¦       pcre.php
+            ¦   ¦       pgsql.php
+            ¦   ¦       posix.php
+            ¦   ¦       ps.php
+            ¦   ¦       pspell.php
+            ¦   ¦       readline.php
+            ¦   ¦       rector-migrate.php
+            ¦   ¦       rnp.php
+            ¦   ¦       rpminfo.php
+            ¦   ¦       rrd.php
+            ¦   ¦       sem.php
+            ¦   ¦       session.php
+            ¦   ¦       shmop.php
+            ¦   ¦       sockets.php
+            ¦   ¦       sodium.php
+            ¦   ¦       solr.php
+            ¦   ¦       spl.php
+            ¦   ¦       sqlsrv.php
+            ¦   ¦       ssdeep.php
+            ¦   ¦       ssh2.php
+            ¦   ¦       stream.php
+            ¦   ¦       strings.php
+            ¦   ¦       swoole.php
+            ¦   ¦       uodbc.php
+            ¦   ¦       uopz.php
+            ¦   ¦       url.php
+            ¦   ¦       var.php
+            ¦   ¦       xdiff.php
+            ¦   ¦       xml.php
+            ¦   ¦       xmlrpc.php
+            ¦   ¦       yaml.php
+            ¦   ¦       yaz.php
+            ¦   ¦       zip.php
+            ¦   ¦       zlib.php
+            ¦   ¦       
+            ¦   +---8.3
+            ¦   ¦       apache.php
+            ¦   ¦       apcu.php
+            ¦   ¦       array.php
+            ¦   ¦       bzip2.php
+            ¦   ¦       calendar.php
+            ¦   ¦       classobj.php
+            ¦   ¦       com.php
+            ¦   ¦       cubrid.php
+            ¦   ¦       curl.php
+            ¦   ¦       datetime.php
+            ¦   ¦       dir.php
+            ¦   ¦       eio.php
+            ¦   ¦       errorfunc.php
+            ¦   ¦       exec.php
+            ¦   ¦       fileinfo.php
+            ¦   ¦       filesystem.php
+            ¦   ¦       filter.php
+            ¦   ¦       fpm.php
+            ¦   ¦       ftp.php
+            ¦   ¦       funchand.php
+            ¦   ¦       functionsList.php
+            ¦   ¦       gettext.php
+            ¦   ¦       gmp.php
+            ¦   ¦       gnupg.php
+            ¦   ¦       hash.php
+            ¦   ¦       ibase.php
+            ¦   ¦       ibmDb2.php
+            ¦   ¦       iconv.php
+            ¦   ¦       image.php
+            ¦   ¦       imap.php
+            ¦   ¦       info.php
+            ¦   ¦       inotify.php
+            ¦   ¦       json.php
+            ¦   ¦       ldap.php
+            ¦   ¦       libxml.php
+            ¦   ¦       lzf.php
+            ¦   ¦       mailparse.php
+            ¦   ¦       mbstring.php
+            ¦   ¦       misc.php
+            ¦   ¦       mysql.php
+            ¦   ¦       mysqli.php
+            ¦   ¦       network.php
+            ¦   ¦       oci8.php
+            ¦   ¦       opcache.php
+            ¦   ¦       openssl.php
+            ¦   ¦       outcontrol.php
+            ¦   ¦       pcntl.php
+            ¦   ¦       pcre.php
+            ¦   ¦       pgsql.php
+            ¦   ¦       posix.php
+            ¦   ¦       ps.php
+            ¦   ¦       pspell.php
+            ¦   ¦       readline.php
+            ¦   ¦       rector-migrate.php
+            ¦   ¦       rnp.php
+            ¦   ¦       rpminfo.php
+            ¦   ¦       rrd.php
+            ¦   ¦       sem.php
+            ¦   ¦       session.php
+            ¦   ¦       shmop.php
+            ¦   ¦       sockets.php
+            ¦   ¦       sodium.php
+            ¦   ¦       solr.php
+            ¦   ¦       spl.php
+            ¦   ¦       sqlsrv.php
+            ¦   ¦       ssdeep.php
+            ¦   ¦       ssh2.php
+            ¦   ¦       stream.php
+            ¦   ¦       strings.php
+            ¦   ¦       swoole.php
+            ¦   ¦       uodbc.php
+            ¦   ¦       uopz.php
+            ¦   ¦       url.php
+            ¦   ¦       var.php
+            ¦   ¦       xdiff.php
+            ¦   ¦       xml.php
+            ¦   ¦       xmlrpc.php
+            ¦   ¦       yaml.php
+            ¦   ¦       yaz.php
+            ¦   ¦       zip.php
+            ¦   ¦       zlib.php
+            ¦   ¦       
+            ¦   +---8.4
+            ¦   ¦       apache.php
+            ¦   ¦       apcu.php
+            ¦   ¦       array.php
+            ¦   ¦       bzip2.php
+            ¦   ¦       calendar.php
+            ¦   ¦       classobj.php
+            ¦   ¦       com.php
+            ¦   ¦       cubrid.php
+            ¦   ¦       curl.php
+            ¦   ¦       datetime.php
+            ¦   ¦       dir.php
+            ¦   ¦       eio.php
+            ¦   ¦       errorfunc.php
+            ¦   ¦       exec.php
+            ¦   ¦       fileinfo.php
+            ¦   ¦       filesystem.php
+            ¦   ¦       filter.php
+            ¦   ¦       fpm.php
+            ¦   ¦       ftp.php
+            ¦   ¦       funchand.php
+            ¦   ¦       functionsList.php
+            ¦   ¦       gettext.php
+            ¦   ¦       gmp.php
+            ¦   ¦       gnupg.php
+            ¦   ¦       hash.php
+            ¦   ¦       ibase.php
+            ¦   ¦       ibmDb2.php
+            ¦   ¦       iconv.php
+            ¦   ¦       image.php
+            ¦   ¦       imap.php
+            ¦   ¦       info.php
+            ¦   ¦       inotify.php
+            ¦   ¦       json.php
+            ¦   ¦       ldap.php
+            ¦   ¦       libxml.php
+            ¦   ¦       lzf.php
+            ¦   ¦       mailparse.php
+            ¦   ¦       mbstring.php
+            ¦   ¦       misc.php
+            ¦   ¦       mysql.php
+            ¦   ¦       mysqli.php
+            ¦   ¦       network.php
+            ¦   ¦       oci8.php
+            ¦   ¦       opcache.php
+            ¦   ¦       openssl.php
+            ¦   ¦       outcontrol.php
+            ¦   ¦       pcntl.php
+            ¦   ¦       pcre.php
+            ¦   ¦       pgsql.php
+            ¦   ¦       posix.php
+            ¦   ¦       ps.php
+            ¦   ¦       pspell.php
+            ¦   ¦       readline.php
+            ¦   ¦       rector-migrate.php
+            ¦   ¦       rnp.php
+            ¦   ¦       rpminfo.php
+            ¦   ¦       rrd.php
+            ¦   ¦       sem.php
+            ¦   ¦       session.php
+            ¦   ¦       shmop.php
+            ¦   ¦       sockets.php
+            ¦   ¦       sodium.php
+            ¦   ¦       solr.php
+            ¦   ¦       spl.php
+            ¦   ¦       sqlsrv.php
+            ¦   ¦       ssdeep.php
+            ¦   ¦       ssh2.php
+            ¦   ¦       stream.php
+            ¦   ¦       strings.php
+            ¦   ¦       swoole.php
+            ¦   ¦       uodbc.php
+            ¦   ¦       uopz.php
+            ¦   ¦       url.php
+            ¦   ¦       var.php
+            ¦   ¦       xdiff.php
+            ¦   ¦       xml.php
+            ¦   ¦       xmlrpc.php
+            ¦   ¦       yaml.php
+            ¦   ¦       yaz.php
+            ¦   ¦       zip.php
+            ¦   ¦       zlib.php
+            ¦   ¦       
+            ¦   +---8.5
+            ¦   ¦       apache.php
+            ¦   ¦       apcu.php
+            ¦   ¦       array.php
+            ¦   ¦       bzip2.php
+            ¦   ¦       calendar.php
+            ¦   ¦       classobj.php
+            ¦   ¦       com.php
+            ¦   ¦       cubrid.php
+            ¦   ¦       curl.php
+            ¦   ¦       datetime.php
+            ¦   ¦       dir.php
+            ¦   ¦       eio.php
+            ¦   ¦       errorfunc.php
+            ¦   ¦       exec.php
+            ¦   ¦       fileinfo.php
+            ¦   ¦       filesystem.php
+            ¦   ¦       filter.php
+            ¦   ¦       fpm.php
+            ¦   ¦       ftp.php
+            ¦   ¦       funchand.php
+            ¦   ¦       functionsList.php
+            ¦   ¦       gettext.php
+            ¦   ¦       gmp.php
+            ¦   ¦       gnupg.php
+            ¦   ¦       hash.php
+            ¦   ¦       ibase.php
+            ¦   ¦       ibmDb2.php
+            ¦   ¦       iconv.php
+            ¦   ¦       image.php
+            ¦   ¦       imap.php
+            ¦   ¦       info.php
+            ¦   ¦       inotify.php
+            ¦   ¦       json.php
+            ¦   ¦       ldap.php
+            ¦   ¦       libxml.php
+            ¦   ¦       lzf.php
+            ¦   ¦       mailparse.php
+            ¦   ¦       mbstring.php
+            ¦   ¦       misc.php
+            ¦   ¦       mysql.php
+            ¦   ¦       mysqli.php
+            ¦   ¦       network.php
+            ¦   ¦       oci8.php
+            ¦   ¦       opcache.php
+            ¦   ¦       openssl.php
+            ¦   ¦       outcontrol.php
+            ¦   ¦       pcntl.php
+            ¦   ¦       pcre.php
+            ¦   ¦       pgsql.php
+            ¦   ¦       posix.php
+            ¦   ¦       ps.php
+            ¦   ¦       pspell.php
+            ¦   ¦       readline.php
+            ¦   ¦       rector-migrate.php
+            ¦   ¦       rnp.php
+            ¦   ¦       rpminfo.php
+            ¦   ¦       rrd.php
+            ¦   ¦       sem.php
+            ¦   ¦       session.php
+            ¦   ¦       shmop.php
+            ¦   ¦       sockets.php
+            ¦   ¦       sodium.php
+            ¦   ¦       solr.php
+            ¦   ¦       spl.php
+            ¦   ¦       sqlsrv.php
+            ¦   ¦       ssdeep.php
+            ¦   ¦       ssh2.php
+            ¦   ¦       stream.php
+            ¦   ¦       strings.php
+            ¦   ¦       swoole.php
+            ¦   ¦       uodbc.php
+            ¦   ¦       uopz.php
+            ¦   ¦       url.php
+            ¦   ¦       var.php
+            ¦   ¦       xdiff.php
+            ¦   ¦       xml.php
+            ¦   ¦       xmlrpc.php
+            ¦   ¦       yaml.php
+            ¦   ¦       yaz.php
+            ¦   ¦       zip.php
+            ¦   ¦       zlib.php
+            ¦   ¦       
+            ¦   +---Exceptions
+            ¦           .gitkeep
+            ¦           ApacheException.php
+            ¦           ApcuException.php
+            ¦           ArrayException.php
+            ¦           Bzip2Exception.php
+            ¦           CalendarException.php
+            ¦           ClassobjException.php
+            ¦           ComException.php
+            ¦           CubridException.php
+            ¦           DatetimeException.php
+            ¦           DirException.php
+            ¦           EioException.php
+            ¦           ErrorfuncException.php
+            ¦           ExecException.php
+            ¦           FileinfoException.php
+            ¦           FilesystemException.php
+            ¦           FilterException.php
+            ¦           FpmException.php
+            ¦           FtpException.php
+            ¦           FunchandException.php
+            ¦           GettextException.php
+            ¦           GmpException.php
+            ¦           GnupgException.php
+            ¦           HashException.php
+            ¦           IbaseException.php
+            ¦           IbmDb2Exception.php
+            ¦           IconvException.php
+            ¦           ImageException.php
+            ¦           ImapException.php
+            ¦           InfoException.php
+            ¦           InotifyException.php
+            ¦           LdapException.php
+            ¦           LibxmlException.php
+            ¦           LzfException.php
+            ¦           MailparseException.php
+            ¦           MbstringException.php
+            ¦           MiscException.php
+            ¦           MysqlException.php
+            ¦           MysqliException.php
+            ¦           NetworkException.php
+            ¦           Oci8Exception.php
+            ¦           OpcacheException.php
+            ¦           OutcontrolException.php
+            ¦           PcntlException.php
+            ¦           PgsqlException.php
+            ¦           PosixException.php
+            ¦           PsException.php
+            ¦           PspellException.php
+            ¦           ReadlineException.php
+            ¦           RnpException.php
+            ¦           RpminfoException.php
+            ¦           RrdException.php
+            ¦           SemException.php
+            ¦           SessionException.php
+            ¦           ShmopException.php
+            ¦           SocketsException.php
+            ¦           SodiumException.php
+            ¦           SolrException.php
+            ¦           SplException.php
+            ¦           SqlsrvException.php
+            ¦           SsdeepException.php
+            ¦           Ssh2Exception.php
+            ¦           StreamException.php
+            ¦           StringsException.php
+            ¦           SwooleException.php
+            ¦           UodbcException.php
+            ¦           UopzException.php
+            ¦           UrlException.php
+            ¦           VarException.php
+            ¦           XdiffException.php
+            ¦           XmlException.php
+            ¦           XmlrpcException.php
+            ¦           YamlException.php
+            ¦           YazException.php
+            ¦           ZipException.php
+            ¦           ZlibException.php
+            ¦           
+            +---lib
+                ¦   DateTime.php
+                ¦   DateTimeImmutable.php
+                ¦   special_cases.php
+                ¦   
+                +---Exceptions
+                        CurlException.php
+                        JsonException.php
+                        OpensslException.php
+                        PcreException.php
+                        SafeExceptionInterface.php
+                        SimplexmlException.php
+                        

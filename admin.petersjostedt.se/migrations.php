@@ -29,7 +29,7 @@ $messageType = '';
 
 // Hantera POST-requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!Session::validateCsrf($_POST['csrf_token'] ?? '')) {
+    if (!Session::verifyCsrfToken($_POST['csrf_token'] ?? '')) {
         $message = t('error.csrf_invalid');
         $messageType = 'error';
     } else {

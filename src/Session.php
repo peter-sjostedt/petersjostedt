@@ -240,6 +240,14 @@ class Session
     }
 
     /**
+     * Alias för verifyCsrfToken (för kompatibilitet)
+     */
+    public static function validateCsrf(?string $token): bool
+    {
+        return self::verifyCsrfToken($token);
+    }
+
+    /**
      * Verifiera CSRF-token från POST-request
      * Kastar exception om ogiltig
      */

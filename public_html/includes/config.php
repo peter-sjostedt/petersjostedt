@@ -54,3 +54,6 @@ require_once __DIR__ . '/../../src/Language.php';
 require_once __DIR__ . '/../../src/Mailer.php';
 require_once __DIR__ . '/../../src/Backup.php';
 require_once __DIR__ . '/../../src/Migration.php';
+require_once __DIR__ . '/../../src/FileUpload.php';
+require_once __DIR__ . '/../../src/ImageUpload.php';
+require_once __DIR__ . '/../../src/FileServe.php';
