@@ -9,7 +9,11 @@
       "Bash(grep:*)",
       "Bash(php database/migrate.php:*)",
       "Bash(git push:*)",
-      "Bash(start http://localhost/petersjostedt/test-file-upload.php)"
+      "Bash(start http://localhost/petersjostedt/test-file-upload.php)",
+      "Bash(wc:*)",
+      "Bash(find:*)",
+      "Bash(php:*)",
+      "Bash(git reset:*)"
     ]
   }
 }

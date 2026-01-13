@@ -45,6 +45,50 @@ body {
     color: #fff;
 }
 
+/* Menu groups */
+.menu-group {
+    margin-bottom: 0.5rem;
+}
+
+.menu-group-header {
+    padding: 1rem 1.5rem;
+    color: #64b5f6;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    user-select: none;
+}
+
+.menu-group-header:hover {
+    background: #0f3460;
+    color: #fff;
+}
+
+.menu-group-header::after {
+    content: ' ▼';
+    float: right;
+    transition: transform 0.3s;
+    font-size: 0.8rem;
+}
+
+.menu-group.collapsed .menu-group-header::after {
+    transform: rotate(-90deg);
+}
+
+.menu-group-items {
+    overflow: hidden;
+    max-height: 500px;
+    transition: max-height 0.3s ease-out;
+}
+
+.menu-group.collapsed .menu-group-items {
+    max-height: 0;
+}
+
+.menu-group-items a {
+    padding-left: 2.5rem;
+}
+
 /* Språkväljare */
 .lang-switcher {
     padding: 1rem 1.5rem;
@@ -161,9 +205,87 @@ th, td {
     padding: 0.75rem;
     text-align: left;
     border-bottom: 1px solid #0f3460;
+    font-size: 1rem;
+    font-weight: normal;
 }
 
-th { color: #aaa; }
+th {
+    color: #aaa;
+}
+
+/* Truncate long text in tables */
+.truncate {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+}
+
+.truncate:hover {
+    color: #16c79a;
+}
+
+/* Log table specific styling */
+td.log-action {
+    max-width: 300px;
+}
+
+/* First column (time) - fixed width */
+table td:first-child,
+table th:first-child {
+    width: 180px;
+    white-space: nowrap;
+}
+
+/* Modal - DEPRECATED: Nu används modal.css istället */
+/*
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: #1a1a2e;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #aaa;
+    background: none;
+    border: none;
+}
+
+.modal-close:hover {
+    color: #e94560;
+}
+*/
 
 /* Forms */
 .form-row {
@@ -185,6 +307,7 @@ input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="number"],
+input[type="tel"],
 textarea,
 select {
     width: 100%;
@@ -255,9 +378,27 @@ select:focus {
 .btn-danger { background: #dc3545; }
 .btn-danger:hover { background: #c82333; }
 
+.btn-cancel {
+    background: #6c757d;
+    color: #fff;
+}
+.btn-cancel:hover { background: #5a6268; }
+
 .btn-small {
     padding: 0.4rem 0.75rem;
     font-size: 0.875rem;
+    min-width: 90px;
+}
+
+.btn-icon {
+    padding: 0;
+    min-width: unset;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
 }
 
 .actions {

@@ -148,13 +148,6 @@ const Modal = (function() {
                 });
             }
 
-            // Sätt bredd om specificerat
-            if (options.width) {
-                container.style.maxWidth = options.width;
-            } else {
-                container.style.maxWidth = '';
-            }
-
             // Visa modal
             overlay.classList.add('active');
 

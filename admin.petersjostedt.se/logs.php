@@ -30,6 +30,8 @@ $page = max(1, (int) ($_GET['page'] ?? 1));
 $perPage = 50;
 
 // Hämta loggar baserat på filter
+$allLogs = $logger->getRecent(500);
+
 switch ($filter) {
     case 'security':
         $logs = $logger->getSecurityAlerts(500);
@@ -37,11 +39,25 @@ switch ($filter) {
     case 'logins':
         $logs = $logger->getByAction('LOGIN', 500);
         break;
+    case 'failed':
+        $logs = $logger->getByAction('LOGIN_FAILED', 500);
+        break;
     case 'errors':
         $logs = $logger->getByAction('ERROR', 500);
         break;
+    case 'other':
+        // Filtrera bort de vanliga typerna
+        $logs = array_filter($allLogs, function($log) {
+            $action = $log['action'];
+            return strpos($action, 'LOGIN_FAILED') === false &&
+                   strpos($action, 'LOGIN') === false &&
+                   strpos($action, 'SECURITY') === false &&
+                   strpos($action, 'ERROR') === false;
+        });
+        $logs = array_values($logs);
+        break;
     default:
-        $logs = $logger->getRecent(500);
+        $logs = $allLogs;
 }
 
 // Sök i loggar
@@ -70,6 +86,8 @@ $stats = $logger->getStats();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= t('admin.nav.logs') ?> - <?= t('admin.title.prefix') ?></title>
     <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <script src="js/modal.js"></script>
     <script src="js/admin.js" defer></script>
 </head>
 <body>
@@ -101,7 +119,9 @@ $stats = $logger->getStats();
             <a href="?filter=all" class="filter-btn <?php echo $filter === 'all' ? 'active' : ''; ?>"><?= t('filter.all') ?></a>
             <a href="?filter=security" class="filter-btn <?php echo $filter === 'security' ? 'active' : ''; ?>"><?= t('filter.security') ?></a>
             <a href="?filter=logins" class="filter-btn <?php echo $filter === 'logins' ? 'active' : ''; ?>"><?= t('filter.logins') ?></a>
+            <a href="?filter=failed" class="filter-btn <?php echo $filter === 'failed' ? 'active' : ''; ?>"><?= t('filter.failed') ?></a>
             <a href="?filter=errors" class="filter-btn <?php echo $filter === 'errors' ? 'active' : ''; ?>"><?= t('filter.errors') ?></a>
+            <a href="?filter=other" class="filter-btn <?php echo $filter === 'other' ? 'active' : ''; ?>"><?= t('filter.other') ?></a>
 
             <form method="GET" class="search-box" style="margin-left:auto;">
                 <input type="hidden" name="filter" value="<?php echo htmlspecialchars($filter); ?>">
@@ -133,7 +153,16 @@ $stats = $logger->getStats();
                     <tr>
                         <td><?php echo date('Y-m-d H:i:s', strtotime($log['created_at'])); ?></td>
                         <td><?php echo htmlspecialchars($log['name'] ?? $log['email'] ?? '-'); ?></td>
-                        <td class="log-action <?php echo $actionClass; ?>"><?php echo htmlspecialchars($log['action']); ?></td>
+                        <td class="log-action <?php echo $actionClass; ?>">
+                            <span class="truncate"
+                                  data-time="<?php echo date('Y-m-d H:i:s', strtotime($log['created_at'])); ?>"
+                                  data-user="<?php echo htmlspecialchars($log['name'] ?? $log['email'] ?? '-'); ?>"
+                                  data-event="<?php echo htmlspecialchars($log['action']); ?>"
+                                  data-ip="<?php echo htmlspecialchars($log['ip_address']); ?>"
+                                  data-class="<?php echo $actionClass; ?>">
+                                <?php echo htmlspecialchars($log['action']); ?>
+                            </span>
+                        </td>
                         <td><?php echo htmlspecialchars($log['ip_address']); ?></td>
                     </tr>
                     <?php endforeach; ?>

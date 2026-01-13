@@ -57,3 +57,14 @@ require_once __DIR__ . '/../../src/Migration.php';
 require_once __DIR__ . '/../../src/FileUpload.php';
 require_once __DIR__ . '/../../src/ImageUpload.php';
 require_once __DIR__ . '/../../src/FileServe.php';
+
+/**
+ * Helper-funktion för att generera URL till assets
+ * Fungerar oavsett om filen körs från public_html eller admin.petersjostedt.se
+ */
+function asset_url(string $path): string {
+    global $appConfig;
+    $baseUrl = rtrim($appConfig['url'], '/');
+    $path = ltrim($path, '/');
+    return $baseUrl . '/' . $path;
+}

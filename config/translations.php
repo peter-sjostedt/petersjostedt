@@ -60,7 +60,9 @@ return [
     'filter.all' => ['sv' => 'Alla', 'en' => 'All'],
     'filter.security' => ['sv' => 'Säkerhet', 'en' => 'Security'],
     'filter.logins' => ['sv' => 'Inloggningar', 'en' => 'Logins'],
+    'filter.failed' => ['sv' => 'Misslyckade', 'en' => 'Failed'],
     'filter.errors' => ['sv' => 'Fel', 'en' => 'Errors'],
+    'filter.other' => ['sv' => 'Övrigt', 'en' => 'Other'],
 
     // === ADMIN - Navigation ===
     'admin.nav.dashboard' => ['sv' => 'Dashboard', 'en' => 'Dashboard'],
@@ -69,6 +71,11 @@ return [
     'admin.nav.logs' => ['sv' => 'Loggar', 'en' => 'Logs'],
     'admin.nav.sessions' => ['sv' => 'Sessioner', 'en' => 'Sessions'],
     'admin.nav.view_site' => ['sv' => 'Visa sidan', 'en' => 'View site'],
+
+    // Menu groups
+    'admin.nav.group.content' => ['sv' => 'Innehåll', 'en' => 'Content'],
+    'admin.nav.group.system' => ['sv' => 'System', 'en' => 'System'],
+    'admin.nav.group.data' => ['sv' => 'Data', 'en' => 'Data'],
 
     // === ADMIN - Titles ===
     'admin.title.prefix' => ['sv' => 'Admin', 'en' => 'Admin'],
@@ -395,6 +402,119 @@ return [
     'admin.files.modal.rename.prompt' => ['sv' => 'Ange nytt namn för filen:', 'en' => 'Enter new name for the file:'],
     'admin.files.modal.rename.placeholder' => ['sv' => 'Nytt filnamn', 'en' => 'New filename'],
     'admin.files.modal.rename.help' => ['sv' => 'Filändelsen kommer att behållas automatiskt om du inte anger en ny.', 'en' => 'The file extension will be kept automatically if you don\'t specify a new one.'],
+
+    // === ADMIN - Organizations ===
+    'admin.organizations.title' => ['sv' => 'Organisationer', 'en' => 'Organizations'],
+    'admin.organizations.heading' => ['sv' => 'Organisationshantering', 'en' => 'Organization Management'],
+    'admin.organizations.nav' => ['sv' => 'Organisationer', 'en' => 'Organizations'],
+    'admin.organizations.description' => ['sv' => 'Hantera organisationer som använder Hospitex RFID-systemet', 'en' => 'Manage organizations using the Hospitex RFID system'],
+
+    // Stats
+    'admin.organizations.stats.total' => ['sv' => 'Totalt antal organisationer', 'en' => 'Total organizations'],
+    'admin.organizations.stats.active' => ['sv' => 'Aktiva', 'en' => 'Active'],
+    'admin.organizations.stats.system' => ['sv' => 'System', 'en' => 'System'],
+    'admin.organizations.stats.customers' => ['sv' => 'Kunder', 'en' => 'Customers'],
+
+    // Table
+    'admin.organizations.table.id' => ['sv' => 'Org-nummer', 'en' => 'Org number'],
+    'admin.organizations.table.name' => ['sv' => 'Namn', 'en' => 'Name'],
+    'admin.organizations.table.type' => ['sv' => 'Typ', 'en' => 'Type'],
+    'admin.organizations.table.contact' => ['sv' => 'Kontakt', 'en' => 'Contact'],
+    'admin.organizations.table.status' => ['sv' => 'Status', 'en' => 'Status'],
+    'admin.organizations.table.created' => ['sv' => 'Skapad', 'en' => 'Created'],
+    'admin.organizations.table.actions' => ['sv' => 'Åtgärder', 'en' => 'Actions'],
+
+    // Organization types
+    'admin.organizations.type.system' => ['sv' => 'System', 'en' => 'System'],
+    'admin.organizations.type.customer' => ['sv' => 'Kund', 'en' => 'Customer'],
+
+    // Status
+    'admin.organizations.status.active' => ['sv' => 'Aktiv', 'en' => 'Active'],
+    'admin.organizations.status.inactive' => ['sv' => 'Inaktiv', 'en' => 'Inactive'],
+
+    // Actions
+    'admin.organizations.action.create' => ['sv' => 'Skapa organisation', 'en' => 'Create organization'],
+    'admin.organizations.action.edit' => ['sv' => 'Redigera', 'en' => 'Edit'],
+    'admin.organizations.action.delete' => ['sv' => 'Radera', 'en' => 'Delete'],
+    'admin.organizations.action.view_units' => ['sv' => 'Visa enheter', 'en' => 'View units'],
+
+    // Form
+    'admin.organizations.form.id' => ['sv' => 'Organisationsnummer', 'en' => 'Organization number'],
+    'admin.organizations.form.id_help' => ['sv' => 'Format: SE556123-4567 (landskod + organisationsnummer)', 'en' => 'Format: SE556123-4567 (country code + org number)'],
+    'admin.organizations.form.name' => ['sv' => 'Namn', 'en' => 'Name'],
+    'admin.organizations.form.type' => ['sv' => 'Organisationstyp', 'en' => 'Organization type'],
+    'admin.organizations.form.article_schema' => ['sv' => 'Artikelattribut', 'en' => 'Article attributes'],
+    'admin.organizations.form.article_schema_help' => ['sv' => 'Fält som beskriver organisationens artiklar', 'en' => 'Fields that describe organization articles'],
+    'admin.organizations.form.article_schema_add' => ['sv' => 'Lägg till fält', 'en' => 'Add field'],
+    'admin.organizations.form.article_schema_placeholder' => ['sv' => 'Fältnamn', 'en' => 'Field name'],
+    'admin.organizations.form.article_schema_remove' => ['sv' => 'Ta bort', 'en' => 'Remove'],
+    'admin.organizations.form.address' => ['sv' => 'Adress', 'en' => 'Address'],
+    'admin.organizations.form.postal_code' => ['sv' => 'Postnummer', 'en' => 'Postal code'],
+    'admin.organizations.form.city' => ['sv' => 'Stad', 'en' => 'City'],
+    'admin.organizations.form.country' => ['sv' => 'Land', 'en' => 'Country'],
+    'admin.organizations.form.phone' => ['sv' => 'Telefon', 'en' => 'Phone'],
+    'admin.organizations.form.email' => ['sv' => 'E-post', 'en' => 'Email'],
+    'admin.organizations.form.is_active' => ['sv' => 'Aktiv', 'en' => 'Active'],
+
+    // Messages
+    'admin.organizations.message.created' => ['sv' => 'Organisation skapad', 'en' => 'Organization created'],
+    'admin.organizations.message.updated' => ['sv' => 'Organisation uppdaterad', 'en' => 'Organization updated'],
+    'admin.organizations.message.deleted' => ['sv' => 'Organisation raderad', 'en' => 'Organization deleted'],
+    'admin.organizations.message.not_found' => ['sv' => 'Organisation hittades inte', 'en' => 'Organization not found'],
+    'admin.organizations.message.cannot_delete_system' => ['sv' => 'Systemorganisationen kan inte raderas', 'en' => 'System organization cannot be deleted'],
+    'admin.organizations.message.id_exists' => ['sv' => 'Organisationsnumret finns redan', 'en' => 'Organization number already exists'],
+
+    // Modal
+    'admin.organizations.modal.create.title' => ['sv' => 'Skapa ny organisation', 'en' => 'Create new organization'],
+    'admin.organizations.modal.edit.title' => ['sv' => 'Redigera organisation', 'en' => 'Edit organization'],
+    'admin.organizations.modal.delete.title' => ['sv' => 'Radera organisation', 'en' => 'Delete organization'],
+    'admin.organizations.modal.delete.message' => ['sv' => 'Är du säker på att du vill radera <strong>{name}</strong>?', 'en' => 'Are you sure you want to delete <strong>{name}</strong>?'],
+    'admin.organizations.modal.delete.warning' => ['sv' => 'Alla enheter och data som tillhör denna organisation kommer också att raderas. Detta kan inte ångras.', 'en' => 'All units and data belonging to this organization will also be deleted. This cannot be undone.'],
+
+    // Units
+    'admin.units.nav' => ['sv' => 'Enheter', 'en' => 'Units'],
+    'admin.units.title' => ['sv' => 'Enheter för {org}', 'en' => 'Units for {org}'],
+    'admin.units.back_to_organizations' => ['sv' => 'Tillbaka till organisationer', 'en' => 'Back to organizations'],
+    'admin.units.no_units' => ['sv' => 'Inga enheter finns ännu', 'en' => 'No units exist yet'],
+    'admin.units.create' => ['sv' => 'Skapa enhet', 'en' => 'Create unit'],
+
+    // Units table
+    'admin.units.table.name' => ['sv' => 'Namn', 'en' => 'Name'],
+    'admin.units.table.api_key' => ['sv' => 'API-nyckel', 'en' => 'API key'],
+    'admin.units.table.is_active' => ['sv' => 'Aktiv', 'en' => 'Active'],
+    'admin.units.table.last_login' => ['sv' => 'Senaste inloggning', 'en' => 'Last login'],
+    'admin.units.table.created' => ['sv' => 'Skapad', 'en' => 'Created'],
+    'admin.units.table.actions' => ['sv' => 'Åtgärder', 'en' => 'Actions'],
+
+    // Units form
+    'admin.units.form.name' => ['sv' => 'Namn', 'en' => 'Name'],
+    'admin.units.form.name_help' => ['sv' => 'Namn på enheten/avdelningen', 'en' => 'Name of the unit/department'],
+    'admin.units.form.password' => ['sv' => 'Lösenord', 'en' => 'Password'],
+    'admin.units.form.password_help' => ['sv' => 'Minst 8 tecken', 'en' => 'At least 8 characters'],
+    'admin.units.form.password_leave_blank' => ['sv' => 'Lämna tomt för att behålla nuvarande', 'en' => 'Leave blank to keep current'],
+    'admin.units.form.api_key' => ['sv' => 'API-nyckel', 'en' => 'API key'],
+    'admin.units.form.api_key_help' => ['sv' => 'Används för systemintegration och skannrar', 'en' => 'Used for system integration and scanners'],
+    'admin.units.form.generate_api_key' => ['sv' => 'Generera ny', 'en' => 'Generate new'],
+    'admin.units.form.copy_api_key' => ['sv' => 'Kopiera API-nyckel', 'en' => 'Copy API key'],
+    'admin.units.form.generate_new_api_key' => ['sv' => 'Generera ny API-nyckel', 'en' => 'Generate new API key'],
+    'admin.units.form.is_active' => ['sv' => 'Aktiv', 'en' => 'Active'],
+
+    // Units actions
+    'admin.units.action.edit' => ['sv' => 'Redigera', 'en' => 'Edit'],
+    'admin.units.action.delete' => ['sv' => 'Radera', 'en' => 'Delete'],
+
+    // Units messages
+    'admin.units.message.created' => ['sv' => 'Enheten har skapats', 'en' => 'Unit has been created'],
+    'admin.units.message.updated' => ['sv' => 'Enheten har uppdaterats', 'en' => 'Unit has been updated'],
+    'admin.units.message.deleted' => ['sv' => 'Enheten har raderats', 'en' => 'Unit has been deleted'],
+    'admin.units.message.error' => ['sv' => 'Ett fel uppstod', 'en' => 'An error occurred'],
+
+    // Units modal
+    'admin.units.modal.create.title' => ['sv' => 'Skapa ny enhet', 'en' => 'Create new unit'],
+    'admin.units.modal.edit.title' => ['sv' => 'Redigera enhet', 'en' => 'Edit unit'],
+    'admin.units.modal.delete.title' => ['sv' => 'Radera enhet', 'en' => 'Delete unit'],
+    'admin.units.modal.delete.message' => ['sv' => 'Är du säker på att du vill radera enheten <strong>{name}</strong>?', 'en' => 'Are you sure you want to delete unit <strong>{name}</strong>?'],
+    'admin.units.modal.delete.warning' => ['sv' => 'Detta kan inte ångras.', 'en' => 'This cannot be undone.'],
 
     ];
 
