@@ -42,3 +42,6 @@ sessions/
 *.tmp
 *.temp
 *.cache
+
+# Referensimplementationer
+hospitex/

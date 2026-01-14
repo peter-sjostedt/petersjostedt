@@ -98,13 +98,13 @@ class Session
      */
     private static function validateSession(): void
     {
-        $currentIp = $_SERVER['REMOTE_ADDR'] ?? '';
         $currentUserAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
 
-        // Kontrollera User-Agent
+        // Kontrollera User-Agent - uppdatera om den ändrats (webbläsaruppdatering etc)
         if (isset($_SESSION['_user_agent']) && $_SESSION['_user_agent'] !== $currentUserAgent) {
-            self::destroy();
-            throw new Exception('Session ogiltig: User-Agent ändrad');
+            // Logga varning men tillåt sessionen fortsätta
+            error_log('Session User-Agent ändrad för session ' . session_id());
+            $_SESSION['_user_agent'] = $currentUserAgent;
         }
     }
 
@@ -445,6 +445,88 @@ class Session
     public static function requireAdmin(string $redirectUrl = '/login.php'): void
     {
         self::requireRole('admin', $redirectUrl);
+    }
+
+    /**
+     * Kräv org_admin-roll (organisation admin)
+     */
+    public static function requireOrgAdmin(string $redirectUrl = '/login.php'): void
+    {
+        self::requireRole('org_admin', $redirectUrl);
+    }
+
+    /**
+     * Kräv admin ELLER org_admin (någon form av admin)
+     */
+    public static function requireAnyAdmin(string $redirectUrl = '/login.php'): void
+    {
+        self::requireLogin($redirectUrl);
+
+        $userData = self::getUserData();
+        if (!isset($userData['role']) || !in_array($userData['role'], ['admin', 'org_admin'])) {
+            self::flash('error', 'Du har inte behörighet att se denna sida');
+            header('Location: ' . $redirectUrl);
+            exit;
+        }
+    }
+
+    /**
+     * Hämta användarens organisation ID (null för system admin)
+     */
+    public static function getOrganizationId(): ?string
+    {
+        $userData = self::getUserData();
+        return $userData['organization_id'] ?? null;
+    }
+
+    /**
+     * Kontrollera om användare är system admin (inte org_admin)
+     */
+    public static function isSystemAdmin(): bool
+    {
+        $userData = self::getUserData();
+        return isset($userData['role']) && $userData['role'] === 'admin';
+    }
+
+    /**
+     * Kontrollera om användare är org admin
+     */
+    public static function isOrgAdmin(): bool
+    {
+        $userData = self::getUserData();
+        return isset($userData['role']) && $userData['role'] === 'org_admin';
+    }
+
+    /**
+     * Verifiera att användaren har tillgång till en organisation
+     * System admin har tillgång till allt, org_admin endast sin egen organisation
+     */
+    public static function canAccessOrganization(string $organizationId): bool
+    {
+        // System admin har tillgång till allt
+        if (self::isSystemAdmin()) {
+            return true;
+        }
+
+        // Org admin har endast tillgång till sin egen organisation
+        if (self::isOrgAdmin()) {
+            return self::getOrganizationId() === $organizationId;
+        }
+
+        return false;
+    }
+
+    /**
+     * Kräv tillgång till en specifik organisation
+     * Kastar exception eller redirectar om ej behörig
+     */
+    public static function requireOrganizationAccess(string $organizationId, string $redirectUrl = '/admin'): void
+    {
+        if (!self::canAccessOrganization($organizationId)) {
+            self::flash('error', 'Du har inte behörighet att se denna organisations data');
+            header('Location: ' . $redirectUrl);
+            exit;
+        }
     }
 
     /**

@@ -61,6 +61,8 @@
     overflow: hidden;
     transform: scale(0.9) translateY(-20px);
     transition: transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .modal-overlay.active .modal {
@@ -179,12 +181,14 @@
     padding-right: 24px;
 }
 
-/* Modal Body */
+/* Modal Body - styling */
 .modal-body {
-    padding: 0 24px 24px;
+    padding: 20px 24px 24px;
     color: var(--modal-text-muted);
     font-size: 15px;
     line-height: 1.6;
+    overflow-y: auto;
+    flex: 1;
 }
 
 /* Modal Input */

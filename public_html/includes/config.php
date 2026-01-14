@@ -57,6 +57,7 @@ require_once __DIR__ . '/../../src/Migration.php';
 require_once __DIR__ . '/../../src/FileUpload.php';
 require_once __DIR__ . '/../../src/ImageUpload.php';
 require_once __DIR__ . '/../../src/FileServe.php';
+require_once __DIR__ . '/../../src/Organization.php';
 
 /**
  * Helper-funktion för att generera URL till assets

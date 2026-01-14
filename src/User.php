@@ -9,6 +9,7 @@
  * - Ta bort användare
  * - Verifiera lösenord
  * - Rollhantering
+ * - Organisationsfiltrering
  */
 
 class User
@@ -18,6 +19,7 @@ class User
     // Tillgängliga roller (matchar ENUM i databasen)
     public const ROLE_USER = 'user';
     public const ROLE_ADMIN = 'admin';
+    public const ROLE_ORG_ADMIN = 'org_admin';
 
     /**
      * Konstruktor - hämta databasinstans
@@ -34,9 +36,10 @@ class User
      * @param string $password Lösenord (i klartext, hashas automatiskt)
      * @param string $name Användarens namn
      * @param string $role Roll (standard: user)
+     * @param string|null $organizationId Organisation ID (krävs för org_admin)
      * @return int|false Det nya användar-ID:t eller false vid fel
      */
-    public function create(string $email, string $password, string $name, string $role = self::ROLE_USER): int|false
+    public function create(string $email, string $password, string $name, string $role = self::ROLE_USER, ?string $organizationId = null): int|false
     {
         // Validera e-post
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -53,6 +56,11 @@ class User
             return false;
         }
 
+        // org_admin måste ha organization_id
+        if ($role === self::ROLE_ORG_ADMIN && empty($organizationId)) {
+            return false;
+        }
+
         // Hasha lösenordet säkert
         $hashedPassword = password_hash($password, PASSWORD_ARGON2ID, [
             'memory_cost' => 65536,
@@ -61,14 +69,21 @@ class User
         ]);
 
         try {
-            $userId = $this->db->insert('users', [
+            $data = [
                 'email' => $email,
                 'password' => $hashedPassword,
                 'name' => $name,
                 'role' => $role,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
-            ]);
+            ];
+
+            // Lägg till organization_id om det finns
+            if ($organizationId !== null) {
+                $data['organization_id'] = $organizationId;
+            }
+
+            $userId = $this->db->insert('users', $data);
 
             return $userId;
 
@@ -87,7 +102,7 @@ class User
     public function findById(int $id): ?array
     {
         $user = $this->db->fetchOne(
-            "SELECT id, email, name, role, created_at, updated_at FROM users WHERE id = ?",
+            "SELECT id, email, name, role, organization_id, created_at, updated_at FROM users WHERE id = ?",
             [$id]
         );
 
@@ -103,7 +118,7 @@ class User
     public function findByEmail(string $email): ?array
     {
         $user = $this->db->fetchOne(
-            "SELECT id, email, name, role, created_at, updated_at FROM users WHERE email = ?",
+            "SELECT id, email, name, role, organization_id, created_at, updated_at FROM users WHERE email = ?",
             [$email]
         );
 
@@ -129,31 +144,83 @@ class User
      *
      * @param int $limit Max antal (0 = alla)
      * @param int $offset Startposition
+     * @param string|null $organizationId Filtrera på organisation (null = alla)
+     * @param string $sortBy Kolumn att sortera på
+     * @param string $sortOrder ASC eller DESC
      * @return array Lista med användare
      */
-    public function findAll(int $limit = 0, int $offset = 0): array
+    public function findAll(int $limit = 0, int $offset = 0, ?string $organizationId = null, string $sortBy = 'name', string $sortOrder = 'ASC'): array
     {
-        $sql = "SELECT id, email, name, role, created_at, updated_at FROM users ORDER BY created_at DESC";
+        // Validera sorteringskolumn
+        $allowedSort = ['name', 'email', 'role', 'organization_name'];
+        if (!in_array($sortBy, $allowedSort)) {
+            $sortBy = 'name';
+        }
+        $sortOrder = strtoupper($sortOrder) === 'DESC' ? 'DESC' : 'ASC';
+
+        // Mappa organization_name till rätt kolumn
+        $orderColumn = $sortBy === 'organization_name' ? 'o.name' : "u.{$sortBy}";
+
+        $sql = "SELECT u.id, u.email, u.name, u.role, u.organization_id, u.created_at, u.updated_at,
+                       o.name as organization_name
+                FROM users u
+                LEFT JOIN organizations o ON u.organization_id = o.id";
+        $params = [];
+
+        if ($organizationId !== null) {
+            // SYSTEM-organisationen visar användare utan organisation (admins)
+            if ($organizationId === 'SYSTEM') {
+                $sql .= " WHERE u.organization_id IS NULL";
+            } else {
+                $sql .= " WHERE u.organization_id = ?";
+                $params[] = $organizationId;
+            }
+        }
+
+        $sql .= " ORDER BY {$orderColumn} {$sortOrder}";
 
         if ($limit > 0) {
             $sql .= " LIMIT ? OFFSET ?";
-            return $this->db->fetchAll($sql, [$limit, $offset]);
+            $params[] = $limit;
+            $params[] = $offset;
         }
 
-        return $this->db->fetchAll($sql);
+        return $this->db->fetchAll($sql, $params);
     }
 
     /**
      * Hämta användare efter roll
      *
      * @param string $role Roll att filtrera på
+     * @param string|null $organizationId Filtrera på organisation (null = alla)
      * @return array Lista med användare
      */
-    public function findByRole(string $role): array
+    public function findByRole(string $role, ?string $organizationId = null): array
+    {
+        $sql = "SELECT id, email, name, role, organization_id, created_at, updated_at FROM users WHERE role = ?";
+        $params = [$role];
+
+        if ($organizationId !== null) {
+            $sql .= " AND organization_id = ?";
+            $params[] = $organizationId;
+        }
+
+        $sql .= " ORDER BY name";
+
+        return $this->db->fetchAll($sql, $params);
+    }
+
+    /**
+     * Hämta användare för en organisation
+     *
+     * @param string $organizationId Organisation ID
+     * @return array Lista med användare
+     */
+    public function findByOrganization(string $organizationId): array
     {
         return $this->db->fetchAll(
-            "SELECT id, email, name, role, created_at, updated_at FROM users WHERE role = ? ORDER BY name",
-            [$role]
+            "SELECT id, email, name, role, organization_id, created_at, updated_at FROM users WHERE organization_id = ? ORDER BY name",
+            [$organizationId]
         );
     }
 
@@ -161,13 +228,13 @@ class User
      * Uppdatera användaruppgifter
      *
      * @param int $id Användar-ID
-     * @param array $data Data att uppdatera (email, name, role)
+     * @param array $data Data att uppdatera (email, name, role, organization_id)
      * @return bool True om uppdateringen lyckades
      */
     public function update(int $id, array $data): bool
     {
         // Tillåtna fält att uppdatera
-        $allowed = ['email', 'name', 'role'];
+        $allowed = ['email', 'name', 'role', 'organization_id'];
         $updateData = [];
 
         foreach ($allowed as $field) {
@@ -345,10 +412,17 @@ class User
     /**
      * Räkna totalt antal användare
      *
+     * @param string|null $organizationId Filtrera på organisation (null = alla)
      * @return int Antal användare
      */
-    public function count(): int
+    public function count(?string $organizationId = null): int
     {
+        if ($organizationId !== null) {
+            return (int) $this->db->fetchColumn(
+                "SELECT COUNT(*) FROM users WHERE organization_id = ?",
+                [$organizationId]
+            );
+        }
         return (int) $this->db->fetchColumn("SELECT COUNT(*) FROM users");
     }
 
@@ -356,18 +430,24 @@ class User
      * Sök användare
      *
      * @param string $query Sökterm
+     * @param string|null $organizationId Filtrera på organisation (null = alla)
      * @return array Matchande användare
      */
-    public function search(string $query): array
+    public function search(string $query, ?string $organizationId = null): array
     {
         $searchTerm = '%' . $query . '%';
+        $sql = "SELECT id, email, name, role, organization_id, created_at, updated_at
+                FROM users
+                WHERE (name LIKE ? OR email LIKE ?)";
+        $params = [$searchTerm, $searchTerm];
 
-        return $this->db->fetchAll(
-            "SELECT id, email, name, role, created_at, updated_at
-             FROM users
-             WHERE name LIKE ? OR email LIKE ?
-             ORDER BY name",
-            [$searchTerm, $searchTerm]
-        );
+        if ($organizationId !== null) {
+            $sql .= " AND organization_id = ?";
+            $params[] = $organizationId;
+        }
+
+        $sql .= " ORDER BY name";
+
+        return $this->db->fetchAll($sql, $params);
     }
 }

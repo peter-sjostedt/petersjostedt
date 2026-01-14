@@ -29,6 +29,10 @@ return [
     'common.logout' => ['sv' => 'Logga ut', 'en' => 'Log out'],
     'common.welcome' => ['sv' => 'Välkommen', 'en' => 'Welcome'],
     'common.welcome_user' => ['sv' => 'Välkommen {name}!', 'en' => 'Welcome {name}!'],
+    'common.select' => ['sv' => 'Välj', 'en' => 'Select'],
+    'common.download' => ['sv' => 'Ladda ner', 'en' => 'Download'],
+    'common.back' => ['sv' => 'Tillbaka', 'en' => 'Back'],
+    'common.warnings' => ['sv' => 'Varningar', 'en' => 'Warnings'],
 
     // === FIELD - Formulärfält ===
     'field.email' => ['sv' => 'E-post', 'en' => 'Email'],
@@ -37,6 +41,7 @@ return [
     'field.new_password_min_8' => ['sv' => 'Nytt lösenord (minst 8 tecken)', 'en' => 'New password (min 8 characters)'],
     'field.name' => ['sv' => 'Namn', 'en' => 'Name'],
     'field.role' => ['sv' => 'Roll', 'en' => 'Role'],
+    'field.organization' => ['sv' => 'Organisation', 'en' => 'Organization'],
 
     // === ERROR - Felmeddelanden ===
     'error.generic' => ['sv' => 'Ett fel uppstod', 'en' => 'An error occurred'],
@@ -106,7 +111,12 @@ return [
     'admin.users.password_updated' => ['sv' => 'Lösenord uppdaterat!', 'en' => 'Password updated!'],
     'admin.users.password_update_failed' => ['sv' => 'Kunde inte uppdatera lösenord.', 'en' => 'Could not update password.'],
     'admin.users.role_user' => ['sv' => 'Användare', 'en' => 'User'],
-    'admin.users.role_admin' => ['sv' => 'Admin', 'en' => 'Admin'],
+    'admin.users.role_org_admin' => ['sv' => 'Organisationsadmin', 'en' => 'Organization Admin'],
+    'admin.users.role_admin' => ['sv' => 'Systemadmin', 'en' => 'System Admin'],
+    'admin.users.requires_org' => ['sv' => 'Användare måste tillhöra en organisation.', 'en' => 'User must belong to an organization.'],
+    'admin.users.modal.delete.title' => ['sv' => 'Radera användare', 'en' => 'Delete user'],
+    'admin.users.modal.delete.message' => ['sv' => 'Är du säker på att du vill radera användaren <strong>{name}</strong>?', 'en' => 'Are you sure you want to delete user <strong>{name}</strong>?'],
+    'admin.users.show_all' => ['sv' => 'Visa alla användare', 'en' => 'Show all users'],
 
     // === ADMIN - Settings ===
     'admin.settings.saved' => ['sv' => 'Inställningar sparade!', 'en' => 'Settings saved!'],
@@ -427,6 +437,8 @@ return [
     // Organization types
     'admin.organizations.type.system' => ['sv' => 'System', 'en' => 'System'],
     'admin.organizations.type.customer' => ['sv' => 'Kund', 'en' => 'Customer'],
+    'admin.organizations.type.supplier' => ['sv' => 'Producent', 'en' => 'Supplier'],
+    'admin.organizations.type.laundry' => ['sv' => 'Tvätteri', 'en' => 'Laundry'],
 
     // Status
     'admin.organizations.status.active' => ['sv' => 'Aktiv', 'en' => 'Active'],
@@ -436,7 +448,8 @@ return [
     'admin.organizations.action.create' => ['sv' => 'Skapa organisation', 'en' => 'Create organization'],
     'admin.organizations.action.edit' => ['sv' => 'Redigera', 'en' => 'Edit'],
     'admin.organizations.action.delete' => ['sv' => 'Radera', 'en' => 'Delete'],
-    'admin.organizations.action.view_units' => ['sv' => 'Visa enheter', 'en' => 'View units'],
+    'admin.organizations.action.view_users' => ['sv' => 'Användare', 'en' => 'Users'],
+    'admin.organizations.action.view_units' => ['sv' => 'Enheter', 'en' => 'Units'],
 
     // Form
     'admin.organizations.form.id' => ['sv' => 'Organisationsnummer', 'en' => 'Organization number'],
@@ -515,6 +528,77 @@ return [
     'admin.units.modal.delete.title' => ['sv' => 'Radera enhet', 'en' => 'Delete unit'],
     'admin.units.modal.delete.message' => ['sv' => 'Är du säker på att du vill radera enheten <strong>{name}</strong>?', 'en' => 'Are you sure you want to delete unit <strong>{name}</strong>?'],
     'admin.units.modal.delete.warning' => ['sv' => 'Detta kan inte ångras.', 'en' => 'This cannot be undone.'],
+
+    // Partner Portal
+    'partner.nav.rfid_system' => ['sv' => 'RFID-System', 'en' => 'RFID System'],
+    'partner.nav.articles' => ['sv' => 'Artiklar', 'en' => 'Articles'],
+    'partner.nav.rfids' => ['sv' => 'RFID-taggar', 'en' => 'RFID Tags'],
+    'partner.nav.units' => ['sv' => 'Enheter', 'en' => 'Units'],
+    'partner.nav.events' => ['sv' => 'Händelser', 'en' => 'Events'],
+    'partner.nav.settings' => ['sv' => 'Inställningar', 'en' => 'Settings'],
+    'partner.nav.organization' => ['sv' => 'Organisation', 'en' => 'Organization'],
+    'partner.nav.users' => ['sv' => 'Användare', 'en' => 'Users'],
+    'partner.welcome' => ['sv' => 'Välkommen', 'en' => 'Welcome'],
+    'partner.welcome.text' => ['sv' => 'Använd menyn till vänster för att navigera.', 'en' => 'Use the menu on the left to navigate.'],
+
+    // Partner Articles
+    'partner.articles.title' => ['sv' => 'Artiklar', 'en' => 'Articles'],
+    'partner.articles.heading' => ['sv' => 'Artiklar', 'en' => 'Articles'],
+
+    // Table
+    'partner.articles.table.sku' => ['sv' => 'SKU', 'en' => 'SKU'],
+    'partner.articles.table.status' => ['sv' => 'Status', 'en' => 'Status'],
+    'partner.articles.table.created' => ['sv' => 'Skapad', 'en' => 'Created'],
+
+    // Status
+    'partner.articles.status.new' => ['sv' => 'Ny', 'en' => 'New'],
+    'partner.articles.status.used' => ['sv' => 'Används', 'en' => 'In use'],
+    'partner.articles.status.inactive' => ['sv' => 'Inaktiv', 'en' => 'Inactive'],
+
+    // Filter
+    'partner.articles.filter.new' => ['sv' => 'Ny', 'en' => 'New'],
+    'partner.articles.filter.used' => ['sv' => 'Används', 'en' => 'In use'],
+    'partner.articles.filter.inactive' => ['sv' => 'Inaktiv', 'en' => 'Inactive'],
+
+    // List
+    'partner.articles.list.empty' => ['sv' => 'Inga artiklar', 'en' => 'No articles'],
+
+    // Actions
+    'partner.articles.action.create' => ['sv' => 'Ny artikel', 'en' => 'New article'],
+    'partner.articles.action.import' => ['sv' => 'Importera', 'en' => 'Import'],
+    'partner.articles.action.export' => ['sv' => 'Exportera', 'en' => 'Export'],
+
+    // Form
+    'partner.articles.form.sku' => ['sv' => 'Artikelnummer (SKU)', 'en' => 'Article number (SKU)'],
+    'partner.articles.form.sku_auto' => ['sv' => 'Lämna tomt för automatiskt nummer', 'en' => 'Leave empty for auto-generated number'],
+    'partner.articles.form.is_active' => ['sv' => 'Aktiv', 'en' => 'Active'],
+    'partner.articles.form.no_fields' => ['sv' => 'Inga artikelfält har definierats.', 'en' => 'No article fields have been defined.'],
+    'partner.articles.form.no_fields_link' => ['sv' => 'Gå till inställningar', 'en' => 'Go to settings'],
+
+    // Messages
+    'partner.articles.message.created' => ['sv' => 'Artikel skapad', 'en' => 'Article created'],
+    'partner.articles.message.updated' => ['sv' => 'Artikel uppdaterad', 'en' => 'Article updated'],
+    'partner.articles.message.deleted' => ['sv' => 'Artikel raderad', 'en' => 'Article deleted'],
+    'partner.articles.message.sku_exists' => ['sv' => 'Artikelnumret finns redan', 'en' => 'Article number already exists'],
+    'partner.articles.message.has_rfids' => ['sv' => 'Kan inte radera - {count} RFID-taggar är kopplade', 'en' => 'Cannot delete - {count} RFID tags are attached'],
+    'partner.articles.message.in_use' => ['sv' => 'Kan inte radera - artikeln används', 'en' => 'Cannot delete - article is in use'],
+
+    // Modal
+    'partner.articles.modal.create.title' => ['sv' => 'Ny artikel', 'en' => 'New article'],
+    'partner.articles.modal.edit.title' => ['sv' => 'Redigera artikel', 'en' => 'Edit article'],
+    'partner.articles.modal.delete.message' => ['sv' => 'Är du säker på att du vill radera artikeln <strong>{sku}</strong>?', 'en' => 'Are you sure you want to delete the article <strong>{sku}</strong>?'],
+
+    // Import
+    'partner.import.title' => ['sv' => 'Importera artiklar', 'en' => 'Import articles'],
+    'partner.import.upload_title' => ['sv' => 'Ladda upp CSV-fil', 'en' => 'Upload CSV file'],
+    'partner.import.select_file' => ['sv' => 'Välj fil', 'en' => 'Select file'],
+    'partner.import.file_hint' => ['sv' => 'CSV-fil med semikolon eller komma som separator.', 'en' => 'CSV file with semicolon or comma as separator.'],
+    'partner.import.button' => ['sv' => 'Importera', 'en' => 'Import'],
+    'partner.import.expected_columns' => ['sv' => 'Förväntade kolumner', 'en' => 'Expected columns'],
+    'partner.import.columns_intro' => ['sv' => 'Första raden ska innehålla följande rubriker:', 'en' => 'First row should contain these headers:'],
+    'partner.import.sku_hint' => ['sv' => 'lämna tom för auto-generering', 'en' => 'leave empty for auto-generation'],
+    'partner.import.update_hint' => ['sv' => 'Om SKU redan finns uppdateras artikeln, annars skapas en ny.', 'en' => 'If SKU exists the article is updated, otherwise a new one is created.'],
+    'partner.import.success' => ['sv' => 'Import klar! {created} nya artiklar skapade, {updated} uppdaterade.', 'en' => 'Import complete! {created} new articles created, {updated} updated.'],
 
     ];
 
