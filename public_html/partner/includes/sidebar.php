@@ -4,7 +4,7 @@
  * Samma konstruktion som admin-sidebar, eget innehåll
  */
 
-$lang = Language::getInstance();
+$langInstance = Language::getInstance();
 $currentPage = basename($_SERVER['PHP_SELF']);
 $orgId = Session::getOrganizationId();
 
@@ -19,8 +19,8 @@ if (!isset($organization) && $orgId) {
 
     <div class="lang-switcher">
         <select>
-            <?php foreach ($lang->getLanguages() as $code => $info): ?>
-                <option value="<?= $code ?>" <?= $code === $lang->getLanguage() ? 'selected' : '' ?>>
+            <?php foreach ($langInstance->getLanguages() as $code => $info): ?>
+                <option value="<?= $code ?>" <?= $code === $langInstance->getLanguage() ? 'selected' : '' ?>>
                     <?= $info['name'] ?>
                 </option>
             <?php endforeach; ?>
@@ -36,7 +36,14 @@ if (!isset($organization) && $orgId) {
                 <a href="articles.php" class="<?= $currentPage === 'articles.php' ? 'active' : '' ?>">📦 <?= t('partner.nav.articles') ?></a>
                 <a href="rfids.php" class="<?= $currentPage === 'rfids.php' ? 'active' : '' ?>">🏷️ <?= t('partner.nav.rfids') ?></a>
                 <a href="units.php" class="<?= $currentPage === 'units.php' ? 'active' : '' ?>">📡 <?= t('partner.nav.units') ?></a>
-                <a href="events.php" class="<?= $currentPage === 'events.php' ? 'active' : '' ?>">📊 <?= t('partner.nav.events') ?></a>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="menu-group-header">📋 <?= t('partner.nav.events_group') ?></div>
+            <div class="menu-group-items">
+                <a href="templates.php" class="<?= $currentPage === 'templates.php' ? 'active' : '' ?>">📝 <?= t('partner.nav.templates') ?></a>
+                <a href="shipments.php" class="<?= $currentPage === 'shipments.php' ? 'active' : '' ?>">📦 <?= t('partner.nav.shipments') ?></a>
             </div>
         </div>
 
@@ -44,11 +51,11 @@ if (!isset($organization) && $orgId) {
             <div class="menu-group-header">⚙️ <?= t('partner.nav.settings') ?></div>
             <div class="menu-group-items">
                 <a href="settings.php" class="<?= $currentPage === 'settings.php' ? 'active' : '' ?>">🏢 <?= t('partner.nav.organization') ?></a>
+                <a href="relations.php" class="<?= $currentPage === 'relations.php' ? 'active' : '' ?>">🤝 <?= t('partner.nav.relations') ?></a>
                 <a href="users.php" class="<?= $currentPage === 'users.php' ? 'active' : '' ?>">👥 <?= t('partner.nav.users') ?></a>
             </div>
         </div>
 
         <a href="logout.php">🚪 <?= t('common.logout') ?></a>
     </nav>
-    <script src="js/sidebar.js"></script>
 </aside>

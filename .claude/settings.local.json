@@ -13,7 +13,9 @@
       "Bash(wc:*)",
       "Bash(find:*)",
       "Bash(php:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(mysql:*)",
+      "Bash(curl:*)"
     ]
   }
 }

@@ -293,6 +293,9 @@ class Migration
     {
         $files = glob($this->migrationsDir . '/*.sql');
         $migrations = array_map('basename', $files);
+        // Exkludera TEMPLATE.sql
+        $migrations = array_filter($migrations, fn($f) => $f !== 'TEMPLATE.sql');
+        $migrations = array_values($migrations);
         sort($migrations);
         return $migrations;
     }

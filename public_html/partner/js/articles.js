@@ -9,6 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
         createBtn.addEventListener('click', openCreateModal);
     }
 
+    // Import button
+    const importBtn = document.getElementById('importArticleBtn');
+    if (importBtn) {
+        importBtn.addEventListener('click', openImportModal);
+    }
+
     // Edit buttons
     const editButtons = document.querySelectorAll('[data-article-edit]');
     editButtons.forEach(function(btn) {
@@ -254,5 +260,59 @@ function openEditModal(article) {
             });
         }
     }, 100);
+}
+
+function openImportModal() {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const labels = JSON.parse(document.querySelector('meta[name="article-labels"]').getAttribute('content'));
+    const articleFields = JSON.parse(document.querySelector('meta[name="article-fields"]').getAttribute('content') || '[]');
+
+    // Bygg lista över förväntade kolumner
+    let columnsHtml = '<ul>';
+    columnsHtml += `<li><strong>SKU</strong> (${escapeHtml(labels.import_sku_hint)})</li>`;
+    articleFields.forEach(function(field) {
+        columnsHtml += `<li>${escapeHtml(field.label)}</li>`;
+    });
+    columnsHtml += '</ul>';
+
+    const content = `
+        <form method="POST" id="importForm" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="${csrfToken}">
+            <input type="hidden" name="action" value="import">
+
+            <div class="form-group">
+                <label for="modal_csv_file">${escapeHtml(labels.import_select_file)} *</label>
+                <input type="file" id="modal_csv_file" name="csv_file" accept=".csv" required>
+                <small class="form-help">${escapeHtml(labels.import_file_hint)}</small>
+            </div>
+
+            <div class="import-info">
+                <strong>${escapeHtml(labels.import_columns)}:</strong>
+                ${columnsHtml}
+            </div>
+        </form>
+    `;
+
+    Modal.custom('info', labels.modal_import, content, {
+        html: true,
+        hideClose: false,
+        width: '500px',
+        buttons: [
+            { text: labels.cancel, class: 'cancel', value: false },
+            { text: labels.import, class: 'primary', value: 'submit' }
+        ]
+    }).then(function(result) {
+        if (result === 'submit') {
+            const form = document.getElementById('importForm');
+            const fileInput = document.getElementById('modal_csv_file');
+
+            if (form && fileInput && fileInput.files.length > 0) {
+                form.submit();
+            } else if (form) {
+                form.reportValidity();
+                openImportModal();
+            }
+        }
+    });
 }
 

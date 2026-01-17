@@ -80,6 +80,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $status = $migration->status();
 $pendingCount = count(array_filter($status, fn($s) => !$s['executed']));
 $executedCount = count(array_filter($status, fn($s) => $s['executed']));
+// Kontrollera om det finns migrations över batch 1 (baslinjen)
+$maxBatch = max(array_map(fn($s) => $s['batch'] ?? 0, $status) ?: [0]);
+$canRollback = $maxBatch > 1;
 ?>
 <!DOCTYPE html>
 <html lang="<?= Language::getInstance()->getLanguage() ?>">
@@ -87,8 +90,8 @@ $executedCount = count(array_filter($status, fn($s) => $s['executed']));
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= t('admin.migrations.title') ?> - <?= t('admin.title.prefix') ?></title>
-    <link rel="stylesheet" href="css/admin.css">
-    <script src="js/admin.js" defer></script>
+    <link rel="stylesheet" href="<?= versioned('admin/css/admin.css') ?>">
+    <script src="<?= versioned('admin/js/admin.js') ?>" defer></script>
 </head>
 <body>
     <?php include 'includes/sidebar.php'; ?>
@@ -127,7 +130,7 @@ $executedCount = count(array_filter($status, fn($s) => $s['executed']));
         </div>
         <?php endif; ?>
 
-        <?php if ($executedCount > 0): ?>
+        <?php if ($canRollback): ?>
         <div class="card">
             <h2><?= t('admin.migrations.rollback.heading') ?></h2>
             <p><?= t('admin.migrations.rollback.warning') ?></p>
@@ -190,24 +193,6 @@ $executedCount = count(array_filter($status, fn($s) => $s['executed']));
             <?php endif; ?>
         </div>
 
-        <!-- Information -->
-        <div class="card">
-            <h2><?= t('admin.migrations.info.heading') ?></h2>
-
-            <h3><?= t('admin.migrations.info.what.heading') ?></h3>
-            <p><?= t('admin.migrations.info.what.description') ?></p>
-
-            <h3 style="margin-top: 2rem;"><?= t('admin.migrations.info.when.heading') ?></h3>
-            <ul>
-                <li><?= t('admin.migrations.info.when.first_setup') ?></li>
-                <li><?= t('admin.migrations.info.when.after_update') ?></li>
-                <li><?= t('admin.migrations.info.when.new_features') ?></li>
-            </ul>
-
-            <h3 style="margin-top: 2rem;"><?= t('admin.migrations.info.cli.heading') ?></h3>
-            <p><?= t('admin.migrations.info.cli.description') ?></p>
-            <pre>php database/migrate.php</pre>
-        </div>
     </main>
 </body>
 </html>

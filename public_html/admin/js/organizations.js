@@ -18,6 +18,15 @@ document.addEventListener('DOMContentLoaded', function() {
             openEditModal(org);
         });
     });
+
+    // QR buttons
+    const qrButtons = document.querySelectorAll('[data-org-qr]');
+    qrButtons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const orgData = JSON.parse(this.getAttribute('data-org-qr'));
+            showOrgQR(orgData);
+        });
+    });
 });
 
 function openCreateModal() {
@@ -396,4 +405,17 @@ function openEditModal(org) {
             });
         }
     }, 100);
+}
+
+function showOrgQR(org) {
+    QR.show({
+        data: {
+            type: 'rfid_register',
+            org_id: org.id,
+            org_name: org.name
+        },
+        title: org.name,
+        subtitle: 'Org: ' + org.id + '\nTyp: Registrera RFID',
+        filename: 'QR_RFID_Register_' + org.id
+    });
 }

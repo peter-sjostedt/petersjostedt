@@ -49,6 +49,7 @@ class Backup
             $this->backupDir . '/daily',
             $this->backupDir . '/weekly',
             $this->backupDir . '/monthly',
+            $this->backupDir . '/pre_restore',
         ];
 
         foreach ($dirs as $dir) {
@@ -323,7 +324,7 @@ class Backup
     {
         $backups = [];
 
-        $types = $type === 'all' ? ['daily', 'weekly', 'monthly'] : [$type];
+        $types = $type === 'all' ? ['daily', 'weekly', 'monthly', 'pre_restore'] : [$type];
 
         foreach ($types as $t) {
             $dir = $this->backupDir . '/' . $t;
@@ -367,16 +368,28 @@ class Backup
      * Återställ databas från backup
      *
      * @param string $backupPath Sökväg till backup-fil
-     * @return array ['success' => bool, 'error' => string|null]
+     * @return array ['success' => bool, 'error' => string|null, 'pre_restore_backup' => string|null]
      */
     public function restoreBackup(string $backupPath): array
     {
         $startTime = microtime(true);
+        $preRestoreBackup = null;
 
         try {
             // Verifiera att filen finns
             if (!file_exists($backupPath)) {
                 throw new Exception('Backup-filen hittades inte');
+            }
+
+            // Skapa automatisk backup före återställning
+            $preBackupResult = $this->createBackup('pre_restore');
+            if ($preBackupResult['success']) {
+                $preRestoreBackup = $preBackupResult['filename'];
+                $this->logger->info(
+                    'BACKUP_PRE_RESTORE',
+                    Session::getUserId(),
+                    "Automatisk backup före återställning: {$preRestoreBackup}"
+                );
             }
 
             // Dekomprimera
@@ -429,7 +442,8 @@ class Backup
             return [
                 'success' => true,
                 'duration' => $duration,
-                'error' => null
+                'error' => null,
+                'pre_restore_backup' => $preRestoreBackup
             ];
 
         } catch (Exception $e) {
@@ -441,7 +455,8 @@ class Backup
 
             return [
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
+                'pre_restore_backup' => $preRestoreBackup
             ];
         }
     }
@@ -587,6 +602,7 @@ class Backup
             'daily' => count(array_filter($backups, fn($b) => $b['type'] === 'daily')),
             'weekly' => count(array_filter($backups, fn($b) => $b['type'] === 'weekly')),
             'monthly' => count(array_filter($backups, fn($b) => $b['type'] === 'monthly')),
+            'pre_restore' => count(array_filter($backups, fn($b) => $b['type'] === 'pre_restore')),
             'total_size' => array_sum(array_column($backups, 'size')),
             'oldest' => null,
             'newest' => null,

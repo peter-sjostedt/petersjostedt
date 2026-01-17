@@ -721,3 +721,235 @@ INSERT INTO users (organization_id, username, email, password, role) VALUES
 ---
 
 **Total uppskattad utvecklingstid**: 25-35 dagar för fullständigt system
+
+---
+
+# Hospitex RFID-Tracking - Designbeslut
+
+## Organisationer och enheter
+
+**Princip:** En organisation har alltid minst en unit (avdelning/enhet). Skapas ingen manuellt skapas en automatiskt.
+
+**Fördelar:**
+- Events pekar alltid på en unit - inga NULL-checks
+- Enhetliga queries
+- Framtidssäkert om organisationen växer
+
+```
+Litet företag:
+  Organization: "Tvätteri AB"
+    └── Unit: "Tvätteri AB"
+
+Stort företag:
+  Organization: "Sjukhusgruppen"
+    ├── Unit: "Sahlgrenska"
+    ├── Unit: "Östra"
+    └── Unit: "Mölndal"
+```
+
+---
+
+## Förberedelse vs Händelse
+
+**Förberedelse (template):**
+- Skapas i admin
+- Har QR-kod
+- Definierar event_type, unit, target_unit
+- Kan vara engångs (order) eller återanvändbar (tvätt-QR)
+- Ingen RFID-koppling
+- Är inte en händelse i sig
+
+**Händelse (event):**
+- Skapas vid skanning
+- Har alltid RFID involverad
+- Kopplas till förberedelse
+- Har `event_at` (när det skedde)
+- RFID:s kopplas via `rfids_events`
+
+**Exempel - återanvändbar:**
+```
+Förberedelse: "Till tvätt" (avdelning 3 → tvätteri)
+
+Måndag 08:15  → Event #101, 45 RFID
+Tisdag 08:20  → Event #102, 52 RFID
+Onsdag 08:10  → Event #103, 38 RFID
+```
+
+**Exempel - engångs:**
+```
+Förberedelse: Sändning ORD-2025-001
+
+Event #201: Avsändare skannar (skickad)
+Event #202: Mottagare skannar (mottagen) + ägarbyte
+
+Förberedelsen förbrukad.
+```
+
+---
+
+## Händelsetyper
+
+| Event type | Beskrivning | Uppdaterar på rfid |
+|------------|-------------|-------------------|
+| `tagged` | RFID kopplas till artikel | article_id, owner_org_id |
+| `transferred` | Förflyttning | location_unit_id, owner_org_id (vid första leverans) |
+| `washed` | Tvättcykel | wash_count +1 |
+| `repaired` | Lagning | metadata |
+| `inventory` | Inventering | last_event |
+| `scrapped` | Kassering | status = scrapped |
+
+---
+
+## Perspektiv på händelser
+
+Samma fysiska händelse ses olika beroende på perspektiv:
+
+```
+Fysisk verklighet: 50 plagg flyttas från Tvätteri till Sjukhus
+
+Tvätteriet ser:    "Levererat rent till Sahlgrenska"
+Sjukhuset ser:     "Mottaget rent från Tvätteri AB"
+```
+
+Lösning: Modellera verkligheten (from_unit, to_unit), presentera perspektivet i gränssnitt.
+
+---
+
+## Transfer med dubbel skanning
+
+```
+Avsändare skannar → Event med RFID-lista A
+Mottagare skannar → Event med RFID-lista B
+
+Avvikelse: A - B = saknas vid mottagning
+```
+
+---
+
+## Ägande vs fysisk plats
+
+```
+owner_org_id     = Vem som äger (ändras sällan, typiskt bara vid första leverans)
+location_unit_id = Var plagget är just nu (ändras ofta)
+```
+
+**Ägarbyte:**
+- Sker vid första leverans från producent
+- Använder article_mappings för att översätta till mottagarens SKU
+- Sker typiskt bara en gång under livscykeln
+
+**Beslut om kassering/reparation:**
+- Alltid ägarens beslut
+
+---
+
+## Inventering
+
+**Snabb fråga "vad finns på unit X":**
+```sql
+SELECT * FROM rfids WHERE location_unit_id = X
+```
+
+**Avstämning:**
+```
+Förväntat:  SELECT epc FROM rfids WHERE location_unit_id = X
+Skannat:    RFID:s i inventeringseventet
+
+Saknas:     Förväntat - Skannat
+Oväntat:    Skannat - Förväntat
+```
+
+---
+
+## RFID = Plagg (1:1)
+
+I första version: ingen hantering av taggbyten. En RFID representerar ett plagg.
+
+---
+
+## Tvätträknare
+
+`wash_count` på rfids-tabellen, räknas upp vid varje `washed`-event.
+
+---
+
+## Databasstruktur
+
+### event_templates (förberedelser)
+
+```sql
+event_templates:
+  id
+  qr_code
+  event_type
+  unit_id
+  target_unit_id
+  reusable            -- true/false
+  is_active           -- false när engångs är förbrukad
+  metadata
+  created_at
+```
+
+### events
+
+```sql
+events:
+  id
+  template_id         -- koppling till förberedelse
+  event_type
+  unit_id
+  target_unit_id
+  event_at            -- när händelsen inträffade
+  metadata
+  created_at
+```
+
+### rfids_events
+
+```sql
+rfids_events:
+  event_id
+  rfid
+```
+
+### rfids
+
+```sql
+rfids:
+  epc
+  article_id
+  owner_org_id
+  location_unit_id
+  status              -- active, lost, scrapped
+  wash_count
+  first_event_id
+  first_event_at      -- denormaliserat för snabba queries
+  last_event_id
+  last_event_at       -- denormaliserat för inventering/rapporter
+```
+
+### units (tillägg)
+
+```sql
+units:
+  ...
+  last_inventory_at
+  last_inventory_event_id
+```
+
+---
+
+## Avgränsningar (första version)
+
+- Byte av RFID-tagg hanteras ej
+- Butik (retur etc.) prioriteras ej
+- Fokus på: producent, sjukvård/hotell/restaurang, tvätteri
+
+---
+
+## Branschoberoende
+
+Flödet är i princip samma oavsett bransch:
+- Producent → Användare → Tvätteri → Användare (loop)
+- Kassering avslutar livscykeln
+- Tvätteriet äger ofta plaggen, leasar ut till användare

@@ -32,6 +32,7 @@ return [
     'common.select' => ['sv' => 'Välj', 'en' => 'Select'],
     'common.download' => ['sv' => 'Ladda ner', 'en' => 'Download'],
     'common.back' => ['sv' => 'Tillbaka', 'en' => 'Back'],
+    'common.view' => ['sv' => 'Visa', 'en' => 'View'],
     'common.warnings' => ['sv' => 'Varningar', 'en' => 'Warnings'],
 
     // === FIELD - Formulärfält ===
@@ -52,6 +53,7 @@ return [
     'error.invalid_credentials_or_no_admin' => ['sv' => 'Felaktiga inloggningsuppgifter eller saknar admin-behörighet.', 'en' => 'Invalid credentials or missing admin privileges.'],
     'error.all_fields_required' => ['sv' => 'Alla fält måste fyllas i.', 'en' => 'All fields are required.'],
     'error.password_min_length' => ['sv' => 'Lösenordet måste vara minst 8 tecken.', 'en' => 'Password must be at least 8 characters.'],
+    'error.cannot_delete_occurred' => ['sv' => 'Kan inte radera en händelse som redan har inträffat.', 'en' => 'Cannot delete an event that has already occurred.'],
 
     // === CONFIRM - Bekräftelsedialoger ===
     'confirm.are_you_sure' => ['sv' => 'Är du säker?', 'en' => 'Are you sure?'],
@@ -186,6 +188,7 @@ return [
     'admin.backup.stats.daily' => ['sv' => 'Dagliga', 'en' => 'Daily'],
     'admin.backup.stats.weekly' => ['sv' => 'Veckovisa', 'en' => 'Weekly'],
     'admin.backup.stats.monthly' => ['sv' => 'Månatliga', 'en' => 'Monthly'],
+    'admin.backup.stats.pre_restore' => ['sv' => 'Före återställning', 'en' => 'Pre-restore'],
     'admin.backup.stats.total_size' => ['sv' => 'Total storlek', 'en' => 'Total size'],
     'admin.backup.stats.oldest' => ['sv' => 'Äldsta backup', 'en' => 'Oldest backup'],
     'admin.backup.stats.newest' => ['sv' => 'Senaste backup', 'en' => 'Newest backup'],
@@ -200,6 +203,7 @@ return [
     'admin.backup.type.daily' => ['sv' => 'Daglig', 'en' => 'Daily'],
     'admin.backup.type.weekly' => ['sv' => 'Veckovis', 'en' => 'Weekly'],
     'admin.backup.type.monthly' => ['sv' => 'Månatlig', 'en' => 'Monthly'],
+    'admin.backup.type.pre_restore' => ['sv' => 'Före återställning', 'en' => 'Pre-restore'],
 
     // List
     'admin.backup.list.heading' => ['sv' => 'Befintliga backuper', 'en' => 'Existing backups'],
@@ -248,6 +252,7 @@ return [
     'admin.backup.instructions.types.monthly' => ['sv' => 'Behålls i 12 månader', 'en' => 'Kept for 12 months'],
     'admin.backup.instructions.restore.heading' => ['sv' => 'Återställning', 'en' => 'Restoration'],
     'admin.backup.instructions.restore.warning' => ['sv' => 'VARNING: Återställning ersätter ALL data i databasen. Skapa alltid en backup först innan du återställer!', 'en' => 'WARNING: Restoration replaces ALL data in the database. Always create a backup first before restoring!'],
+    'admin.backup.instructions.restore.info' => ['sv' => 'Vid återställning skapas automatiskt en backup av nuvarande data innan återställningen genomförs.', 'en' => 'When restoring, a backup of current data is automatically created before the restoration is performed.'],
 
     // === ERROR - Felsidor ===
     'error.back_home' => ['sv' => 'Tillbaka till startsidan', 'en' => 'Back to homepage'],
@@ -450,6 +455,7 @@ return [
     'admin.organizations.action.delete' => ['sv' => 'Radera', 'en' => 'Delete'],
     'admin.organizations.action.view_users' => ['sv' => 'Användare', 'en' => 'Users'],
     'admin.organizations.action.view_units' => ['sv' => 'Enheter', 'en' => 'Units'],
+    'admin.organizations.action.qr' => ['sv' => 'QR-kod för RFID-registrering', 'en' => 'QR code for RFID registration'],
 
     // Form
     'admin.organizations.form.id' => ['sv' => 'Organisationsnummer', 'en' => 'Organization number'],
@@ -534,7 +540,8 @@ return [
     'partner.nav.articles' => ['sv' => 'Artiklar', 'en' => 'Articles'],
     'partner.nav.rfids' => ['sv' => 'RFID-taggar', 'en' => 'RFID Tags'],
     'partner.nav.units' => ['sv' => 'Enheter', 'en' => 'Units'],
-    'partner.nav.events' => ['sv' => 'Händelser', 'en' => 'Events'],
+    'partner.nav.events_group' => ['sv' => 'Händelser', 'en' => 'Events'],
+    'partner.nav.events' => ['sv' => 'Händelselogg', 'en' => 'Event Log'],
     'partner.nav.settings' => ['sv' => 'Inställningar', 'en' => 'Settings'],
     'partner.nav.organization' => ['sv' => 'Organisation', 'en' => 'Organization'],
     'partner.nav.users' => ['sv' => 'Användare', 'en' => 'Users'],
@@ -594,11 +601,404 @@ return [
     'partner.import.select_file' => ['sv' => 'Välj fil', 'en' => 'Select file'],
     'partner.import.file_hint' => ['sv' => 'CSV-fil med semikolon eller komma som separator.', 'en' => 'CSV file with semicolon or comma as separator.'],
     'partner.import.button' => ['sv' => 'Importera', 'en' => 'Import'],
+    'partner.export.button' => ['sv' => 'Exportera', 'en' => 'Export'],
     'partner.import.expected_columns' => ['sv' => 'Förväntade kolumner', 'en' => 'Expected columns'],
     'partner.import.columns_intro' => ['sv' => 'Första raden ska innehålla följande rubriker:', 'en' => 'First row should contain these headers:'],
     'partner.import.sku_hint' => ['sv' => 'lämna tom för auto-generering', 'en' => 'leave empty for auto-generation'],
     'partner.import.update_hint' => ['sv' => 'Om SKU redan finns uppdateras artikeln, annars skapas en ny.', 'en' => 'If SKU exists the article is updated, otherwise a new one is created.'],
-    'partner.import.success' => ['sv' => 'Import klar! {created} nya artiklar skapade, {updated} uppdaterade.', 'en' => 'Import complete! {created} new articles created, {updated} updated.'],
+    'partner.import.success' => ['sv' => 'Import klar! {created} nya skapade, {updated} uppdaterade.', 'en' => 'Import complete! {created} new created, {updated} updated.'],
+    'partner.import.error.no_file' => ['sv' => 'Ingen fil uppladdad', 'en' => 'No file uploaded'],
+    'partner.import.error.empty_file' => ['sv' => 'Filen innehåller ingen data', 'en' => 'File contains no data'],
+    'partner.import.error.missing_column' => ['sv' => 'Kolumnen "{column}" saknas i filen', 'en' => 'Column "{column}" is missing from file'],
+    'partner.import.error.wrong_file_type_outgoing' => ['sv' => 'Fel filtyp. Filen verkar vara en inleverans-export. Byt till fliken "Inkommande" för att importera den.', 'en' => 'Wrong file type. The file appears to be a delivery export. Switch to the "Incoming" tab to import it.'],
+    'partner.import.error.wrong_file_type_incoming' => ['sv' => 'Fel filtyp. Filen verkar vara en försändelse-export. Byt till fliken "Utgående" för att importera den.', 'en' => 'Wrong file type. The file appears to be a shipment export. Switch to the "Outgoing" tab to import it.'],
+
+    // Partner Shipments (Försändelser - utgående och inkommande med flikar)
+    'partner.nav.shipments' => ['sv' => 'Försändelser', 'en' => 'Shipments'],
+
+    // Page
+    'partner.shipments.title' => ['sv' => 'Försändelser', 'en' => 'Shipments'],
+    'partner.shipments.heading' => ['sv' => 'Försändelser', 'en' => 'Shipments'],
+
+    // Tabs
+    'partner.shipments.tab.outgoing' => ['sv' => 'Utgående', 'en' => 'Outgoing'],
+    'partner.shipments.tab.incoming' => ['sv' => 'Inkommande', 'en' => 'Incoming'],
+
+    // List
+    'partner.shipments.list.empty_outgoing' => ['sv' => 'Inga utgående försändelser', 'en' => 'No outgoing shipments'],
+    'partner.shipments.list.empty_incoming' => ['sv' => 'Inga inkommande försändelser', 'en' => 'No incoming shipments'],
+
+    // Table
+    'partner.shipments.table.qr_code' => ['sv' => 'QR-kod', 'en' => 'QR Code'],
+    'partner.shipments.table.customer' => ['sv' => 'Mottagare', 'en' => 'Customer'],
+    'partner.shipments.table.supplier' => ['sv' => 'Leverantör', 'en' => 'Supplier'],
+    'partner.shipments.table.orders' => ['sv' => 'Ordrar', 'en' => 'Orders'],
+    'partner.shipments.table.status' => ['sv' => 'Status', 'en' => 'Status'],
+    'partner.shipments.table.created' => ['sv' => 'Skapad', 'en' => 'Created'],
+
+    // Form
+    'partner.shipments.form.qr_code' => ['sv' => 'QR-kod', 'en' => 'QR Code'],
+    'partner.shipments.form.customer' => ['sv' => 'Mottagare', 'en' => 'Customer'],
+    'partner.shipments.form.select_customer' => ['sv' => '-- Välj mottagare --', 'en' => '-- Select customer --'],
+    'partner.shipments.form.no_customers' => ['sv' => 'Inga kunder konfigurerade. Lägg till via Relationer.', 'en' => 'No customers configured. Add via Relations.'],
+    'partner.shipments.form.supplier' => ['sv' => 'Leverantör', 'en' => 'Supplier'],
+    'partner.shipments.form.select_supplier' => ['sv' => '-- Välj leverantör --', 'en' => '-- Select supplier --'],
+    'partner.shipments.form.no_suppliers' => ['sv' => 'Inga leverantörer konfigurerade. Lägg till via Relationer.', 'en' => 'No suppliers configured. Add via Relations.'],
+    'partner.shipments.form.sales_order_id' => ['sv' => 'Försäljningsorder', 'en' => 'Sales Order'],
+    'partner.shipments.form.sales_order_id_help' => ['sv' => 'Ditt ordernummer (SO)', 'en' => 'Your order number (SO)'],
+    'partner.shipments.form.purchase_order_id' => ['sv' => 'Inköpsorder', 'en' => 'Purchase Order'],
+    'partner.shipments.form.purchase_order_id_help' => ['sv' => 'Motpartens ordernummer (PO)', 'en' => 'Counterpart order number (PO)'],
+    'partner.shipments.form.from_unit' => ['sv' => 'Från enhet', 'en' => 'From Unit'],
+    'partner.shipments.form.to_unit' => ['sv' => 'Till enhet', 'en' => 'To Unit'],
+    'partner.shipments.form.select_unit' => ['sv' => '-- Välj enhet (valfritt) --', 'en' => '-- Select unit (optional) --'],
+    'partner.shipments.form.notes' => ['sv' => 'Anteckningar', 'en' => 'Notes'],
+
+    // Status
+    'partner.shipments.status.prepared' => ['sv' => 'Förberedd', 'en' => 'Prepared'],
+    'partner.shipments.status.shipped' => ['sv' => 'Skickad', 'en' => 'Shipped'],
+    'partner.shipments.status.received' => ['sv' => 'Mottagen', 'en' => 'Received'],
+    'partner.shipments.status.cancelled' => ['sv' => 'Avbruten', 'en' => 'Cancelled'],
+
+    // Actions
+    'partner.shipments.action.create_outgoing' => ['sv' => 'Ny försändelse', 'en' => 'New shipment'],
+    'partner.shipments.action.create_incoming' => ['sv' => 'Ny inleverans', 'en' => 'New delivery'],
+    'partner.shipments.action.qr' => ['sv' => 'QR-kod', 'en' => 'QR code'],
+
+    // Modal
+    'partner.shipments.modal.create_outgoing' => ['sv' => 'Ny utgående försändelse', 'en' => 'New outgoing shipment'],
+    'partner.shipments.modal.create_incoming' => ['sv' => 'Ny inkommande försändelse', 'en' => 'New incoming shipment'],
+    'partner.shipments.modal.edit' => ['sv' => 'Redigera försändelse', 'en' => 'Edit shipment'],
+    'partner.shipments.modal.delete' => ['sv' => 'Radera försändelse', 'en' => 'Delete shipment'],
+    'partner.shipments.modal.confirm_delete' => ['sv' => 'Vill du verkligen radera denna försändelse?', 'en' => 'Are you sure you want to delete this shipment?'],
+    'partner.shipments.modal.import' => ['sv' => 'Importera försändelser', 'en' => 'Import shipments'],
+
+    // Messages
+    'partner.shipments.message.created' => ['sv' => 'Försändelse {id} har skapats', 'en' => 'Shipment {id} has been created'],
+    'partner.shipments.message.updated' => ['sv' => 'Försändelse uppdaterad', 'en' => 'Shipment updated'],
+    'partner.shipments.message.deleted' => ['sv' => 'Försändelse raderad', 'en' => 'Shipment deleted'],
+    'partner.shipments.message.cancelled' => ['sv' => 'Försändelse avbruten', 'en' => 'Shipment cancelled'],
+
+    // Errors
+    'partner.shipments.error.customer_required' => ['sv' => 'Mottagare måste väljas', 'en' => 'Customer must be selected'],
+    'partner.shipments.error.supplier_required' => ['sv' => 'Leverantör måste väljas', 'en' => 'Supplier must be selected'],
+    'partner.shipments.error.cannot_update_shipped' => ['sv' => 'Kan inte uppdatera skickad försändelse', 'en' => 'Cannot update shipped shipment'],
+    'partner.shipments.error.cannot_delete' => ['sv' => 'Kan endast radera förberedda försändelser', 'en' => 'Can only delete prepared shipments'],
+
+    // QR
+    'partner.shipments.qr.from' => ['sv' => 'Från', 'en' => 'From'],
+    'partner.shipments.qr.to' => ['sv' => 'Till', 'en' => 'To'],
+
+    // Import/Export (legacy support)
+    'partner.shipments.action.import' => ['sv' => 'Importera', 'en' => 'Import'],
+    'partner.shipments.action.export' => ['sv' => 'Exportera', 'en' => 'Export'],
+    'partner.shipments.export.type' => ['sv' => 'Typ', 'en' => 'Type'],
+    'partner.shipments.export.filename_outgoing' => ['sv' => 'forsandelser', 'en' => 'shipments'],
+    'partner.shipments.export.filename_incoming' => ['sv' => 'inleveranser', 'en' => 'deliveries'],
+    'partner.shipments.import.title' => ['sv' => 'Importera försändelser', 'en' => 'Import shipments'],
+    'partner.shipments.import.partner_hint' => ['sv' => 'obligatorisk, namn eller ID', 'en' => 'required, name or ID'],
+    'partner.shipments.import.partner_id_hint' => ['sv' => 'valfritt, prioriteras om angiven', 'en' => 'optional, prioritized if provided'],
+    'partner.shipments.import.unit_id_hint' => ['sv' => 'valfritt, prioriteras om angiven', 'en' => 'optional, prioritized if provided'],
+    'partner.shipments.import.partners_available' => ['sv' => 'Tillgängliga partners', 'en' => 'Available partners'],
+    'partner.shipments.import.units_available' => ['sv' => 'Tillgängliga enheter', 'en' => 'Available units'],
+
+    // Export columns (legacy)
+    'partner.shipment.export.sender_id' => ['sv' => 'Sändar-ID', 'en' => 'Sender ID'],
+    'partner.shipment.export.sender_name' => ['sv' => 'Sändare', 'en' => 'Sender'],
+    'partner.shipment.export.receiver_id' => ['sv' => 'Mottagare-ID', 'en' => 'Receiver ID'],
+    'partner.shipment.export.receiver_name' => ['sv' => 'Mottagare', 'en' => 'Receiver'],
+
+    // Partner Deliveries (Inleveranser = du tar emot)
+    'partner.deliveries.title' => ['sv' => 'Inleveranser', 'en' => 'Deliveries'],
+    'partner.deliveries.heading' => ['sv' => 'Inleveranser', 'en' => 'Deliveries'],
+    'partner.deliveries.list.empty' => ['sv' => 'Inga inleveranser', 'en' => 'No deliveries'],
+
+    // Table
+    'partner.deliveries.table.delivery_id' => ['sv' => 'Inleverans-ID', 'en' => 'Delivery ID'],
+    'partner.deliveries.table.supplier' => ['sv' => 'Leverantör', 'en' => 'Supplier'],
+    'partner.deliveries.table.order' => ['sv' => 'Order', 'en' => 'Order'],
+    'partner.deliveries.table.created' => ['sv' => 'Skapad', 'en' => 'Created'],
+
+    // Form
+    'partner.deliveries.form.delivery_id' => ['sv' => 'Inleverans-ID', 'en' => 'Delivery ID'],
+    'partner.deliveries.form.delivery_id_help' => ['sv' => 'Auto-genererat eller ange eget', 'en' => 'Auto-generated or enter your own'],
+    'partner.deliveries.form.purchase_order_id' => ['sv' => 'Ordernummer', 'en' => 'Order number'],
+    'partner.deliveries.form.purchase_order_id_help' => ['sv' => 'Ditt beställningsnummer (PO)', 'en' => 'Your purchase order number (PO)'],
+    'partner.deliveries.form.supplier_order_id' => ['sv' => 'Leverantörens order', 'en' => 'Supplier order'],
+    'partner.deliveries.form.supplier_order_id_help' => ['sv' => 'Leverantörens orderbekräftelse', 'en' => 'Supplier order confirmation'],
+    'partner.deliveries.form.supplier' => ['sv' => 'Leverantör', 'en' => 'Supplier'],
+    'partner.deliveries.form.select_supplier' => ['sv' => '-- Välj leverantör --', 'en' => '-- Select supplier --'],
+    'partner.deliveries.form.no_suppliers' => ['sv' => 'Inga leverantörer konfigurerade. Lägg till via Relationer.', 'en' => 'No suppliers configured. Add via Relations.'],
+    'partner.deliveries.form.receiver' => ['sv' => 'Mottagare', 'en' => 'Receiver'],
+
+    // Actions
+    'partner.deliveries.action.create' => ['sv' => 'Ny inleverans', 'en' => 'New delivery'],
+    'partner.deliveries.action.edit' => ['sv' => 'Redigera', 'en' => 'Edit'],
+    'partner.deliveries.action.update' => ['sv' => 'Uppdatera', 'en' => 'Update'],
+    'partner.deliveries.action.import' => ['sv' => 'Importera', 'en' => 'Import'],
+    'partner.deliveries.action.export' => ['sv' => 'Exportera', 'en' => 'Export'],
+    'partner.deliveries.action.qr' => ['sv' => 'QR-kod för mottagning', 'en' => 'QR code for receiving'],
+
+    // Modal
+    'partner.deliveries.modal.create.title' => ['sv' => 'Ny inleverans', 'en' => 'New delivery'],
+    'partner.deliveries.modal.edit.title' => ['sv' => 'Redigera inleverans', 'en' => 'Edit delivery'],
+    'partner.deliveries.modal.delete.title' => ['sv' => 'Radera inleverans', 'en' => 'Delete delivery'],
+    'partner.deliveries.modal.confirm_delete' => ['sv' => 'Vill du verkligen radera denna inleverans?', 'en' => 'Are you sure you want to delete this delivery?'],
+
+    // Messages
+    'partner.deliveries.message.created' => ['sv' => 'Inleverans {id} har skapats', 'en' => 'Delivery {id} has been created'],
+    'partner.deliveries.message.updated' => ['sv' => 'Inleverans {id} har uppdaterats', 'en' => 'Delivery {id} has been updated'],
+    'partner.deliveries.message.deleted' => ['sv' => 'Inleverans raderad', 'en' => 'Delivery deleted'],
+
+    // Errors
+    'partner.deliveries.error.delivery_id_required' => ['sv' => 'Inleverans-ID krävs', 'en' => 'Delivery ID is required'],
+    'partner.deliveries.error.supplier_required' => ['sv' => 'Leverantör måste väljas', 'en' => 'Supplier must be selected'],
+
+    // QR
+    'partner.deliveries.qr.from' => ['sv' => 'Från', 'en' => 'From'],
+    'partner.deliveries.qr.to' => ['sv' => 'Till', 'en' => 'To'],
+
+    // Import/Export
+    'partner.deliveries.import.title' => ['sv' => 'Importera inleveranser', 'en' => 'Import deliveries'],
+    'partner.deliveries.import.delivery_id_hint' => ['sv' => 'lämna tom för auto-generering', 'en' => 'leave empty for auto-generation'],
+    'partner.deliveries.import.supplier_hint' => ['sv' => 'obligatorisk, namn eller ID', 'en' => 'required, name or ID'],
+    'partner.deliveries.import.suppliers_available' => ['sv' => 'Tillgängliga leverantörer', 'en' => 'Available suppliers'],
+    'partner.deliveries.export.supplier_id' => ['sv' => 'Leverantör-ID', 'en' => 'Supplier ID'],
+    'partner.deliveries.export.supplier_name' => ['sv' => 'Leverantör', 'en' => 'Supplier'],
+    'partner.deliveries.export.receiver_id' => ['sv' => 'Mottagare-ID', 'en' => 'Receiver ID'],
+    'partner.deliveries.export.receiver_name' => ['sv' => 'Mottagare', 'en' => 'Receiver'],
+
+    // Partner Relations
+    'partner.nav.relations' => ['sv' => 'Relationer', 'en' => 'Relations'],
+    'partner.relations.title' => ['sv' => 'Organisationsrelationer', 'en' => 'Organization Relations'],
+    'partner.relations.heading' => ['sv' => 'Kunder & Leverantörer', 'en' => 'Customers & Suppliers'],
+
+    // Add form
+    'partner.relations.add.title' => ['sv' => 'Lägg till relation', 'en' => 'Add relation'],
+    'partner.relations.form.organization' => ['sv' => 'Organisation', 'en' => 'Organization'],
+    'partner.relations.form.select_org' => ['sv' => '-- Välj organisation --', 'en' => '-- Select organization --'],
+    'partner.relations.form.type' => ['sv' => 'Relationstyp', 'en' => 'Relation type'],
+    'partner.relations.form.select_type' => ['sv' => '-- Välj typ --', 'en' => '-- Select type --'],
+    'partner.relations.type.customer' => ['sv' => 'Kund', 'en' => 'Customer'],
+    'partner.relations.type.supplier' => ['sv' => 'Leverantör', 'en' => 'Supplier'],
+
+    // Lists
+    'partner.relations.customers.title' => ['sv' => 'Kunder', 'en' => 'Customers'],
+    'partner.relations.customers.empty' => ['sv' => 'Inga kunder tillagda ännu', 'en' => 'No customers added yet'],
+    'partner.relations.suppliers.title' => ['sv' => 'Leverantörer', 'en' => 'Suppliers'],
+    'partner.relations.suppliers.empty' => ['sv' => 'Inga leverantörer tillagda ännu', 'en' => 'No suppliers added yet'],
+
+    // Table
+    'partner.relations.table.name' => ['sv' => 'Namn', 'en' => 'Name'],
+    'partner.relations.table.org_id' => ['sv' => 'Org-nummer', 'en' => 'Org number'],
+    'partner.relations.table.status' => ['sv' => 'Status', 'en' => 'Status'],
+    'partner.relations.table.added' => ['sv' => 'Tillagd', 'en' => 'Added'],
+
+    // Status
+    'partner.relations.status.active' => ['sv' => 'Aktiv', 'en' => 'Active'],
+    'partner.relations.status.inactive' => ['sv' => 'Inaktiv', 'en' => 'Inactive'],
+
+    // Actions
+    'partner.relations.action.activate' => ['sv' => 'Aktivera', 'en' => 'Activate'],
+    'partner.relations.action.deactivate' => ['sv' => 'Inaktivera', 'en' => 'Deactivate'],
+    'partner.relations.confirm.delete' => ['sv' => 'Ta bort denna relation?', 'en' => 'Remove this relation?'],
+
+    // Messages
+    'partner.relations.message.added' => ['sv' => '{name} har lagts till', 'en' => '{name} has been added'],
+    'partner.relations.message.deleted' => ['sv' => 'Relationen har tagits bort', 'en' => 'Relation has been removed'],
+    'partner.relations.message.updated' => ['sv' => 'Relationen har uppdaterats', 'en' => 'Relation has been updated'],
+
+    // Errors
+    'partner.relations.error.required_fields' => ['sv' => 'Alla fält måste fyllas i', 'en' => 'All fields are required'],
+    'partner.relations.error.cannot_add_self' => ['sv' => 'Du kan inte lägga till din egen organisation', 'en' => 'You cannot add your own organization'],
+    'partner.relations.error.org_not_found' => ['sv' => 'Organisationen hittades inte', 'en' => 'Organization not found'],
+    'partner.relations.error.already_exists' => ['sv' => 'Relationen finns redan', 'en' => 'Relation already exists'],
+
+    // Tabs
+    'partner.relations.tab.customers' => ['sv' => 'Kunder', 'en' => 'Customers'],
+    'partner.relations.tab.suppliers' => ['sv' => 'Leverantörer', 'en' => 'Suppliers'],
+
+    // Actions
+    'partner.relations.action.add_customer' => ['sv' => 'Lägg till kund', 'en' => 'Add Customer'],
+    'partner.relations.action.add_supplier' => ['sv' => 'Lägg till leverantör', 'en' => 'Add Supplier'],
+
+    // Modals
+    'partner.relations.modal.create_customer' => ['sv' => 'Lägg till kund', 'en' => 'Add Customer'],
+    'partner.relations.modal.create_supplier' => ['sv' => 'Lägg till leverantör', 'en' => 'Add Supplier'],
+    'partner.relations.modal.delete' => ['sv' => 'Ta bort relation', 'en' => 'Remove Relation'],
+    'partner.relations.modal.import' => ['sv' => 'Importera relationer', 'en' => 'Import Relations'],
+
+    // Import
+    'partner.relations.import.org_id_hint' => ['sv' => 'Organisationens ID, t.ex. ORG-0001', 'en' => 'Organization ID, e.g. ORG-0001'],
+    'partner.relations.import.name_hint' => ['sv' => 'Organisationens namn', 'en' => 'Organization name'],
+    'partner.relations.import.status_hint' => ['sv' => 'Aktiv/Inaktiv - uppdateras om relationen redan finns', 'en' => 'Active/Inactive - updates if relation already exists'],
+
+    // Export
+    'partner.relations.export.filename_customers' => ['sv' => 'kunder', 'en' => 'customers'],
+    'partner.relations.export.filename_suppliers' => ['sv' => 'leverantorer', 'en' => 'suppliers'],
+
+    // Partner Events (Händelselogg)
+    'partner.events.title' => ['sv' => 'Händelselogg', 'en' => 'Event Log'],
+    'partner.events.heading' => ['sv' => 'Händelselogg', 'en' => 'Event Log'],
+    'partner.events.list.empty' => ['sv' => 'Inga händelser hittades', 'en' => 'No events found'],
+
+    // Event types
+    'partner.events.type.rfid_link' => ['sv' => 'RFID-koppling', 'en' => 'RFID Link'],
+    'partner.events.type.rfid_register' => ['sv' => 'RFID-registrering', 'en' => 'RFID Registration'],
+    'partner.events.type.inventory' => ['sv' => 'Inventering', 'en' => 'Inventory'],
+    'partner.events.type.receive' => ['sv' => 'Mottagning', 'en' => 'Receiving'],
+
+    // Table
+    'partner.events.table.type' => ['sv' => 'Typ', 'en' => 'Type'],
+    'partner.events.table.description' => ['sv' => 'Beskrivning', 'en' => 'Description'],
+    'partner.events.table.unit' => ['sv' => 'Enhet', 'en' => 'Unit'],
+    'partner.events.table.timestamp' => ['sv' => 'Tidpunkt', 'en' => 'Timestamp'],
+
+    // Filter
+    'partner.events.filter.all_types' => ['sv' => 'Alla typer', 'en' => 'All types'],
+
+    // Detail modal
+    'partner.events.detail.article' => ['sv' => 'Artikel', 'en' => 'Article'],
+    'partner.events.detail.rfid' => ['sv' => 'RFID', 'en' => 'RFID'],
+    'partner.events.detail.unit' => ['sv' => 'Enhet', 'en' => 'Unit'],
+    'partner.events.detail.user' => ['sv' => 'Användare', 'en' => 'User'],
+    'partner.events.detail.timestamp' => ['sv' => 'Tidpunkt', 'en' => 'Timestamp'],
+
+    // Descriptions
+    'partner.events.desc.inventory' => ['sv' => '{count} artiklar räknade', 'en' => '{count} items counted'],
+
+    // Pagination
+    'partner.events.pagination' => ['sv' => 'Sida {page} av {total}', 'en' => 'Page {page} of {total}'],
+
+    // Partner Repetitive (Repetitiva händelser)
+    'partner.nav.repetitive' => ['sv' => 'Repetitiva', 'en' => 'Repetitive'],
+    'partner.repetitive.title' => ['sv' => 'Repetitiva händelser', 'en' => 'Repetitive Events'],
+    'partner.repetitive.heading' => ['sv' => 'Repetitiva händelser', 'en' => 'Repetitive Events'],
+    'partner.repetitive.list.empty' => ['sv' => 'Inga händelser', 'en' => 'No events'],
+
+    // Table
+    'partner.repetitive.table.label' => ['sv' => 'Etikett', 'en' => 'Label'],
+    'partner.repetitive.table.unit' => ['sv' => 'Enhet', 'en' => 'Unit'],
+    'partner.repetitive.table.notes' => ['sv' => 'Anteckningar', 'en' => 'Notes'],
+    'partner.repetitive.table.created' => ['sv' => 'Skapad', 'en' => 'Created'],
+
+    // Form
+    'partner.repetitive.form.label' => ['sv' => 'Etikett', 'en' => 'Label'],
+    'partner.repetitive.form.unit' => ['sv' => 'Enhet', 'en' => 'Unit'],
+    'partner.repetitive.form.select_unit' => ['sv' => '-- Välj enhet (valfritt) --', 'en' => '-- Select unit (optional) --'],
+    'partner.repetitive.form.notes' => ['sv' => 'Anteckningar', 'en' => 'Notes'],
+
+    // Actions
+    'partner.repetitive.action.create' => ['sv' => 'Ny händelse', 'en' => 'New event'],
+    'partner.repetitive.action.update' => ['sv' => 'Uppdatera', 'en' => 'Update'],
+    'partner.repetitive.action.edit' => ['sv' => 'Redigera', 'en' => 'Edit'],
+    'partner.repetitive.action.delete' => ['sv' => 'Radera', 'en' => 'Delete'],
+    'partner.repetitive.action.qr' => ['sv' => 'QR-kod', 'en' => 'QR code'],
+    'partner.repetitive.action.import' => ['sv' => 'Importera', 'en' => 'Import'],
+    'partner.repetitive.action.export' => ['sv' => 'Exportera', 'en' => 'Export'],
+
+    // Messages
+    'partner.repetitive.message.created' => ['sv' => 'Händelse skapad', 'en' => 'Event created'],
+    'partner.repetitive.message.updated' => ['sv' => 'Händelse uppdaterad', 'en' => 'Event updated'],
+    'partner.repetitive.message.deleted' => ['sv' => 'Händelse raderad', 'en' => 'Event deleted'],
+
+    // Errors
+    'partner.repetitive.error.label_required' => ['sv' => 'Etikett måste anges', 'en' => 'Label is required'],
+
+    // Modal
+    'partner.repetitive.modal.create.title' => ['sv' => 'Ny händelse', 'en' => 'New event'],
+    'partner.repetitive.modal.edit.title' => ['sv' => 'Redigera händelse', 'en' => 'Edit event'],
+    'partner.repetitive.modal.delete.title' => ['sv' => 'Radera händelse', 'en' => 'Delete event'],
+    'partner.repetitive.modal.confirm_delete' => ['sv' => 'Vill du verkligen radera denna händelse?', 'en' => 'Are you sure you want to delete this event?'],
+
+    // Import/Export
+    'partner.repetitive.import.title' => ['sv' => 'Importera repetitiva händelser', 'en' => 'Import repetitive events'],
+    'partner.repetitive.import.label_hint' => ['sv' => 'obligatorisk', 'en' => 'required'],
+    'partner.repetitive.import.unit_id' => ['sv' => 'Enhet-ID', 'en' => 'Unit ID'],
+    'partner.repetitive.import.unit_hint' => ['sv' => 'valfritt', 'en' => 'optional'],
+    'partner.repetitive.import.units_available' => ['sv' => 'Tillgängliga enheter', 'en' => 'Available units'],
+
+    // === EVENT TYPES - Händelsetyper ===
+    'event_type.receive' => ['sv' => 'Mottagning', 'en' => 'Receive'],
+    'event_type.receive.desc' => ['sv' => 'Plagg mottaget på enhet', 'en' => 'Garment received at unit'],
+    'event_type.send' => ['sv' => 'Skicka', 'en' => 'Send'],
+    'event_type.send.desc' => ['sv' => 'Plagg skickat från enhet', 'en' => 'Garment sent from unit'],
+    'event_type.wash' => ['sv' => 'Tvätt', 'en' => 'Wash'],
+    'event_type.wash.desc' => ['sv' => 'Plagg tvättat', 'en' => 'Garment washed'],
+    'event_type.inventory' => ['sv' => 'Inventering', 'en' => 'Inventory'],
+    'event_type.inventory.desc' => ['sv' => 'Plagg inventerat på enhet', 'en' => 'Garment inventoried at unit'],
+    'event_type.scrap' => ['sv' => 'Kassering', 'en' => 'Scrap'],
+    'event_type.scrap.desc' => ['sv' => 'Plagg kasserat', 'en' => 'Garment scrapped'],
+    'event_type.lost' => ['sv' => 'Förlorad', 'en' => 'Lost'],
+    'event_type.lost.desc' => ['sv' => 'Plagg markerat som förlorat', 'en' => 'Garment marked as lost'],
+    'event_type.found' => ['sv' => 'Återfunnen', 'en' => 'Found'],
+    'event_type.found.desc' => ['sv' => 'Plagg återfunnet', 'en' => 'Garment found'],
+    'event_type.repetitive' => ['sv' => 'Repetitiv', 'en' => 'Repetitive'],
+    'event_type.repetitive.desc' => ['sv' => 'Repetitiv händelse', 'en' => 'Repetitive event'],
+
+    // === EVENT TEMPLATES - Händelsemallar ===
+    'partner.nav.templates' => ['sv' => 'Mallar', 'en' => 'Templates'],
+    'partner.templates.title' => ['sv' => 'Händelsemallar', 'en' => 'Event Templates'],
+    'partner.templates.heading' => ['sv' => 'Händelsemallar', 'en' => 'Event Templates'],
+    'partner.templates.list.empty' => ['sv' => 'Inga mallar', 'en' => 'No templates'],
+
+    // Table
+    'partner.templates.table.label' => ['sv' => 'Etikett', 'en' => 'Label'],
+    'partner.templates.table.event_type' => ['sv' => 'Händelsetyp', 'en' => 'Event Type'],
+    'partner.templates.table.unit' => ['sv' => 'Enhet', 'en' => 'Unit'],
+    'partner.templates.table.target_unit' => ['sv' => 'Målenhet', 'en' => 'Target Unit'],
+    'partner.templates.table.reusable' => ['sv' => 'Återanvändbar', 'en' => 'Reusable'],
+    'partner.templates.table.created' => ['sv' => 'Skapad', 'en' => 'Created'],
+
+    // Form
+    'partner.templates.form.label' => ['sv' => 'Etikett', 'en' => 'Label'],
+    'partner.templates.form.event_type' => ['sv' => 'Händelsetyp', 'en' => 'Event Type'],
+    'partner.templates.form.select_event_type' => ['sv' => '-- Välj händelsetyp --', 'en' => '-- Select event type --'],
+    'partner.templates.form.unit' => ['sv' => 'Enhet', 'en' => 'Unit'],
+    'partner.templates.form.select_unit' => ['sv' => '-- Välj enhet (valfritt) --', 'en' => '-- Select unit (optional) --'],
+    'partner.templates.form.target_unit' => ['sv' => 'Målenhet', 'en' => 'Target Unit'],
+    'partner.templates.form.select_target_unit' => ['sv' => '-- Välj målenhet (för transfers) --', 'en' => '-- Select target unit (for transfers) --'],
+    'partner.templates.form.is_reusable' => ['sv' => 'Återanvändbar (repetitiv)', 'en' => 'Reusable (repetitive)'],
+    'partner.templates.form.is_reusable_help' => ['sv' => 'Avmarkera för engångsmallar som raderas efter användning', 'en' => 'Uncheck for one-time templates that are deleted after use'],
+    'partner.templates.form.notes' => ['sv' => 'Anteckningar', 'en' => 'Notes'],
+
+    // Actions
+    'partner.templates.action.create' => ['sv' => 'Ny mall', 'en' => 'New template'],
+    'partner.templates.action.edit' => ['sv' => 'Redigera', 'en' => 'Edit'],
+    'partner.templates.action.delete' => ['sv' => 'Radera', 'en' => 'Delete'],
+    'partner.templates.action.qr' => ['sv' => 'QR-kod', 'en' => 'QR code'],
+    'partner.templates.action.import' => ['sv' => 'Importera', 'en' => 'Import'],
+    'partner.templates.action.export' => ['sv' => 'Exportera', 'en' => 'Export'],
+
+    // Messages
+    'partner.templates.message.created' => ['sv' => 'Mall skapad', 'en' => 'Template created'],
+    'partner.templates.message.updated' => ['sv' => 'Mall uppdaterad', 'en' => 'Template updated'],
+    'partner.templates.message.deleted' => ['sv' => 'Mall raderad', 'en' => 'Template deleted'],
+
+    // Errors
+    'partner.templates.error.label_required' => ['sv' => 'Etikett måste anges', 'en' => 'Label is required'],
+    'partner.templates.error.event_type_required' => ['sv' => 'Händelsetyp måste väljas', 'en' => 'Event type must be selected'],
+    'partner.templates.error.invalid_event_type' => ['sv' => 'Ogiltig händelsetyp \'{value}\'', 'en' => 'Invalid event type \'{value}\''],
+
+    // Modal
+    'partner.templates.modal.create.title' => ['sv' => 'Ny mall', 'en' => 'New template'],
+    'partner.templates.modal.edit.title' => ['sv' => 'Redigera mall', 'en' => 'Edit template'],
+    'partner.templates.modal.delete.title' => ['sv' => 'Radera mall', 'en' => 'Delete template'],
+    'partner.templates.modal.confirm_delete' => ['sv' => 'Vill du verkligen radera denna mall?', 'en' => 'Are you sure you want to delete this template?'],
+
+    // Reusable labels
+    'partner.templates.reusable.yes' => ['sv' => 'Ja', 'en' => 'Yes'],
+    'partner.templates.reusable.no' => ['sv' => 'Engångs', 'en' => 'One-time'],
+
+    // Import
+    'partner.templates.import.title' => ['sv' => 'Importera mallar', 'en' => 'Import templates'],
+    'partner.templates.import.label_hint' => ['sv' => 'obligatorisk', 'en' => 'required'],
+    'partner.templates.import.event_type_hint' => ['sv' => 'obligatorisk, kod eller namn', 'en' => 'required, code or name'],
+    'partner.templates.import.unit_hint' => ['sv' => 'valfritt, ID eller namn', 'en' => 'optional, ID or name'],
+    'partner.templates.import.target_unit_hint' => ['sv' => 'valfritt, för transfer-händelser', 'en' => 'optional, for transfer events'],
+    'partner.templates.import.reusable_hint' => ['sv' => 'Ja/Nej, default Ja', 'en' => 'Yes/No, default Yes'],
+    'partner.templates.import.event_types_available' => ['sv' => 'Tillgängliga händelsetyper', 'en' => 'Available event types'],
+    'partner.templates.import.units_available' => ['sv' => 'Tillgängliga enheter', 'en' => 'Available units'],
+
 
     ];
 

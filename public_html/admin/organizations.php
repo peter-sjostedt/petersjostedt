@@ -208,11 +208,12 @@ $customerOrgs = count(array_filter($organizations, fn($o) => $o['org_type'] === 
         'modal_create' => t('admin.organizations.modal.create.title'),
         'modal_edit' => t('admin.organizations.modal.edit.title')
     ]) ?>'>
-    <link rel="stylesheet" href="css/admin.css">
-    <link rel="stylesheet" href="../assets/css/modal.css">
-    <script src="../assets/js/modal.js"></script>
-    <script src="js/admin.js" defer></script>
-    <script src="js/organizations.js" defer></script>
+    <link rel="stylesheet" href="<?= versioned('admin/css/admin.css') ?>">
+    <link rel="stylesheet" href="<?= versioned('assets/css/modal.css') ?>">
+    <script src="<?= versioned('assets/js/modal.js') ?>"></script>
+    <script src="<?= versioned('assets/js/qr.js') ?>"></script>
+    <script src="<?= versioned('admin/js/admin.js') ?>" defer></script>
+    <script src="<?= versioned('admin/js/organizations.js') ?>" defer></script>
 </head>
 <body>
     <?php include 'includes/sidebar.php'; ?>
@@ -297,6 +298,7 @@ $customerOrgs = count(array_filter($organizations, fn($o) => $o['org_type'] === 
                             <td class="actions">
                                 <a href="users.php?org=<?= urlencode($org['id']) ?>" class="btn btn-icon" title="<?= t('admin.organizations.action.view_users') ?>">👤</a>
                                 <a href="units.php?org_id=<?= urlencode($org['id']) ?>" class="btn btn-icon" title="<?= t('admin.organizations.action.view_units') ?>">🏢</a>
+                                <button type="button" class="btn btn-icon" data-org-qr='<?= htmlspecialchars(json_encode(['id' => $org['id'], 'name' => $org['name']]), ENT_QUOTES) ?>' title="<?= t('admin.organizations.action.qr') ?>">📱</button>
                                 <button type="button" class="btn btn-icon" data-org-edit='<?= json_encode($org) ?>' title="<?= t('admin.organizations.action.edit') ?>">✏️</button>
                                 <?php if ($org['id'] !== 'SYSTEM'): ?>
                                     <form method="POST" style="display:inline;" data-confirm="<?= t('admin.organizations.modal.delete.message', ['name' => htmlspecialchars($org['name'])]) ?>">

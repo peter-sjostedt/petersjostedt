@@ -148,6 +148,17 @@ document.addEventListener('click', function(e) {
         return;
     }
 
+    // Data-qr knappar
+    if (e.target.matches('[data-qr]') || e.target.closest('[data-qr]')) {
+        e.preventDefault();
+        const btn = e.target.closest('[data-qr]') || e.target;
+        const qrConfig = JSON.parse(btn.dataset.qr);
+        if (typeof QR !== 'undefined' && QR.show) {
+            QR.show(qrConfig);
+        }
+        return;
+    }
+
     // Data-download-qr knappar
     if (e.target.matches('[data-download-qr]') || e.target.closest('[data-download-qr]')) {
         e.preventDefault();

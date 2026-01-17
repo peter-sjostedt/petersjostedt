@@ -46,6 +46,14 @@ function openCreateModal() {
             <input type="hidden" name="action" value="create">
 
             <table style="width: 100%; border-collapse: collapse;">
+                <tr id="org_field_row">
+                    <td style="padding: 0.5rem; width: 30%; vertical-align: top;"><strong>${labels.organization} *</strong></td>
+                    <td style="padding: 0.5rem;">
+                        <select id="modal_organization" name="organization_id" style="width: 100%;">
+                            ${orgOptions}
+                        </select>
+                    </td>
+                </tr>
                 <tr>
                     <td style="padding: 0.5rem; width: 30%; vertical-align: top;"><strong>${labels.role} *</strong></td>
                     <td style="padding: 0.5rem;">
@@ -53,14 +61,6 @@ function openCreateModal() {
                             <option value="user">${labels.role_user}</option>
                             <option value="org_admin">${labels.role_org_admin}</option>
                             <option value="admin">${labels.role_admin}</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr id="org_field_row">
-                    <td style="padding: 0.5rem; width: 30%; vertical-align: top;"><strong>${labels.organization} *</strong></td>
-                    <td style="padding: 0.5rem;">
-                        <select id="modal_organization" name="organization_id" style="width: 100%;">
-                            ${orgOptions}
                         </select>
                     </td>
                 </tr>
@@ -99,7 +99,7 @@ function openCreateModal() {
     setTimeout(() => {
         setupRoleToggle();
         setupAjaxFormSubmit();
-        document.getElementById('modal_name').focus();
+        document.getElementById('modal_organization').focus();
     }, 100);
 }
 
@@ -124,10 +124,12 @@ function openEditModal(user) {
             <input type="hidden" name="id" value="${user.id}">
 
             <table style="width: 100%; border-collapse: collapse;">
-                <tr>
-                    <td style="padding: 0.5rem; width: 30%; vertical-align: top;"><strong>ID</strong></td>
+                <tr id="org_field_row" style="display: ${showOrgField ? 'table-row' : 'none'};">
+                    <td style="padding: 0.5rem; width: 30%; vertical-align: top;"><strong>${labels.organization} *</strong></td>
                     <td style="padding: 0.5rem;">
-                        <input type="text" value="${user.id}" disabled style="width: 100%; background: #2a2a2a; color: #888;">
+                        <select id="modal_organization" name="organization_id" style="width: 100%;">
+                            ${orgOptions}
+                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -137,14 +139,6 @@ function openEditModal(user) {
                             <option value="user" ${user.role === 'user' ? 'selected' : ''}>${labels.role_user}</option>
                             <option value="org_admin" ${user.role === 'org_admin' ? 'selected' : ''}>${labels.role_org_admin}</option>
                             <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>${labels.role_admin}</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr id="org_field_row" style="display: ${showOrgField ? 'table-row' : 'none'};">
-                    <td style="padding: 0.5rem; width: 30%; vertical-align: top;"><strong>${labels.organization} *</strong></td>
-                    <td style="padding: 0.5rem;">
-                        <select id="modal_organization" name="organization_id" style="width: 100%;">
-                            ${orgOptions}
                         </select>
                     </td>
                 </tr>

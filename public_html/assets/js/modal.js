@@ -102,8 +102,16 @@ const Modal = (function() {
 
             // Sätt ikon och typ
             headerEl.className = 'modal-header ' + type;
+            iconEl.style.display = '';
             iconEl.className = 'modal-icon ' + type;
             iconEl.innerHTML = icons[type] || icons.info;
+
+            // Centrera titel om önskat
+            if (options.centerTitle) {
+                headerEl.classList.add('centered');
+            } else {
+                headerEl.classList.remove('centered');
+            }
 
             // Sätt titel
             titleEl.textContent = title;

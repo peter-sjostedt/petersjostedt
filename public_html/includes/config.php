@@ -58,6 +58,10 @@ require_once __DIR__ . '/../../src/FileUpload.php';
 require_once __DIR__ . '/../../src/ImageUpload.php';
 require_once __DIR__ . '/../../src/FileServe.php';
 require_once __DIR__ . '/../../src/Organization.php';
+require_once __DIR__ . '/../../src/Event.php';
+require_once __DIR__ . '/../../src/EventType.php';
+require_once __DIR__ . '/../../src/EventTemplate.php';
+require_once __DIR__ . '/../../src/Shipment.php';
 
 /**
  * Helper-funktion för att generera URL till assets
@@ -68,4 +72,18 @@ function asset_url(string $path): string {
     $baseUrl = rtrim($appConfig['url'], '/');
     $path = ltrim($path, '/');
     return $baseUrl . '/' . $path;
+}
+
+/**
+ * Helper-funktion för cache busting av CSS/JS-filer
+ * Lägger till filens modifieringstid som query string
+ * Returnerar absolut URL från site root
+ */
+function versioned(string $path): string {
+    $fullPath = __DIR__ . '/../' . ltrim($path, '/');
+    $url = '/' . ltrim($path, '/');
+    if (file_exists($fullPath)) {
+        return $url . '?v=' . filemtime($fullPath);
+    }
+    return $url;
 }

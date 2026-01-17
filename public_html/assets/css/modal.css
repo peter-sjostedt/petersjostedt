@@ -179,6 +179,21 @@
     color: var(--modal-text-dark);
     margin: 0;
     padding-right: 24px;
+    flex-grow: 1;
+}
+
+/* Centered title */
+.modal-header.centered {
+    position: relative;
+}
+
+.modal-header.centered .modal-title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding-right: 0;
+    pointer-events: none;
 }
 
 /* Modal Body - styling */

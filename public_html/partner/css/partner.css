@@ -637,6 +637,80 @@ button.search-clear:hover {
 .text-muted { color: #999; }
 .text-center { text-align: center; }
 
+/* Tabs container */
+.tabs-container {
+    margin-bottom: 0;
+}
+
+.tabs {
+    display: flex;
+    gap: 0;
+    margin: 0;
+    border: none;
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    color: #6b7280;
+    text-decoration: none;
+    background: #f8f9fa;
+    border: 1px solid #d1d5db;
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    margin-right: -1px;
+    transition: all 0.2s;
+}
+
+.tab:hover {
+    color: #1a73e8;
+    background: #f3f4f6;
+}
+
+.tab.active {
+    color: #1a73e8;
+    background: #fff;
+    border-color: #d1d5db;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+}
+
+.tabs + .card {
+    border-top-left-radius: 0;
+    margin-top: 0;
+    border-top: 1px solid #d1d5db;
+}
+
+.tab .badge {
+    background: #e5e7eb;
+    color: #6b7280;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.tab.active .badge {
+    background: #dbeafe;
+    color: #1a73e8;
+}
+
+/* Form helpers in modals */
+.form-warning {
+    color: #856404;
+    display: block;
+    margin-top: 0.25rem;
+}
+
+.form-help {
+    color: #666;
+    display: block;
+    margin-top: 0.25rem;
+}
+
 /* Modal overlay (för QR och andra modaler) */
 #modal-overlay {
     position: fixed;
@@ -712,6 +786,45 @@ button.search-clear:hover {
 }
 
 /* Responsive */
+/* Import Modal */
+.import-info {
+    background: #f8f9fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.import-info ul {
+    margin: 0.5rem 0 0 1.5rem;
+}
+
+.import-info li {
+    margin: 0.25rem 0;
+}
+
+.import-info details {
+    margin-top: 0.75rem;
+}
+
+.import-info summary {
+    cursor: pointer;
+    color: #1a73e8;
+    font-size: 0.85rem;
+}
+
+.import-info summary:hover {
+    text-decoration: underline;
+}
+
+.import-partners-list {
+    max-height: 150px;
+    overflow-y: auto;
+    font-size: 0.85rem;
+    color: #666;
+}
+
 @media (max-width: 768px) {
     .sidebar {
         width: 100%;

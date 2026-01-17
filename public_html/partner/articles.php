@@ -71,6 +71,111 @@ function fieldKey(string $label): string
 }
 
 /**
+ * Bearbeta artikel CSV-import
+ */
+function processArticleImport(string $filePath, string $orgId, array $articleSchema, PDO $db): array
+{
+    $content = file_get_contents($filePath);
+
+    // Ta bort BOM om den finns
+    $content = preg_replace('/^\xEF\xBB\xBF/', '', $content);
+
+    // Detektera separator genom att testa vilken som ger fler kolumner i rubrikraden
+    $firstLine = strtok($content, "\n");
+    $colsWithComma = count(str_getcsv($firstLine, ','));
+    $colsWithSemicolon = count(str_getcsv($firstLine, ';'));
+    $separator = ($colsWithSemicolon > $colsWithComma) ? ';' : ',';
+
+    // Parsa CSV
+    $lines = array_filter(explode("\n", $content), 'trim');
+    if (count($lines) < 2) {
+        return ['success' => false, 'error' => t('partner.import.error.empty_file')];
+    }
+
+    // Parsa rubrikrad
+    $headers = str_getcsv(array_shift($lines), $separator);
+    $headers = array_map('trim', $headers);
+
+    // Hitta SKU-kolumn
+    $skuIndex = array_search('SKU', $headers);
+    if ($skuIndex === false) {
+        return ['success' => false, 'error' => t('partner.import.error.missing_column', ['column' => 'SKU'])];
+    }
+
+    // Mappa rubriker till fältnycklar
+    $fieldMap = [];
+    foreach ($articleSchema as $field) {
+        $headerIndex = array_search($field['label'], $headers);
+        if ($headerIndex !== false) {
+            $fieldMap[$headerIndex] = fieldKey($field['label']);
+        }
+    }
+
+    $created = 0;
+    $updated = 0;
+    $errors = [];
+    $rowNum = 1;
+
+    foreach ($lines as $line) {
+        $rowNum++;
+        $line = trim($line);
+        if (empty($line)) continue;
+
+        $values = str_getcsv($line, $separator);
+        $sku = trim($values[$skuIndex] ?? '');
+
+        // Bygg fältdata
+        $fieldData = [];
+        foreach ($fieldMap as $csvIndex => $fKey) {
+            $fieldData[$fKey] = trim($values[$csvIndex] ?? '');
+        }
+
+        // Generera SKU om den saknas
+        if (empty($sku)) {
+            $sku = generateSku($db, $orgId, $fieldData);
+        }
+
+        $dataJson = json_encode($fieldData, JSON_UNESCAPED_UNICODE);
+
+        // Kolla om artikeln redan finns
+        $stmt = $db->prepare("SELECT id FROM articles WHERE organization_id = ? AND sku = ?");
+        $stmt->execute([$orgId, $sku]);
+        $existing = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Generera namn från första fältvärdet eller SKU
+        $name = '';
+        foreach ($fieldData as $value) {
+            if (!empty($value)) {
+                $name = $value;
+                break;
+            }
+        }
+        if (empty($name)) {
+            $name = $sku;
+        }
+
+        if ($existing) {
+            // Uppdatera
+            $stmt = $db->prepare("UPDATE articles SET name = ?, data = ? WHERE id = ?");
+            $stmt->execute([$name, $dataJson, $existing['id']]);
+            $updated++;
+        } else {
+            // Skapa ny
+            $stmt = $db->prepare("INSERT INTO articles (organization_id, sku, name, data, is_active) VALUES (?, ?, ?, ?, 1)");
+            $stmt->execute([$orgId, $sku, $name, $dataJson]);
+            $created++;
+        }
+    }
+
+    return [
+        'success' => true,
+        'created' => $created,
+        'updated' => $updated,
+        'errors' => $errors
+    ];
+}
+
+/**
  * Generera SKU baserat på fältvärdena
  * Tar första 3 bokstäverna från varje fält och sammanfogar med bindestreck
  * T.ex. Lakan + Medium + Vit = LAK-MED-VIT
@@ -206,6 +311,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 break;
 
+            case 'import':
+                if (!isset($_FILES['csv_file']) || $_FILES['csv_file']['error'] !== UPLOAD_ERR_OK) {
+                    $message = t('partner.import.error.no_file');
+                    $messageType = 'error';
+                } else {
+                    $result = processArticleImport($_FILES['csv_file']['tmp_name'], $organizationId, $schemaFields, $db);
+                    if ($result['success']) {
+                        $message = t('partner.import.success', ['created' => $result['created'], 'updated' => $result['updated']]);
+                        $messageType = 'success';
+                        Logger::getInstance()->info('ARTICLE_IMPORT', Session::getUserId(), "Importerade artiklar: {$result['created']} nya, {$result['updated']} uppdaterade");
+                    } else {
+                        $message = $result['error'];
+                        $messageType = 'error';
+                    }
+                }
+                break;
+
             case 'delete':
                 $id = (int)($_POST['id'] ?? 0);
 
@@ -310,18 +432,25 @@ $pageTitle = t('partner.articles.title') . ' - ' . htmlspecialchars($organizatio
         'create' => t('common.create'),
         'update' => t('common.update'),
         'cancel' => t('common.cancel'),
+        'import' => t('partner.articles.action.import'),
         'modal_create' => t('partner.articles.modal.create.title'),
         'modal_edit' => t('partner.articles.modal.edit.title'),
+        'modal_import' => t('partner.import.title'),
         'no_fields' => t('partner.articles.form.no_fields'),
-        'no_fields_link' => t('partner.articles.form.no_fields_link')
+        'no_fields_link' => t('partner.articles.form.no_fields_link'),
+        'import_select_file' => t('partner.import.select_file'),
+        'import_file_hint' => t('partner.import.file_hint'),
+        'import_columns' => t('partner.import.expected_columns'),
+        'import_sku_hint' => t('partner.import.sku_hint')
     ]) ?>'>
     <meta name="article-fields" content='<?= htmlspecialchars(json_encode($articleFields), ENT_QUOTES) ?>'>
-    <link rel="stylesheet" href="css/partner.css">
-    <link rel="stylesheet" href="../assets/css/modal.css">
-    <script src="../assets/js/modal.js"></script>
-    <script src="js/sidebar.js" defer></script>
-    <script src="js/modals.js" defer></script>
-    <script src="js/articles.js" defer></script>
+    <link rel="stylesheet" href="css/partner.css?v=<?= filemtime(__DIR__ . '/css/partner.css') ?>">
+    <link rel="stylesheet" href="../assets/css/modal.css?v=<?= filemtime(__DIR__ . '/../assets/css/modal.css') ?>">
+    <script src="../assets/js/modal.js?v=<?= filemtime(__DIR__ . '/../assets/js/modal.js') ?>"></script>
+    <script src="../assets/js/qr.js?v=<?= filemtime(__DIR__ . '/../assets/js/qr.js') ?>"></script>
+    <script src="js/sidebar.js?v=<?= filemtime(__DIR__ . '/js/sidebar.js') ?>" defer></script>
+    <script src="js/modals.js?v=<?= filemtime(__DIR__ . '/js/modals.js') ?>" defer></script>
+    <script src="js/articles.js?v=<?= filemtime(__DIR__ . '/js/articles.js') ?>" defer></script>
 </head>
 <body>
     <?php include __DIR__ . '/includes/sidebar.php'; ?>
@@ -334,7 +463,7 @@ $pageTitle = t('partner.articles.title') . ' - ' . htmlspecialchars($organizatio
                     <input type="text" id="table-search" placeholder="<?= t('common.search') ?>...">
                     <button type="button" class="search-clear" title="<?= t('common.cancel') ?>">&times;</button>
                 </div>
-                <a href="import.php?type=articles" class="btn"><?= t('partner.articles.action.import') ?></a>
+                <button type="button" class="btn" id="importArticleBtn"><?= t('partner.articles.action.import') ?></button>
                 <a href="export.php?type=articles" class="btn"><?= t('partner.articles.action.export') ?></a>
                 <button type="button" class="btn btn-primary" id="createArticleBtn"><?= t('partner.articles.action.create') ?></button>
             </div>
@@ -375,7 +504,34 @@ $pageTitle = t('partner.articles.title') . ' - ' . htmlspecialchars($organizatio
                         <td colspan="4" class="text-muted text-center"><?= t('partner.articles.list.empty') ?></td>
                     </tr>
                     <?php else: ?>
-                    <?php foreach ($articles as $article): ?>
+                    <?php foreach ($articles as $article):
+                        // QR-data
+                        $articleData = json_decode($article['data'] ?? '{}', true) ?: [];
+                        $qrLines = ['Org: ' . $organizationId . ' (' . $organization['name'] . ')'];
+                        if (!empty($articleData) && !empty($articleFields)) {
+                            $sortedValues = [];
+                            foreach ($articleFields as $field) {
+                                $key = fieldKey($field['label']);
+                                if (!empty($articleData[$key])) {
+                                    $sortedValues[] = $articleData[$key];
+                                }
+                            }
+                            if (!empty($sortedValues)) {
+                                $qrLines[] = implode(' | ', $sortedValues);
+                            }
+                        }
+                        $qrConfig = [
+                            'data' => [
+                                'type' => 'sku',
+                                'org_id' => $organizationId,
+                                'sku' => $article['sku']
+                            ],
+                            'title' => 'SKU: ' . $article['sku'],
+                            'subtitle' => implode("\n", $qrLines),
+                            'filename' => 'SKU_' . $article['sku']
+                        ];
+                        $qrData = htmlspecialchars(json_encode($qrConfig, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8');
+                    ?>
                     <tr class="<?= !$article['is_active'] ? 'row-inactive' : '' ?>">
                         <td><strong><?= htmlspecialchars($article['sku']) ?></strong></td>
                         <td>
@@ -389,7 +545,7 @@ $pageTitle = t('partner.articles.title') . ' - ' . htmlspecialchars($organizatio
                         </td>
                         <td><?= date('Y-m-d', strtotime($article['created_at'])) ?></td>
                         <td class="actions">
-                            <button type="button" class="btn btn-icon" data-modal="modals/qr_view.php?id=<?= $article['id'] ?>" title="QR">📱</button>
+                            <button type="button" class="btn btn-icon" data-qr="<?= $qrData ?>" title="QR">📱</button>
                             <button type="button" class="btn btn-icon" data-article-edit='<?= htmlspecialchars(json_encode($article)) ?>' title="<?= t('common.edit') ?>">✏️</button>
                             <?php if (!$article['is_used'] && $article['rfid_count'] == 0): ?>
                             <form method="POST" style="display:inline;" data-confirm="<?= t('partner.articles.modal.delete.message', ['sku' => htmlspecialchars($article['sku'])]) ?>">

@@ -36,8 +36,8 @@ $userCount = $userModel->count();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= t('admin.nav.dashboard') ?> - <?= t('admin.title.prefix') ?></title>
-    <link rel="stylesheet" href="css/admin.css">
-    <script src="js/admin.js" defer></script>
+    <link rel="stylesheet" href="<?= versioned('admin/css/admin.css') ?>">
+    <script src="<?= versioned('admin/js/admin.js') ?>" defer></script>
 </head>
 <body>
     <?php include 'includes/sidebar.php'; ?>

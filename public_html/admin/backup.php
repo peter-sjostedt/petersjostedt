@@ -133,8 +133,8 @@ $stats = $backup->getStats();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= t('admin.backup.title') ?> - <?= t('admin.title.prefix') ?></title>
-    <link rel="stylesheet" href="css/admin.css">
-    <script src="js/admin.js" defer></script>
+    <link rel="stylesheet" href="<?= versioned('admin/css/admin.css') ?>">
+    <script src="<?= versioned('admin/js/admin.js') ?>" defer></script>
 </head>
 <body>
     <?php include 'includes/sidebar.php'; ?>
@@ -156,6 +156,7 @@ $stats = $backup->getStats();
             <p><strong><?= t('admin.backup.stats.daily') ?>:</strong> <?= $stats['daily'] ?></p>
             <p><strong><?= t('admin.backup.stats.weekly') ?>:</strong> <?= $stats['weekly'] ?></p>
             <p><strong><?= t('admin.backup.stats.monthly') ?>:</strong> <?= $stats['monthly'] ?></p>
+            <p><strong><?= t('admin.backup.stats.pre_restore') ?>:</strong> <?= $stats['pre_restore'] ?></p>
 
             <?php if (isset($stats['total_size_human'])): ?>
                 <hr>
@@ -207,46 +208,31 @@ $stats = $backup->getStats();
             <table>
                 <thead>
                     <tr>
-                        <th><?= t('admin.backup.list.filename') ?></th>
                         <th><?= t('admin.backup.list.type') ?></th>
-                        <th><?= t('admin.backup.list.size') ?></th>
                         <th><?= t('admin.backup.list.created') ?></th>
-                        <th><?= t('admin.backup.list.age') ?></th>
-                        <th><?= t('admin.backup.list.actions') ?></th>
+                        <th><?= t('admin.backup.list.size') ?></th>
+                        <th><?= t('common.actions') ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($backups as $b): ?>
                         <tr>
-                            <td><code><?= htmlspecialchars($b['name']) ?></code></td>
-                            <td>
-                                <span class="badge badge-<?= $b['type'] ?>">
-                                    <?= t('admin.backup.type.' . $b['type']) ?>
-                                </span>
-                            </td>
-                            <td><?= htmlspecialchars($b['size_human']) ?></td>
+                            <td><span class="badge badge-<?= $b['type'] ?>"><?= t('admin.backup.type.' . $b['type']) ?></span></td>
                             <td><?= htmlspecialchars($b['modified_human']) ?></td>
-                            <td><?= t('admin.backup.list.days_ago', ['days' => $b['age_days']]) ?></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <form method="POST" style="display: inline;" onsubmit="return confirm('<?= t('admin.backup.restore.confirm') ?>');">
-                                        <?= Session::csrfField() ?>
-                                        <input type="hidden" name="action" value="restore">
-                                        <input type="hidden" name="backup_file" value="<?= htmlspecialchars($b['name']) ?>">
-                                        <button type="submit" class="btn btn-sm btn-warning">
-                                            <?= t('admin.backup.restore.button') ?>
-                                        </button>
-                                    </form>
-
-                                    <form method="POST" style="display: inline;" onsubmit="return confirm('<?= t('admin.backup.delete.confirm') ?>');">
-                                        <?= Session::csrfField() ?>
-                                        <input type="hidden" name="action" value="delete">
-                                        <input type="hidden" name="backup_file" value="<?= htmlspecialchars($b['name']) ?>">
-                                        <button type="submit" class="btn btn-sm btn-danger">
-                                            <?= t('admin.backup.delete.button') ?>
-                                        </button>
-                                    </form>
-                                </div>
+                            <td><?= htmlspecialchars($b['size_human']) ?></td>
+                            <td class="actions">
+                                <form method="POST" style="display: inline;" onsubmit="return confirm('<?= t('admin.backup.restore.confirm') ?>');">
+                                    <?= Session::csrfField() ?>
+                                    <input type="hidden" name="action" value="restore">
+                                    <input type="hidden" name="backup_file" value="<?= htmlspecialchars($b['name']) ?>">
+                                    <button type="submit" class="btn btn-icon" title="<?= t('admin.backup.restore.button') ?>">🔄</button>
+                                </form>
+                                <form method="POST" style="display: inline;" onsubmit="return confirm('<?= t('admin.backup.delete.confirm') ?>');">
+                                    <?= Session::csrfField() ?>
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="backup_file" value="<?= htmlspecialchars($b['name']) ?>">
+                                    <button type="submit" class="btn btn-icon btn-icon-danger" title="<?= t('admin.backup.delete.button') ?>">🗑️</button>
+                                </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -271,7 +257,7 @@ $stats = $backup->getStats();
     </ul>
 
     <h3 style="margin-top: 2rem;"><?= t('admin.backup.instructions.restore.heading') ?></h3>
-    <p><?= t('admin.backup.instructions.restore.warning') ?></p>
+    <p><?= t('admin.backup.instructions.restore.info') ?></p>
         </div>
     </main>
 </body>

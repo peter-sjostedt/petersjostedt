@@ -24,7 +24,9 @@ if (isset($_GET['set_lang'])) {
 
 $userModel = new User();
 $orgModel = new Organization();
-$organizations = $orgModel->findCustomers();
+// Hämta alla organisationer utom system-organisationen
+$allOrgs = $orgModel->findAll(null, true);
+$organizations = array_values(array_filter($allOrgs, fn($o) => $o['org_type'] !== 'system'));
 
 // AJAX API endpoint
 $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
@@ -170,11 +172,11 @@ $users = $userModel->findAll(0, 0, $filterOrg, $sortBy, $sortOrder);
     <?php if ($filterOrg): ?>
     <meta name="filter-org" content="<?= htmlspecialchars($filterOrg) ?>">
     <?php endif; ?>
-    <link rel="stylesheet" href="css/admin.css">
-    <link rel="stylesheet" href="../assets/css/modal.css">
-    <script src="../assets/js/modal.js"></script>
-    <script src="js/admin.js" defer></script>
-    <script src="js/users.js" defer></script>
+    <link rel="stylesheet" href="<?= versioned('admin/css/admin.css') ?>">
+    <link rel="stylesheet" href="<?= versioned('assets/css/modal.css') ?>">
+    <script src="<?= versioned('assets/js/modal.js') ?>"></script>
+    <script src="<?= versioned('admin/js/admin.js') ?>" defer></script>
+    <script src="<?= versioned('admin/js/users.js') ?>" defer></script>
 </head>
 <body>
     <?php include 'includes/sidebar.php'; ?>
